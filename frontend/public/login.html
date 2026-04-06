@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>InvoShield — GST Fraud Detection</title>
-  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
 
@@ -24,8 +24,8 @@
       <div class="badge-row">
         <span class="badge">GSTN Certified</span>
         <span class="badge">ISO 27001</span>
-        <span class="badge">AES-256</span>
-        <span class="badge">GDPR Compliant</span>
+        <span class="badge">AES-24</span>
+        
       </div>
 
       <div class="stat-row">
@@ -66,7 +66,7 @@
     </aside>
 
     <main>
-      <div class="login-card">  <!-- Beech ka Card (Centered Card) -->
+      <div class="login-card">
         <div class="card-inner-glow"></div>
 
         <div class="logo-wrap">
@@ -85,9 +85,9 @@
         <h2 class="card-title">Secure <span>Access</span></h2>
         <p class="card-desc">Sign in to your enforcement dashboard</p>
 
-        <form id="loginForm" onsubmit="handleLogin(event)">
+        <form id="loginForm">
           <div class="form-group">
-            <label class="form-label">OfficialEmail / GSTIN</label>
+            <label class="form-label">Official Email / GSTIN</label>
             <div class="input-wrap">
               <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -134,7 +134,7 @@
 
         <div class="divider"><span>or access with</span></div>
 
-        <button class="gstin-btn">
+        <button class="gstin-btn" type="button">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
           </svg>
@@ -254,10 +254,7 @@
       }, 900);
     });
   </script>
-  <script src="../frontend/js/login.js"></script>
-
-</body>
-</html>
+  <script src="/js/login.js"></script>
 
 </body>
 </html>

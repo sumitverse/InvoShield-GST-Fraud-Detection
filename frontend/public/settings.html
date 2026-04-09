@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Settings</title>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+  <link rel="stylesheet" href="/css/enforcement.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item active" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div>
+      <div class="topbar-title">Settings</div>
+      <div class="topbar-sub">Preferences, integrations, access control, and audit settings</div>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="btn primary" id="st-save" style="height:34px;">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Save
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <section class="page-head">
+      <div>
+        <div class="title">Workspace configuration</div>
+        <div class="subtitle">
+          Control how InvoShield monitors filings, generates alerts, and handles enforcement actions. These settings are designed for operational
+          teams: strong defaults, clear auditability, and safe-by-default enforcement toggles.
+        </div>
+        <div class="pill-row">
+          <div class="pill live"><strong>Secure</strong> role-based access</div>
+          <div class="pill info"><strong>API</strong> integrations ready</div>
+          <div class="pill warn"><strong>Policy</strong> approvals required</div>
+          <div class="pill"><strong>Logs</strong> retention 365d</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="st-reset">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Reset
+        </button>
+      </div>
+    </section>
+
+    <section class="settings-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Monitoring</div>
+            <div class="panel-sub">Control ingestion, scoring cadence, and alert thresholds.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Realtime entity scoring</div>
+              <div class="setting-desc">Continuously update entity risk based on velocity + graph topology + mismatch signals.</div>
+            </div>
+            <div class="toggle on" data-toggle="scoring"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Burst detection</div>
+              <div class="setting-desc">Detect rapid invoice generation spikes and route to triage within 2 minutes.</div>
+            </div>
+            <div class="toggle on" data-toggle="burst"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Grace window</div>
+              <div class="setting-desc">Allow reconciliation before ITC mismatch alerts are escalated.</div>
+            </div>
+            <div class="toggle on" data-toggle="grace"></div>
+          </div>
+          <div class="field" style="margin-top:10px;">
+            <label>ITC mismatch alert threshold</label>
+            <input id="st-itc" type="number" min="0" step="0.1" value="2.5" />
+          </div>
+          <div class="field">
+            <label>Grace window (hours)</label>
+            <input id="st-grace" type="number" min="0" step="1" value="48" />
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Enforcement safety</div>
+            <div class="panel-sub">High-impact actions require approvals and keep a legal-grade trail.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Temporary ITC hold</div>
+              <div class="setting-desc">Enable policy-driven holds for critical patterns with dual approvals.</div>
+            </div>
+            <div class="toggle" data-toggle="hold"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Blacklist exact-match enforcement</div>
+              <div class="setting-desc">Automatically block entities on exact GSTIN match once approved.</div>
+            </div>
+            <div class="toggle on" data-toggle="bl_exact"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">One-hop EDD</div>
+              <div class="setting-desc">For near-network blacklist matches, require Enhanced Due Diligence (EDD).</div>
+            </div>
+            <div class="toggle on" data-toggle="edd"></div>
+          </div>
+          <div class="field" style="margin-top:10px;">
+            <label>Approvals required (critical)</label>
+            <select id="st-approvals">
+              <option>Zone Lead + Legal</option>
+              <option>Zone Lead only</option>
+              <option>Legal only</option>
+              <option>None (not recommended)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Evidence completeness minimum (%)</label>
+            <input id="st-evidence" type="number" min="0" max="100" step="1" value="70" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Integrations</div>
+            <div class="panel-sub">Connect to GST registry, e-invoice, and internal case systems.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="field">
+            <label>GST Registry API base</label>
+            <input id="st-gstapi" type="text" value="https://api.example.gov/gst/registry" />
+          </div>
+          <div class="field">
+            <label>E-Invoice webhook URL</label>
+            <input id="st-hook" type="text" value="https://example.org/webhooks/einvoice" />
+          </div>
+          <div class="field">
+            <label>API key (masked)</label>
+            <input id="st-key" type="password" value="demo-demo-demo" />
+          </div>
+          <div class="btn-row" style="justify-content:flex-start;">
+            <button class="btn primary" id="st-test">
+              <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Test Connection
+            </button>
+            <button class="btn" id="st-rotate">
+              <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/></svg>
+              Rotate Key
+            </button>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot b"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Integration notes</div><div class="tag b">Ops</div></div>
+              <div class="mini-sub">Keys should be stored server-side. The UI only stores placeholders and displays last-test status.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Notifications & audit</div>
+            <div class="panel-sub">Who gets alerted, and how long records remain accessible.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Email alerts</div>
+              <div class="setting-desc">Send high severity alerts + daily summaries to officers.</div>
+            </div>
+            <div class="toggle on" data-toggle="email"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">SMS for critical cases</div>
+              <div class="setting-desc">Critical escalations trigger SMS to zone leadership.</div>
+            </div>
+            <div class="toggle" data-toggle="sms"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-left">
+              <div class="setting-name">Immutable audit</div>
+              <div class="setting-desc">Store every policy change, approvals, and enforcement actions.</div>
+            </div>
+            <div class="toggle on" data-toggle="audit"></div>
+          </div>
+          <div class="field" style="margin-top:10px;">
+            <label>Log retention (days)</label>
+            <input id="st-retention" type="number" min="30" step="1" value="365" />
+          </div>
+          <div class="field">
+            <label>Daily summary time (local)</label>
+            <input id="st-summary" type="time" value="18:30" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Workspace identity</div>
+          <div class="panel-sub">Displayed across dashboards and exported evidence bundles.</div>
+        </div>
+      </div>
+      <div class="filters" style="grid-template-columns: 1fr 1fr 1fr auto;">
+        <div class="field">
+          <label>Zone</label>
+          <select id="st-zone">
+            <option>Punjab</option>
+            <option>Delhi</option>
+            <option>Maharashtra</option>
+            <option>Gujarat</option>
+            <option>Karnataka</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fiscal year</label>
+          <select id="st-fy">
+            <option>FY 2026-27</option>
+            <option>FY 2025-26</option>
+            <option>FY 2024-25</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Default case owner</label>
+          <select id="st-owner">
+            <option>Team Queue</option>
+            <option>Sumit Kumar</option>
+            <option>R. Singh</option>
+            <option>A. Verma</option>
+          </select>
+        </div>
+        <div class="btn-row" style="align-items:flex-end;">
+          <button class="btn" id="st-preview">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px;">
+        <label>Footer disclaimer (exports)</label>
+        <textarea id="st-disclaimer">This report is generated by InvoShield for compliance and enforcement operations. Data is subject to verification and may change as filings are reconciled.</textarea>
+      </div>
+    </section>
+
+    <p style="padding:10px 0;color:var(--text-2);font-size:.78rem;text-align:center;position:relative;z-index:1;">
+      Settings are stored client-side for demo. Production should persist per-tenant server-side with RBAC and audit logs.
+    </p>
+
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/settings.js"></script>
+<script>
+function logout() {
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
+

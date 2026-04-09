@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Entities</title>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+  <link rel="stylesheet" href="/css/enforcement.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item active" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div>
+      <div class="topbar-title">Entity Intelligence</div>
+      <div class="topbar-sub">Live network watch · Risk scoring · Shell detection</div>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="ent-search" type="text" placeholder="Search GSTIN, trade name, PAN…"/>
+    </div>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      Live Graph
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <section class="page-head">
+      <div>
+        <div class="title">Entities</div>
+        <div class="subtitle">
+          A live view of suppliers, recipients, and intermediaries across filings. The system continuously scores entities using invoice velocity,
+          ITC anomalies, network centrality, and blacklist proximity. Use this page to triage investigations before opening cases.
+        </div>
+        <div class="pill-row">
+          <div class="pill live"><strong id="ent-live">Live</strong> refresh every 2s</div>
+          <div class="pill info"><strong id="ent-stream">1,284</strong> signals/min</div>
+          <div class="pill warn"><strong id="ent-flagged">42</strong> high-risk entities</div>
+          <div class="pill"><strong id="ent-coverage">92%</strong> jurisdiction coverage</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost" id="ent-export">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+        <button class="btn primary" id="ent-open-case">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Open Case
+        </button>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <div class="kpi-box">
+        <div class="lbl">Entities monitored</div>
+        <div class="val" id="kpi-monitored">58,240</div>
+        <div class="meta"><span class="chip b">Realtime</span><span class="muted">Active today</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Velocity spikes</div>
+        <div class="val" id="kpi-velocity">318</div>
+        <div class="meta"><span class="chip y">Watch</span><span class="muted">Last 30m</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Network loops</div>
+        <div class="val" id="kpi-loops">27</div>
+        <div class="meta"><span class="chip r">Critical</span><span class="muted">Circular trades</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">ITC mismatch rate</div>
+        <div class="val" id="kpi-itc">4.8%</div>
+        <div class="meta"><span class="chip g">Improving</span><span class="muted">vs last week</span></div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Risk feed (realtime)</div>
+            <div class="panel-sub">Rolling 60 seconds of risk score updates (synthetic, updates live)</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn ghost" id="ent-pause">
+              <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              Pause
+            </button>
+            <button class="btn" id="ent-reset">
+              <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              Reset
+            </button>
+          </div>
+        </div>
+        <div style="height: 260px;">
+          <canvas id="riskLine"></canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Risk distribution</div>
+            <div class="panel-sub">Share of entities by current band (updates live)</div>
+          </div>
+        </div>
+        <div style="height: 260px;">
+          <canvas id="riskDonut"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Entity registry</div>
+          <div class="panel-sub">Filter, rank, and take action on high-risk entities.</div>
+        </div>
+      </div>
+
+      <div class="filters" style="margin-bottom: 14px;">
+        <div class="field">
+          <label>Search</label>
+          <input id="ent-filter-q" type="text" placeholder="GSTIN / trade name / PAN / state…"/>
+        </div>
+        <div class="field">
+          <label>Risk band</label>
+          <select id="ent-filter-band">
+            <option value="">All</option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Jurisdiction</label>
+          <select id="ent-filter-zone">
+            <option value="">All Zones</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Karnataka">Karnataka</option>
+          </select>
+        </div>
+        <div class="btn-row" style="align-items: flex-end;">
+          <button class="btn" id="ent-clear">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Clear
+          </button>
+          <button class="btn primary" id="ent-run">
+            <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Run Triage
+          </button>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="tbl" id="ent-table">
+          <thead>
+            <tr>
+              <th>Entity</th>
+              <th>GSTIN</th>
+              <th>Zone</th>
+              <th>Band</th>
+              <th>Risk</th>
+              <th>Signals</th>
+              <th>Last activity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grid-3">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Auto-detections</div>
+            <div class="panel-sub">Latest model triggers flowing into enforcement triage.</div>
+          </div>
+        </div>
+        <div class="mini-list" id="ent-detections"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Policy highlights</div>
+            <div class="panel-sub">Operational rules applied during scoring.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="mini-item">
+            <div class="mini-dot b"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Velocity + topology</div><div class="tag b">Graph</div></div>
+              <div class="mini-sub">High invoice bursts + hub centrality increases scrutiny. Repeated triangular routes are down-weighted for seasonality.</div>
+              <div class="mini-meta"><span class="pill">Window <strong>30m</strong></span><span class="pill">Min tx <strong>50</strong></span></div>
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot y"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">ITC mismatch</div><div class="tag y">Compliance</div></div>
+              <div class="mini-sub">Mismatch between supplier outward and recipient inward claims raises band. Small mismatches are tolerated in first 48 hours.</div>
+              <div class="mini-meta"><span class="pill">Grace <strong>48h</strong></span><span class="pill">Alert at <strong>2.5%</strong></span></div>
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot r"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Blacklist proximity</div><div class="tag r">Enforcement</div></div>
+              <div class="mini-sub">Exact GSTIN match triggers immediate hold. One-hop network proximity triggers enhanced due diligence before blocking.</div>
+              <div class="mini-meta"><span class="pill">Exact <strong>Hold</strong></span><span class="pill">1-hop <strong>EDD</strong></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Next actions</div>
+            <div class="panel-sub">What most teams do after triage.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="mini-item">
+            <div class="mini-dot g"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Open case</div><div class="tag g">2 mins</div></div>
+              <div class="mini-sub">Create a case from a selected entity, attach evidence bundle, and assign to an officer or a team queue.</div>
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot y"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Request documents</div><div class="tag y">4 hrs</div></div>
+              <div class="mini-sub">Send notice for e-way bills, purchase orders, transport proofs, and bank ledger extracts for matching.</div>
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot r"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Block ITC (temporary)</div><div class="tag r">Policy</div></div>
+              <div class="mini-sub">Temporarily block ITC where strong indicators exist, with audit trail stored for legal defensibility.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p style="padding:10px 0;color:var(--text-2);font-size:.78rem;text-align:center;position:relative;z-index:1;">
+      Entities data here is demo-realtime to showcase UI; wire to backend APIs for production.
+    </p>
+
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/entities.js"></script>
+<script>
+function logout() {
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
+

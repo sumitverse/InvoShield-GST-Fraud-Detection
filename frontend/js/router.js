@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const doc = parser.parseFromString(html, 'text/html');
                 
                 document.title = doc.title;
+
+                // Swap sidebar too (keeps links + active states consistent)
+                const currentSidebar = document.querySelector('.sidebar');
+                const newSidebar = doc.querySelector('.sidebar');
+                if (currentSidebar && newSidebar) currentSidebar.innerHTML = newSidebar.innerHTML;
                 
                 const currentTopbar = document.querySelector('.topbar');
                 const newTopbar = doc.querySelector('.topbar');
@@ -40,21 +45,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 window.history.pushState({path: url}, '', url);
 
-                // Re-initialize specific scripts for the dashboard page if navigating to it
-                if (url.includes('dashboard.html')) {
-                    if (!document.querySelector('script[src*="Chart.js"]')) {
-                        const chartScript = document.createElement('script');
-                        chartScript.src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js";
-                        document.head.appendChild(chartScript);
-                    }
+                const loadScript = (src) => new Promise((resolve, reject) => {
+                    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.onload = () => resolve();
+                    s.onerror = () => reject(new Error(`Failed loading ${src}`));
+                    document.body.appendChild(s);
+                });
 
+                const ensureChartJs = async () => {
+                    const chartSrc = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js";
+                    if (document.querySelector(`script[src="${chartSrc}"]`) || typeof Chart !== 'undefined') return;
+                    await new Promise((resolve, reject) => {
+                        const s = document.createElement('script');
+                        s.src = chartSrc;
+                        s.onload = () => resolve();
+                        s.onerror = () => reject(new Error('Failed loading Chart.js'));
+                        document.head.appendChild(s);
+                    });
+                };
+
+                // Re-initialize page scripts after DOM swap (scripts inside fetched HTML won't execute)
+                if (url.includes('dashboard.html')) {
+                    await ensureChartJs();
                     if (typeof CurrencyExchange !== 'undefined') {
                         new CurrencyExchange();
-                    } else if (!document.querySelector('script[src="/js/dashboard.js"]')) {
-                        const script = document.createElement('script');
-                        script.src = '/js/dashboard.js';
-                        document.body.appendChild(script);
+                    } else {
+                        await loadScript('/js/dashboard.js');
                     }
+                } else if (url.includes('entities.html')) {
+                    await ensureChartJs();
+                    await loadScript('/js/entities.js');
+                    if (window.InvoShield?.initEntities) window.InvoShield.initEntities();
+                } else if (url.includes('case-manager.html')) {
+                    await loadScript('/js/case-manager.js');
+                    if (window.InvoShield?.initCaseManager) window.InvoShield.initCaseManager();
+                } else if (url.includes('blacklist.html')) {
+                    await loadScript('/js/blacklist.js');
+                    if (window.InvoShield?.initBlacklist) window.InvoShield.initBlacklist();
+                } else if (url.includes('settings.html')) {
+                    await loadScript('/js/settings.js');
+                    if (window.InvoShield?.initSettings) window.InvoShield.initSettings();
+                } else if (url.includes('analytics.html')) {
+                    await ensureChartJs();
+                    await loadScript('/js/analytics.js');
+                    if (window.InvoShield?.initAnalytics) window.InvoShield.initAnalytics();
+                } else if (url.includes('reports.html')) {
+                    await loadScript('/js/reports.js');
+                    if (window.InvoShield?.initReports) window.InvoShield.initReports();
                 }
             } catch (err) {
                 console.error("Routing error:", err);

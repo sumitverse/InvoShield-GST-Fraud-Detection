@@ -63,3 +63,4 @@ Include the auth-api.js utility:
 - Change JWT_SECRET in backend .env file
 - Never commit .env files to git (already in .gitignore)
 - Use HTTPS in production
+ 

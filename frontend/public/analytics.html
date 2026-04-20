@@ -124,9 +124,10 @@
           <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
           Pause
         </button>
-        <button class="btn primary" id="an-export">
+        <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="if(window.InvoShield && window.InvoShield.parseCSVAndAnalyze && this.files[0]) window.InvoShield.parseCSVAndAnalyze(this.files[0])" />
+        <button class="btn primary" id="an-export" onclick="document.getElementById('csv-upload').click()">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export
+          Upload CSV
         </button>
       </div>
     </section>
@@ -245,6 +246,33 @@
               <div class="mini-meta"><span class="pill">Evidence <strong>attached</strong></span></div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analysis-results-section" style="display: none; margin-top: 24px;">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Batch Import Analysis</div>
+            <div class="panel-sub">Custom rules applied: ITC Anomaly, Refund Anomaly, Transaction Pattern.</div>
+          </div>
+        </div>
+        <div class="tbl-wrap" style="max-height: 400px; overflow-y: auto;">
+          <table class="tbl" id="analysis-results-table">
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>Sales</th>
+                <th>Purchase</th>
+                <th>ITC</th>
+                <th>Refund</th>
+                <th>Rule Triggers</th>
+                <th>Risk Level</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
       </div>
     </section>

@@ -417,16 +417,13 @@
     start();
   }
 
-  // Expose initializer for router-driven navigation
   window.InvoShield = window.InvoShield || {};
   window.InvoShield.initEntities = () => {
     stop();
-    // give the router swap a tick to paint DOM
     setTimeout(init, 0);
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    // If loaded directly, init immediately.
     if (location.pathname.endsWith('/entities.html') || location.pathname.endsWith('\\entities.html') || location.href.includes('entities.html')) {
       window.InvoShield.initEntities();
     }

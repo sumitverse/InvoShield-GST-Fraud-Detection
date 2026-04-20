@@ -236,7 +236,8 @@
         purchase: headers.findIndex(h => h.includes('purchase')),
         itc: headers.findIndex(h => h.includes('itc') || h.includes('tax')),
         refund: headers.findIndex(h => h.includes('refund')),
-        id: headers.findIndex(h => h.includes('company') || h.includes('gstin') || h.includes('id') || h.includes('name'))
+        id: headers.findIndex(h => h.includes('gstin') || h.includes('identifier') || (h.includes('id') && !h.includes('name'))),
+        company: headers.findIndex(h => h.includes('company') || h.includes('name'))
       };
 
       if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) {
@@ -255,6 +256,7 @@
         const itc = parseFloat(cols[idx.itc]) || 0;
         const refund = parseFloat(cols[idx.refund]) || 0;
         const identifier = idx.id !== -1 ? cols[idx.id] : `Row ${i + 1}`;
+        const companyName = idx.company !== -1 ? cols[idx.company] : '-';
 
         let triggers = [];
         if (itc > 0.5 * sales) triggers.push('ITC > 50% Sales');
@@ -270,6 +272,7 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td style="font-weight:600;">${identifier}</td>
+          <td style="color:var(--text-2); font-size:0.85rem;">${companyName}</td>
           <td class="mono muted">${fmtInt(sales)}</td>
           <td class="mono muted">${fmtInt(purchase)}</td>
           <td class="mono muted">${fmtInt(itc)}</td>

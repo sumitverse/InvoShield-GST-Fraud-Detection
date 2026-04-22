@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Reports</title>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+  <link rel="stylesheet" href="/css/enforcement.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item active" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div>
+      <div class="topbar-title">Reports</div>
+      <div class="topbar-sub">Generate, schedule, and export compliance + enforcement reports</div>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="btn primary" id="rp-generate" style="height:34px;">
+      <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      Generate
+    </button>
+    <button class="btn" id="rp-schedule" style="height:34px;">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Schedule
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <section class="page-head">
+      <div>
+        <div class="title">Reporting center</div>
+        <div class="subtitle">
+          Build operational and legally-defensible reports: summary dashboards, audit trails, evidence bundles, and zone performance packs.
+          Exports are designed to be shareable with approvals and metadata included (case ID, officer, and timestamps).
+        </div>
+        <div class="pill-row">
+          <div class="pill info"><strong>8</strong> templates</div>
+          <div class="pill warn"><strong>2</strong> scheduled</div>
+          <div class="pill"><strong>365d</strong> retention</div>
+          <div class="pill live"><strong>Audit</strong> included</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost" id="rp-export">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Create report</div>
+            <div class="panel-sub">Choose a template and scope, then generate an exportable pack.</div>
+          </div>
+        </div>
+
+        <div class="filters" style="grid-template-columns: 1fr 1fr 1fr auto; margin-bottom: 14px;">
+          <div class="field">
+            <label>Template</label>
+            <select id="rp-template">
+              <option value="Enforcement Summary">Enforcement Summary</option>
+              <option value="Fraud Alerts Digest">Fraud Alerts Digest</option>
+              <option value="Entity Risk Register">Entity Risk Register</option>
+              <option value="Blacklist Changes">Blacklist Changes</option>
+              <option value="Case Audit Trail">Case Audit Trail</option>
+              <option value="Zone Performance Pack">Zone Performance Pack</option>
+              <option value="Monthly Impact Statement">Monthly Impact Statement</option>
+              <option value="Evidence Bundle (Legal)">Evidence Bundle (Legal)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Zone</label>
+            <select id="rp-zone">
+              <option>Punjab</option>
+              <option>Delhi</option>
+              <option>Maharashtra</option>
+              <option>Gujarat</option>
+              <option>Karnataka</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Period</label>
+            <select id="rp-period">
+              <option>Last 24 hours</option>
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>FY 2026-27 (YTD)</option>
+            </select>
+          </div>
+          <div class="btn-row" style="align-items:flex-end;">
+            <button class="btn primary" id="rp-run">
+              <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Run
+            </button>
+          </div>
+        </div>
+
+        <div class="mini-list" id="rp-template-info"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Recent exports</div>
+            <div class="panel-sub">Generated reports with status + approvals (demo data).</div>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl" id="rp-table">
+            <thead>
+              <tr>
+                <th>Report</th>
+                <th>Scope</th>
+                <th>Generated</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Compliance notes</div>
+          <div class="panel-sub">Guidance for producing legally robust exports.</div>
+        </div>
+      </div>
+      <div class="mini-list">
+        <div class="mini-item">
+          <div class="mini-dot b"></div>
+          <div class="mini-main">
+            <div class="mini-top"><div class="mini-title">Audit trail first</div><div class="tag b">Policy</div></div>
+            <div class="mini-sub">Always attach the audit trail for holds, blacklist changes, and escalations (who/when/why).</div>
+            <div class="mini-meta"><span class="pill">Requirement <strong>mandatory</strong></span></div>
+          </div>
+        </div>
+        <div class="mini-item">
+          <div class="mini-dot y"></div>
+          <div class="mini-main">
+            <div class="mini-top"><div class="mini-title">Evidence completeness</div><div class="tag y">Quality</div></div>
+            <div class="mini-sub">If evidence completeness &lt; 70%, exports should be labeled as “Preliminary” and routed for review.</div>
+            <div class="mini-meta"><span class="pill">Threshold <strong>70%</strong></span></div>
+          </div>
+        </div>
+        <div class="mini-item">
+          <div class="mini-dot r"></div>
+          <div class="mini-main">
+            <div class="mini-top"><div class="mini-title">Approvals for critical actions</div><div class="tag r">Enforcement</div></div>
+            <div class="mini-sub">Critical enforcement exports should include dual approvals (Zone Lead + Legal) and reason codes.</div>
+            <div class="mini-meta"><span class="pill">Approvals <strong>2</strong></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p style="padding:10px 0;color:var(--text-2);font-size:.78rem;text-align:center;position:relative;z-index:1;">
+      Reports are demo UI; connect to backend generation + storage for production.
+    </p>
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/reports.js"></script>
+<script>
+function logout() {
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
+

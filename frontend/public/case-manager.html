@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Case Manager</title>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+  <link rel="stylesheet" href="/css/enforcement.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item active" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div>
+      <div class="topbar-title">Case Manager</div>
+      <div class="topbar-sub">Create, assign, and track investigations with an audit trail</div>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="btn primary" id="cm-new" style="height:34px;">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Case
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <section class="page-head">
+      <div>
+        <div class="title">Investigations pipeline</div>
+        <div class="subtitle">
+          Convert alerts and entity signals into defensible cases. Each case maintains a timeline of evidence, notices, officer actions,
+          and resolution outcomes. Use standard templates to speed up drafting and preserve consistency across zones.
+        </div>
+        <div class="pill-row">
+          <div class="pill info"><strong>3</strong> new assignments</div>
+          <div class="pill warn"><strong>7</strong> pending notices</div>
+          <div class="pill"><strong>21</strong> in review</div>
+          <div class="pill live"><strong>Audit</strong> immutable trail</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost" id="cm-templates">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          Templates
+        </button>
+        <button class="btn" id="cm-export">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <div class="kpi-box">
+        <div class="lbl">Open cases</div>
+        <div class="val">64</div>
+        <div class="meta"><span class="chip b">Active</span><span class="muted">Across zones</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Avg time to first action</div>
+        <div class="val">2.6h</div>
+        <div class="meta"><span class="chip g">On track</span><span class="muted">SLA 4h</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Evidence completeness</div>
+        <div class="val">78%</div>
+        <div class="meta"><span class="chip y">Improve</span><span class="muted">Missing docs</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Recovered / blocked</div>
+        <div class="val">₹4.8Cr</div>
+        <div class="meta"><span class="chip r">High impact</span><span class="muted">This month</span></div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Case queue</div>
+            <div class="panel-sub">Prioritized list sorted by severity and deadline.</div>
+          </div>
+        </div>
+
+        <div class="filters" style="margin-bottom: 14px;">
+          <div class="field">
+            <label>Search</label>
+            <input id="cm-q" type="text" placeholder="Case ID / GSTIN / officer / entity…"/>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="cm-status">
+              <option value="">All</option>
+              <option value="New">New</option>
+              <option value="In Review">In Review</option>
+              <option value="Notice Sent">Notice Sent</option>
+              <option value="Escalated">Escalated</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Priority</label>
+            <select id="cm-priority">
+              <option value="">All</option>
+              <option value="Critical">Critical</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="btn-row" style="align-items: flex-end;">
+            <button class="btn" id="cm-clear">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Clear
+            </button>
+            <button class="btn primary" id="cm-refresh">
+              <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.13 3.36L1 14"/></svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="tbl-wrap">
+          <table class="tbl" id="cm-table">
+            <thead>
+              <tr>
+                <th>Case</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Officer</th>
+                <th>Due</th>
+                <th>Evidence</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Selected case</div>
+            <div class="panel-sub">Summary, timeline, and next recommended actions.</div>
+          </div>
+        </div>
+
+        <div class="mini-list" id="cm-detail">
+          <div class="mini-item">
+            <div class="mini-dot b"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Pick a case to view</div><div class="tag b">Ready</div></div>
+              <div class="mini-sub">Click any case row on the left to view its timeline, evidence checklist, and recommended next action.</div>
+              <div class="mini-meta"><span class="pill">Tip: double-click opens full screen</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <div class="panel-head" style="margin-bottom:10px;">
+            <div>
+              <div class="panel-title">Evidence checklist</div>
+              <div class="panel-sub">Standard bundle for GST fraud cases.</div>
+            </div>
+          </div>
+          <div class="mini-list">
+            <div class="mini-item"><div class="mini-dot g"></div><div class="mini-main"><div class="mini-top"><div class="mini-title">Invoices + annexures</div><div class="tag g">Required</div></div><div class="mini-sub">Original invoices, amendments, and metadata (IRN where applicable).</div></div></div>
+            <div class="mini-item"><div class="mini-dot y"></div><div class="mini-main"><div class="mini-top"><div class="mini-title">E-way bill trail</div><div class="tag y">Often missing</div></div><div class="mini-sub">Vehicle details, route, checkpoints, cancellation history.</div></div></div>
+            <div class="mini-item"><div class="mini-dot b"></div><div class="mini-main"><div class="mini-top"><div class="mini-title">Bank / ledger extracts</div><div class="tag b">Support</div></div><div class="mini-sub">Payment proof, UPI/NEFT references, reconciliation notes.</div></div></div>
+            <div class="mini-item"><div class="mini-dot r"></div><div class="mini-main"><div class="mini-top"><div class="mini-title">Blacklist linkage</div><div class="tag r">Escalate</div></div><div class="mini-sub">If present, attach relationship graph and prior enforcement orders.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p style="padding:10px 0;color:var(--text-2);font-size:.78rem;text-align:center;position:relative;z-index:1;">
+      Case Manager is UI-complete; connect to backend case APIs for persistence and role-based workflow.
+    </p>
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/case-manager.js"></script>
+<script>
+function logout() {
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
+

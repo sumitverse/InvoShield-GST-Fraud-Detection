@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>InvoShield — Blacklist</title>
+  <link rel="stylesheet" href="/css/blacklist.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item active" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Blacklist</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="tbtn danger" onclick="openAddModal()">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add to Blacklist
+    </button>
+    <button class="tbtn ghost" onclick="exportBlacklist()">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <!-- Banner -->
+    <div class="banner">
+      <div class="banner-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="banner-content">
+        <div class="banner-title">GST Fraud Blacklist — Punjab Zone · FY 2026-27</div>
+        <div class="banner-sub">Entities confirmed for GST fraud, circular trading, shell operations or ITC abuse. All linked invoices are auto-blocked.</div>
+      </div>
+      <div class="banner-stats">
+        <div class="bstat"><div class="bstat-val red">148</div><div class="bstat-label">Blacklisted</div></div>
+        <div class="bstat"><div class="bstat-val orange">31</div><div class="bstat-label">This Month</div></div>
+        <div class="bstat"><div class="bstat-val yellow">₹48Cr</div><div class="bstat-label">Blocked</div></div>
+        <div class="bstat"><div class="bstat-val green">12</div><div class="bstat-label">Removed</div></div>
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Total Blacklisted</span>
+          <div class="kpi-icon red">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val red">148</div>
+        <div class="kpi-delta"><span class="down">↑ 31</span><span class="muted">added this month</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Circular Trading</span>
+          <div class="kpi-icon orange">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val orange">62</div>
+        <div class="kpi-delta"><span class="down">↑ 14</span><span class="muted">this month</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Shell Entities</span>
+          <div class="kpi-icon yellow">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val yellow">49</div>
+        <div class="kpi-delta"><span class="down">↑ 9</span><span class="muted">this month</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">ITC Fraud</span>
+          <div class="kpi-icon red">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val red">37</div>
+        <div class="kpi-delta"><span class="down">↑ 8</span><span class="muted">this month</span></div>
+      </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">🚫 Blacklisted Entity Registry</div>
+        <div class="filter-bar">
+          <input class="filter-input" type="text" id="bl-search" placeholder="Search GSTIN, entity name…"/>
+          <select class="filter-select" id="bl-type-filter">
+            <option value="">All Types</option>
+            <option value="circular">Circular Trading</option>
+            <option value="shell">Shell Entity</option>
+            <option value="itc">ITC Fraud</option>
+            <option value="duplicate">Duplicate Invoice</option>
+          </select>
+          <select class="filter-select" id="bl-zone-filter">
+            <option value="">All Zones</option>
+            <option>Ludhiana</option>
+            <option>Amritsar</option>
+            <option>Jalandhar</option>
+            <option>Patiala</option>
+            <option>Mohali</option>
+          </select>
+          <div class="filter-spacer"></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="bl-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all"/></th>
+              <th>GSTIN</th>
+              <th>Entity Name</th>
+              <th>Zone</th>
+              <th>Fraud Type</th>
+              <th>Amount Blocked</th>
+              <th>Risk Score</th>
+              <th>Blacklisted On</th>
+              <th>Blacklisted By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27AABC1234D1Z5</td>
+              <td class="td-name">Apex Traders Pvt Ltd</td>
+              <td>Ludhiana</td>
+              <td><span class="bl-type circular">Circular Trading</span></td>
+              <td class="td-amount">₹1,20,00,000</td>
+              <td><span class="risk-score critical">98</span></td>
+              <td class="td-date">Mar 18, 2025</td>
+              <td>Sumit Kumar</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Apex Traders Pvt Ltd','27AABC1234D1Z5','98','₹1,20,00,000','Ludhiana','Circular Trading','Mar 18, 2025','Sumit Kumar','14 linked invoices blocked. Circular loop confirmed across 7 entities.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27CCCM5567L1Z9</td>
+              <td class="td-name">Global Supply Co</td>
+              <td>Amritsar</td>
+              <td><span class="bl-type shell">Shell Entity</span></td>
+              <td class="td-amount">₹2,80,00,000</td>
+              <td><span class="risk-score critical">96</span></td>
+              <td class="td-date">Mar 15, 2025</td>
+              <td>Priya Sharma</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Global Supply Co','27CCCM5567L1Z9','96','₹2,80,00,000','Amritsar','Shell Entity','Mar 15, 2025','Priya Sharma','No physical premises found. Director linked to 3 other blacklisted entities.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27DDDP3321M1Z4</td>
+              <td class="td-name">Rajdhani Logistics</td>
+              <td>Patiala</td>
+              <td><span class="bl-type itc">ITC Fraud</span></td>
+              <td class="td-amount">₹42,00,000</td>
+              <td><span class="risk-score critical">91</span></td>
+              <td class="td-date">Mar 10, 2025</td>
+              <td>Rahul Verma</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Rajdhani Logistics','27DDDP3321M1Z4','91','₹42,00,000','Patiala','ITC Fraud','Mar 10, 2025','Rahul Verma','ITC claims exceeded purchase value by 38%. GSTR-2A mismatch confirmed.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27BBBZ9988K1Z2</td>
+              <td class="td-name">Sunrise Enterprises</td>
+              <td>Jalandhar</td>
+              <td><span class="bl-type duplicate">Duplicate Invoice</span></td>
+              <td class="td-amount">₹18,50,000</td>
+              <td><span class="risk-score high">87</span></td>
+              <td class="td-date">Mar 7, 2025</td>
+              <td>Sumit Kumar</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Sunrise Enterprises','27BBBZ9988K1Z2','87','₹18,50,000','Jalandhar','Duplicate Invoice','Mar 7, 2025','Sumit Kumar','47 duplicate invoices filed across 3 GSTINs. Penalty of ₹4.2L issued.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27FFFG4490P1Z7</td>
+              <td class="td-name">Northern Export House</td>
+              <td>Ludhiana</td>
+              <td><span class="bl-type circular">Circular Trading</span></td>
+              <td class="td-amount">₹65,00,000</td>
+              <td><span class="risk-score critical">94</span></td>
+              <td class="td-date">Feb 28, 2025</td>
+              <td>Priya Sharma</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Northern Export House','27FFFG4490P1Z7','94','₹65,00,000','Ludhiana','Circular Trading','Feb 28, 2025','Priya Sharma','Bogus export claims under zero-rated supply. 9 linked entities under investigation.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27GGGQ1123R1Z1</td>
+              <td class="td-name">Bharat Steel Traders</td>
+              <td>Mohali</td>
+              <td><span class="bl-type shell">Shell Entity</span></td>
+              <td class="td-amount">₹9,80,000</td>
+              <td><span class="risk-score high">88</span></td>
+              <td class="td-date">Feb 20, 2025</td>
+              <td>Rahul Verma</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Bharat Steel Traders','27GGGQ1123R1Z1','88','₹9,80,000','Mohali','Shell Entity','Feb 20, 2025','Rahul Verma','Registered address is a vacant plot. No employees or inventory found on inspection.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-mono">27HHHW8834S1Z6</td>
+              <td class="td-name">Kapoor Textiles Pvt Ltd</td>
+              <td>Amritsar</td>
+              <td><span class="bl-type itc">ITC Fraud</span></td>
+              <td class="td-amount">₹31,00,000</td>
+              <td><span class="risk-score critical">93</span></td>
+              <td class="td-date">Feb 14, 2025</td>
+              <td>Sumit Kumar</td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Kapoor Textiles Pvt Ltd','27HHHW8834S1Z6','93','₹31,00,000','Amritsar','ITC Fraud','Feb 14, 2025','Sumit Kumar','Fraudulent ITC of ₹31L claimed on non-existent textile purchases. FIR filed.')">View</button>
+                <button class="act-btn remove" onclick="removeEntry(this)">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span class="pag-info">Showing 1–7 of 148 blacklisted entities</span>
+        <div class="pag-controls">
+          <button class="pag-btn" disabled>
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pag-btn active">1</button>
+          <button class="pag-btn">2</button>
+          <button class="pag-btn">3</button>
+          <button class="pag-btn">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Detail Panel -->
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title" id="panel-name">Entity Name</div>
+      <div class="panel-gstin" id="panel-gstin">GSTIN</div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-kpi-row">
+      <div class="panel-kpi">
+        <div class="panel-kpi-label">Risk Score</div>
+        <div class="panel-kpi-val red" id="panel-risk">—</div>
+      </div>
+      <div class="panel-kpi">
+        <div class="panel-kpi-label">Blocked</div>
+        <div class="panel-kpi-val orange" id="panel-amount">—</div>
+      </div>
+      <div class="panel-kpi">
+        <div class="panel-kpi-label">Zone</div>
+        <div class="panel-kpi-val blue" id="panel-zone">—</div>
+      </div>
+    </div>
+
+    <div class="panel-section-title">Blacklist Details</div>
+    <div class="panel-row"><span class="panel-label">Fraud Type</span><span class="panel-val red" id="panel-type">—</span></div>
+    <div class="panel-row"><span class="panel-label">Blacklisted On</span><span class="panel-val" id="panel-date">—</span></div>
+    <div class="panel-row"><span class="panel-label">Blacklisted By</span><span class="panel-val" id="panel-officer">—</span></div>
+    <div class="panel-row"><span class="panel-label">Status</span><span class="panel-val red">Active — All invoices blocked</span></div>
+    <div class="panel-row"><span class="panel-label">Linked Cases</span><span class="panel-val orange">2 open cases</span></div>
+
+    <div class="panel-section-title">Investigation Notes</div>
+    <div class="panel-indicator">
+      <div class="pi-dot red"></div>
+      <div class="pi-text" id="panel-notes">—</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot yellow"></div>
+      <div class="pi-text">All linked GSTINs flagged for cross-verification</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot yellow"></div>
+      <div class="pi-text">Director details shared with enforcement wing</div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="panel-btn danger" onclick="viewCase()">📋 View Linked Cases</button>
+      <button class="panel-btn success" onclick="confirmRemove()">✅ Remove from Blacklist</button>
+      <button class="panel-btn ghost" onclick="exportReport()">⬇ Export Full Report</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/blacklist.js"></script>
+<script>
+function logout() { window.location.href = 'login.html'; }
+
+function openPanel(name, gstin, risk, amount, zone, type, date, officer, notes) {
+  document.getElementById('panel-name').textContent    = name;
+  document.getElementById('panel-gstin').textContent   = gstin;
+  document.getElementById('panel-risk').textContent    = risk;
+  document.getElementById('panel-amount').textContent  = amount;
+  document.getElementById('panel-zone').textContent    = zone;
+  document.getElementById('panel-type').textContent    = type;
+  document.getElementById('panel-date').textContent    = date;
+  document.getElementById('panel-officer').textContent = officer;
+  document.getElementById('panel-notes').textContent   = notes;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('panel-overlay').classList.add('open');
+}
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('panel-overlay').classList.remove('open');
+}
+function viewCase() {
+  closePanel();
+  window.location.href = 'case-manager.html';
+}
+function confirmRemove() {
+  const name = document.getElementById('panel-name').textContent;
+  if (confirm('Remove "' + name + '" from blacklist? This will require supervisor approval.')) {
+    alert('Removal request submitted for supervisor review.');
+    closePanel();
+  }
+}
+function exportReport() {
+  const name = document.getElementById('panel-name').textContent;
+  alert('Generating PDF report for "' + name + '"... Download will start shortly.');
+}
+function removeEntry(btn) {
+  const row = btn.closest('tr');
+  const name = row.querySelector('.td-name').textContent;
+  if (confirm('Remove "' + name + '" from blacklist? This requires supervisor approval.')) {
+    alert('Removal request submitted for supervisor review.');
+  }
+}
+
+// Search filter
+document.getElementById('bl-search').addEventListener('input', function() {
+  const term = this.value.toLowerCase();
+  document.querySelectorAll('#bl-table tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+});
+
+// Type filter
+document.getElementById('bl-type-filter').addEventListener('change', function() {
+  const val = this.value;
+  document.querySelectorAll('#bl-table tbody tr').forEach(row => {
+    const type = row.querySelector('.bl-type');
+    row.style.display = (!val || (type && type.classList.contains(val))) ? '' : 'none';
+  });
+});
+
+// Select all
+document.getElementById('select-all').addEventListener('change', function() {
+  document.querySelectorAll('#bl-table tbody input[type="checkbox"]').forEach(cb => cb.checked = this.checked);
+});
+</script>
+<!-- Add to Blacklist Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal" id="add-modal">
+  <div class="modal-header">
+    <div class="modal-title">🚫 Add Entity to Blacklist</div>
+    <button class="panel-close" onclick="closeModal()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="form-label">GSTIN</label>
+      <input class="form-input" type="text" id="bl-gstin" placeholder="27AABC1234D1Z5"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Entity Name</label>
+      <input class="form-input" type="text" id="bl-name" placeholder="Entity legal name"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Fraud Type</label>
+        <select class="form-input" id="bl-type">
+          <option>Circular Trading</option><option>Shell Entity</option><option>ITC Fraud</option><option>Duplicate Invoice</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Zone</label>
+        <select class="form-input" id="bl-zone">
+          <option>Ludhiana</option><option>Amritsar</option><option>Jalandhar</option><option>Patiala</option><option>Mohali</option><option>Bathinda</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Amount Blocked (₹)</label>
+      <input class="form-input" type="text" id="bl-amount" placeholder="e.g. 42,00,000"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Reason / Evidence Summary</label>
+      <textarea class="form-input" id="bl-reason" rows="3" placeholder="Describe the confirmed fraud evidence…"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="panel-btn ghost" onclick="closeModal()">Cancel</button>
+    <button class="panel-btn danger" onclick="addToBlacklist()">🚫 Confirm Blacklist</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+</body>
+</html>

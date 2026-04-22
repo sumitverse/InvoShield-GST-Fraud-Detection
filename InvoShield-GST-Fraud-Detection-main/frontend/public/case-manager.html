@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>InvoShield — Case Manager</title>
+  <link rel="stylesheet" href="/css/case-manager.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item active" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Case Manager</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="view-toggle">
+      <button class="vt-btn active" id="btn-kanban" onclick="setView('kanban')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Board
+      </button>
+      <button class="vt-btn" id="btn-list" onclick="setView('list')">
+        <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        List
+      </button>
+    </div>
+    <button class="tbtn primary" onclick="openNewCaseModal()">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Case
+    </button>
+    <button class="tbtn ghost" onclick="exportAll()">
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+    <div class="banner">
+      <div class="banner-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="banner-content">
+        <div class="banner-title">Case Manager — Punjab Zone · FY 2026-27</div>
+        <div class="banner-sub">Track, assign and resolve GST fraud investigation cases across all enforcement stages</div>
+      </div>
+      <div class="banner-stats">
+        <div class="bstat"><div class="bstat-val blue">24</div><div class="bstat-label">Total</div></div>
+        <div class="bstat"><div class="bstat-val yellow">9</div><div class="bstat-label">Active</div></div>
+        <div class="bstat"><div class="bstat-val green">11</div><div class="bstat-label">Closed</div></div>
+        <div class="bstat"><div class="bstat-val red">4</div><div class="bstat-label">Critical</div></div>
+      </div>
+    </div>
+
+    <div class="body">
+      <!-- Filters -->
+      <div class="filters">
+        <input class="filter-input" type="text" placeholder="Search case ID, GSTIN, entity…"/>
+        <select class="filter-select">
+          <option>All Priorities</option>
+          <option>Critical</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+        <select class="filter-select">
+          <option>All Types</option>
+          <option>Circular Trading</option>
+          <option>ITC Fraud</option>
+          <option>Shell Entity</option>
+          <option>Duplicate Invoice</option>
+        </select>
+        <select class="filter-select">
+          <option>All Officers</option>
+          <option>Sumit Kumar</option>
+          <option>Priya Sharma</option>
+          <option>Rahul Verma</option>
+        </select>
+        <div class="filter-spacer"></div>
+      </div>
+
+      <!-- Kanban Board View -->
+      <div id="view-kanban" class="kanban">
+
+        <!-- NEW -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot new"></div>
+            <div class="col-title">New</div>
+            <div class="col-count new">6</div>
+          </div>
+          <div class="col-body">
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00112','27AABC1234D1Z5','Critical','₹1,20,00,000','New','Sumit Kumar','2h ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00112</div>
+                <div class="cc-priority critical">Critical</div>
+              </div>
+              <div class="cc-title">Circular Trading Network — 7 Entities</div>
+              <div class="cc-gstin">27AABC1234D1Z5</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹1,20,00,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">SK</div>
+                  <div class="cc-name">Sumit K.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Opened: 2h ago</div>
+                <div class="cc-tags"><span class="cc-tag circular">Circular</span></div>
+              </div>
+            </div>
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00109','27BBBZ9988K1Z2','High','₹42,00,000','New','Priya Sharma','5h ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00109</div>
+                <div class="cc-priority high">High</div>
+              </div>
+              <div class="cc-title">Fake ITC Claims — Textile Sector</div>
+              <div class="cc-gstin">27BBBZ9988K1Z2</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹42,00,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">PS</div>
+                  <div class="cc-name">Priya S.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Opened: 5h ago</div>
+                <div class="cc-tags"><span class="cc-tag itc">ITC</span></div>
+              </div>
+            </div>
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00107','27CCCM5567L1Z9','Medium','₹8,40,000','New','Rahul Verma','1d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00107</div>
+                <div class="cc-priority medium">Medium</div>
+              </div>
+              <div class="cc-title">Duplicate Invoice Filing — Logistics</div>
+              <div class="cc-gstin">27CCCM5567L1Z9</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹8,40,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">RV</div>
+                  <div class="cc-name">Rahul V.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Opened: 1d ago</div>
+                <div class="cc-tags"><span class="cc-tag fraud">Fraud</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- INVESTIGATING -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot investigating"></div>
+            <div class="col-title">Investigating</div>
+            <div class="col-count investigating">5</div>
+          </div>
+          <div class="col-body">
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00098','27DDDP3321M1Z4','Critical','₹2,80,00,000','Investigating','Sumit Kumar','2d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00098</div>
+                <div class="cc-priority critical">Critical</div>
+              </div>
+              <div class="cc-title">Shell Entity Match — Blacklisted GSTIN</div>
+              <div class="cc-gstin">27DDDP3321M1Z4</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹2,80,00,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">SK</div>
+                  <div class="cc-name">Sumit K.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Updated: 30m ago</div>
+                <div class="cc-tags"><span class="cc-tag shell">Shell</span></div>
+              </div>
+            </div>
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00094','27EEEF7712N1Z3','High','₹18,50,000','Investigating','Priya Sharma','3d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00094</div>
+                <div class="cc-priority high">High</div>
+              </div>
+              <div class="cc-title">ITC Mismatch — GSTR-2A vs GSTR-3B</div>
+              <div class="cc-gstin">27EEEF7712N1Z3</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹18,50,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">PS</div>
+                  <div class="cc-name">Priya S.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Updated: 2h ago</div>
+                <div class="cc-tags"><span class="cc-tag itc">ITC</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PENDING REVIEW -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot pending"></div>
+            <div class="col-title">Pending Review</div>
+            <div class="col-count pending">4</div>
+          </div>
+          <div class="col-body">
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00087','27FFFG4490P1Z7','High','₹65,00,000','Pending Review','Rahul Verma','5d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00087</div>
+                <div class="cc-priority high">High</div>
+              </div>
+              <div class="cc-title">Bogus Exports — Zero-Rated Supply Abuse</div>
+              <div class="cc-gstin">27FFFG4490P1Z7</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹65,00,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">RV</div>
+                  <div class="cc-name">Rahul V.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Pending: 3d</div>
+                <div class="cc-tags"><span class="cc-tag fraud">Fraud</span></div>
+              </div>
+            </div>
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00081','27GGGQ1123R1Z1','Medium','₹9,20,000','Pending Review','Sumit Kumar','7d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00081</div>
+                <div class="cc-priority medium">Medium</div>
+              </div>
+              <div class="cc-title">Unregistered Supplier Transactions</div>
+              <div class="cc-gstin">27GGGQ1123R1Z1</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹9,20,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">SK</div>
+                  <div class="cc-name">Sumit K.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Pending: 5d</div>
+                <div class="cc-tags"><span class="cc-tag circular">Circular</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CLOSED -->
+        <div class="kanban-col">
+          <div class="col-header">
+            <div class="col-dot closed"></div>
+            <div class="col-title">Closed</div>
+            <div class="col-count closed">9</div>
+          </div>
+          <div class="col-body">
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00074','27HHHW8834S1Z6','Low','₹1,10,000','Closed','Priya Sharma','9d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00074</div>
+                <div class="cc-priority low">Low</div>
+              </div>
+              <div class="cc-title">Minor ITC Discrepancy — Resolved</div>
+              <div class="cc-gstin">27HHHW8834S1Z6</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹1,10,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">PS</div>
+                  <div class="cc-name">Priya S.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Closed: 2d ago</div>
+                <div class="cc-tags"><span class="cc-tag itc">ITC</span></div>
+              </div>
+            </div>
+
+            <div class="case-card" onclick="openPanel('CASE-2025-00068','27IIIX5521T1Z8','High','₹38,00,000','Closed','Rahul Verma','11d ago')">
+              <div class="cc-top">
+                <div class="cc-id">CASE-2025-00068</div>
+                <div class="cc-priority high">High</div>
+              </div>
+              <div class="cc-title">Circular Trading — Penalty Issued ₹12L</div>
+              <div class="cc-gstin">27IIIX5521T1Z8</div>
+              <div class="cc-meta">
+                <div class="cc-amount">₹38,00,000</div>
+                <div class="cc-assignee">
+                  <div class="cc-avatar">RV</div>
+                  <div class="cc-name">Rahul V.</div>
+                </div>
+              </div>
+              <div class="cc-footer">
+                <div class="cc-date">Closed: 4d ago</div>
+                <div class="cc-tags"><span class="cc-tag circular">Circular</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- List View (hidden by default) -->
+      <div id="view-list" style="display:none;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Title</th>
+                <th>GSTIN</th>
+                <th>Amount</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Opened</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-mono">CASE-2025-00112</td>
+                <td>Circular Trading Network — 7 Entities</td>
+                <td class="td-mono">27AABC1234D1Z5</td>
+                <td class="td-amount">₹1,20,00,000</td>
+                <td><span class="td-priority critical">Critical</span></td>
+                <td><span class="td-status new">New</span></td>
+                <td>Sumit Kumar</td>
+                <td>2h ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00109</td>
+                <td>Fake ITC Claims — Textile Sector</td>
+                <td class="td-mono">27BBBZ9988K1Z2</td>
+                <td class="td-amount">₹42,00,000</td>
+                <td><span class="td-priority high">High</span></td>
+                <td><span class="td-status new">New</span></td>
+                <td>Priya Sharma</td>
+                <td>5h ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00098</td>
+                <td>Shell Entity Match — Blacklisted GSTIN</td>
+                <td class="td-mono">27DDDP3321M1Z4</td>
+                <td class="td-amount">₹2,80,00,000</td>
+                <td><span class="td-priority critical">Critical</span></td>
+                <td><span class="td-status investigating">Investigating</span></td>
+                <td>Sumit Kumar</td>
+                <td>2d ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00094</td>
+                <td>ITC Mismatch — GSTR-2A vs GSTR-3B</td>
+                <td class="td-mono">27EEEF7712N1Z3</td>
+                <td class="td-amount">₹18,50,000</td>
+                <td><span class="td-priority high">High</span></td>
+                <td><span class="td-status investigating">Investigating</span></td>
+                <td>Priya Sharma</td>
+                <td>3d ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00087</td>
+                <td>Bogus Exports — Zero-Rated Supply Abuse</td>
+                <td class="td-mono">27FFFG4490P1Z7</td>
+                <td class="td-amount">₹65,00,000</td>
+                <td><span class="td-priority high">High</span></td>
+                <td><span class="td-status pending">Pending Review</span></td>
+                <td>Rahul Verma</td>
+                <td>5d ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00081</td>
+                <td>Unregistered Supplier Transactions</td>
+                <td class="td-mono">27GGGQ1123R1Z1</td>
+                <td class="td-amount">₹9,20,000</td>
+                <td><span class="td-priority medium">Medium</span></td>
+                <td><span class="td-status pending">Pending Review</span></td>
+                <td>Sumit Kumar</td>
+                <td>7d ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00074</td>
+                <td>Minor ITC Discrepancy — Resolved</td>
+                <td class="td-mono">27HHHW8834S1Z6</td>
+                <td class="td-amount">₹1,10,000</td>
+                <td><span class="td-priority low">Low</span></td>
+                <td><span class="td-status closed">Closed</span></td>
+                <td>Priya Sharma</td>
+                <td>9d ago</td>
+              </tr>
+              <tr>
+                <td class="td-mono">CASE-2025-00068</td>
+                <td>Circular Trading — Penalty Issued ₹12L</td>
+                <td class="td-mono">27IIIX5521T1Z8</td>
+                <td class="td-amount">₹38,00,000</td>
+                <td><span class="td-priority high">High</span></td>
+                <td><span class="td-status closed">Closed</span></td>
+                <td>Rahul Verma</td>
+                <td>11d ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/case-manager.js"></script>
+<!-- Case Detail Panel -->
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title" id="panel-case-id">CASE-2025-00000</div>
+      <div class="panel-gstin" id="panel-case-gstin">GSTIN</div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-kpi-row">
+      <div class="panel-kpi"><div class="panel-kpi-label">Priority</div><div class="panel-kpi-val red" id="panel-priority">—</div></div>
+      <div class="panel-kpi"><div class="panel-kpi-label">Amount</div><div class="panel-kpi-val orange" id="panel-amount">—</div></div>
+      <div class="panel-kpi"><div class="panel-kpi-label">Status</div><div class="panel-kpi-val blue" id="panel-status">—</div></div>
+    </div>
+    <div class="panel-section-title">Case Details</div>
+    <div class="panel-row"><span class="panel-label">Title</span><span class="panel-val" id="panel-title">—</span></div>
+    <div class="panel-row"><span class="panel-label">Assigned To</span><span class="panel-val" id="panel-officer">—</span></div>
+    <div class="panel-row"><span class="panel-label">Opened</span><span class="panel-val" id="panel-opened">—</span></div>
+    <div class="panel-row"><span class="panel-label">Last Updated</span><span class="panel-val">Just now</span></div>
+    <div class="panel-row"><span class="panel-label">Evidence Files</span><span class="panel-val green">3 attached</span></div>
+    <div class="panel-section-title">Investigation Notes</div>
+    <div class="panel-indicator"><div class="pi-dot red"></div><div class="pi-text">Suspicious transaction pattern identified across multiple GSTINs.</div></div>
+    <div class="panel-indicator"><div class="pi-dot yellow"></div><div class="pi-text">Bank statements requested from nodal officer — pending receipt.</div></div>
+    <div class="panel-indicator"><div class="pi-dot yellow"></div><div class="pi-text">Field visit scheduled for physical verification of premises.</div></div>
+    <div class="panel-indicator"><div class="pi-dot green"></div><div class="pi-text">GSTIN registration details verified with GST portal.</div></div>
+    <div class="panel-section-title">Update Status</div>
+    <select class="filter-select" id="panel-status-select" style="width:100%;margin-bottom:8px;">
+      <option>New</option><option>Investigating</option><option>Pending Review</option><option>Closed</option>
+    </select>
+    <div class="panel-actions">
+      <button class="panel-btn primary" onclick="updateCaseStatus()">💾 Save Status Update</button>
+      <button class="panel-btn danger" onclick="escalateCase()">🚨 Escalate Case</button>
+      <button class="panel-btn ghost" onclick="exportCase()">⬇ Export Case Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Case Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal" id="new-case-modal">
+  <div class="modal-header">
+    <div class="modal-title">➕ Create New Case</div>
+    <button class="panel-close" onclick="closeModal()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="form-label">Case Title</label>
+      <input class="form-input" type="text" id="nc-title" placeholder="e.g. Circular Trading Network — Ludhiana"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">GSTIN</label>
+        <input class="form-input" type="text" id="nc-gstin" placeholder="27AABC1234D1Z5"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount Involved</label>
+        <input class="form-input" type="text" id="nc-amount" placeholder="₹0"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <select class="form-input" id="nc-priority">
+          <option>Critical</option><option>High</option><option>Medium</option><option>Low</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fraud Type</label>
+        <select class="form-input" id="nc-type">
+          <option>Circular Trading</option><option>ITC Fraud</option><option>Shell Entity</option><option>Duplicate Invoice</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Assign To</label>
+      <select class="form-input" id="nc-officer">
+        <option>Sumit Kumar</option><option>Priya Sharma</option><option>Rahul Verma</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Initial Notes</label>
+      <textarea class="form-input" id="nc-notes" rows="3" placeholder="Describe the fraud pattern observed…"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="panel-btn ghost" onclick="closeModal()">Cancel</button>
+    <button class="panel-btn primary" onclick="createCase()">Create Case</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+</body>
+</html>

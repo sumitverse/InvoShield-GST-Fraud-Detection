@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Entities</title>
+  <link rel="stylesheet" href="../css/entities.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item active" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Entities</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="entity-search" placeholder="Search GSTIN, entity name…"/>
+    </div>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      Live Monitoring
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Total Entities Tracked</span>
+          <div class="kpi-icon blue">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val blue">23,166</div>
+        <div class="kpi-delta"><span class="up">↑ 8.4%</span><span class="muted">vs last month</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">High Risk Entities</span>
+          <div class="kpi-icon red">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val red">931</div>
+        <div class="kpi-delta"><span class="down">↑ 5.2%</span><span class="muted">needs review</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Blacklisted Entities</span>
+          <div class="kpi-icon yellow">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val yellow">148</div>
+        <div class="kpi-delta"><span class="down">↑ 2</span><span class="muted">added this week</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Verified & Compliant</span>
+          <div class="kpi-icon green">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+        </div>
+        <div class="kpi-val green">22,087</div>
+        <div class="kpi-delta"><span class="up">↑ 1.1%</span><span class="muted">fully compliant</span></div>
+      </div>
+    </div>
+
+    <!-- Filter Bar + Table -->
+    <div class="card" style="position:relative;z-index:1;">
+      <div class="card-head">
+        <div class="card-title">🏢 Entity Registry</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select class="filter-select" id="filter-risk">
+            <option value="">All Risk Levels</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <select class="filter-select" id="filter-status">
+            <option value="">All Status</option>
+            <option value="blacklisted">Blacklisted</option>
+            <option value="flagged">Flagged</option>
+            <option value="review">Under Review</option>
+            <option value="verified">Verified</option>
+          </select>
+          <select class="filter-select" id="filter-type">
+            <option value="">All Types</option>
+            <option value="pvt">Pvt Ltd</option>
+            <option value="proprietor">Proprietorship</option>
+            <option value="partnership">Partnership</option>
+          </select>
+          <span class="card-badge blue" id="entity-count">23,166 entities</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="entity-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all"/></th>
+              <th>GSTIN</th>
+              <th>Entity Name</th>
+              <th>Type</th>
+              <th>Zone</th>
+              <th>Total Invoices</th>
+              <th>Fraud Cases</th>
+              <th>Risk Score</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27AABC1234D1Z5</td>
+              <td class="td-name">Apex Traders Pvt Ltd</td>
+              <td class="td-type">Pvt Ltd</td>
+              <td class="td-zone">Ludhiana</td>
+              <td>1,842</td>
+              <td class="td-fraud red">14</td>
+              <td><span class="risk-score critical">98</span></td>
+              <td><span class="td-status blacklisted">Blacklisted</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Apex Traders Pvt Ltd','27AABC1234D1Z5','98','Blacklisted','Ludhiana','1,842','14','Circular Trading, Shell Entity')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27CCCM5567L1Z9</td>
+              <td class="td-name">Global Supply Co</td>
+              <td class="td-type">Partnership</td>
+              <td class="td-zone">Amritsar</td>
+              <td>3,210</td>
+              <td class="td-fraud red">9</td>
+              <td><span class="risk-score critical">96</span></td>
+              <td><span class="td-status blacklisted">Blacklisted</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Global Supply Co','27CCCM5567L1Z9','96','Blacklisted','Amritsar','3,210','9','Shell Entity, ITC Mismatch')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27BBBZ9988K1Z2</td>
+              <td class="td-name">Sunrise Enterprises</td>
+              <td class="td-type">Proprietorship</td>
+              <td class="td-zone">Jalandhar</td>
+              <td>987</td>
+              <td class="td-fraud orange">5</td>
+              <td><span class="risk-score high">85</span></td>
+              <td><span class="td-status flagged">Flagged</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Sunrise Enterprises','27BBBZ9988K1Z2','85','Flagged','Jalandhar','987','5','Duplicate Invoice')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27DDDP3321M1Z4</td>
+              <td class="td-name">Rajdhani Logistics</td>
+              <td class="td-type">Pvt Ltd</td>
+              <td class="td-zone">Patiala</td>
+              <td>2,104</td>
+              <td class="td-fraud orange">3</td>
+              <td><span class="risk-score high">74</span></td>
+              <td><span class="td-status review">Under Review</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Rajdhani Logistics','27DDDP3321M1Z4','74','Under Review','Patiala','2,104','3','ITC Mismatch')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27EEEF7712N1Z1</td>
+              <td class="td-name">Northern Goods Ltd</td>
+              <td class="td-type">Pvt Ltd</td>
+              <td class="td-zone">Mohali</td>
+              <td>4,560</td>
+              <td class="td-fraud yellow">2</td>
+              <td><span class="risk-score med">62</span></td>
+              <td><span class="td-status review">Under Review</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Northern Goods Ltd','27EEEF7712N1Z1','62','Under Review','Mohali','4,560','2','ITC Mismatch')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27FFFG4490P1Z3</td>
+              <td class="td-name">Punjab Steel Works</td>
+              <td class="td-type">Partnership</td>
+              <td class="td-zone">Ludhiana</td>
+              <td>6,780</td>
+              <td class="td-fraud green">0</td>
+              <td><span class="risk-score low">18</span></td>
+              <td><span class="td-status verified">Verified</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Punjab Steel Works','27FFFG4490P1Z3','18','Verified','Ludhiana','6,780','0','None')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"/></td>
+              <td class="td-gstin">27GGGK8821Q1Z7</td>
+              <td class="td-name">Metro Parts Ltd</td>
+              <td class="td-type">Pvt Ltd</td>
+              <td class="td-zone">Bathinda</td>
+              <td>1,230</td>
+              <td class="td-fraud green">0</td>
+              <td><span class="risk-score low">8</span></td>
+              <td><span class="td-status verified">Verified</span></td>
+              <td class="td-actions">
+                <button class="act-btn view" onclick="openPanel('Metro Parts Ltd','27GGGK8821Q1Z7','8','Verified','Bathinda','1,230','0','None')">View</button>
+                <button class="act-btn flag">Flag</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span class="pag-info">Showing 1–7 of 23,166 entities</span>
+        <div class="pag-controls">
+          <button class="pag-btn" disabled>
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="pag-btn active">1</button>
+          <button class="pag-btn">2</button>
+          <button class="pag-btn">3</button>
+          <button class="pag-btn">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Entity Detail Panel -->
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title" id="panel-name">Entity Name</div>
+      <div class="panel-gstin" id="panel-gstin">GSTIN</div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="panel-body">
+    <div class="panel-kpi-row">
+      <div class="panel-kpi">
+        <div class="panel-kpi-label">Risk Score</div>
+        <div class="panel-kpi-val red" id="panel-risk">—</div>
+      </div>
+      <div class="panel-kpi">
+        <div class="panel-kpi-label">Status</div>
+        <div class="panel-kpi-val" id="panel-status">—</div>
+      </div>
+      <div class="panel-kpi">
+        <div class="panel-kpi-label">Zone</div>
+        <div class="panel-kpi-val blue" id="panel-zone">—</div>
+      </div>
+    </div>
+
+    <div class="panel-section-title">Filing Summary</div>
+    <div class="panel-row"><span class="panel-label">Total Invoices</span><span class="panel-val" id="panel-invoices">—</span></div>
+    <div class="panel-row"><span class="panel-label">Fraud Cases</span><span class="panel-val red" id="panel-fraud">—</span></div>
+    <div class="panel-row"><span class="panel-label">Fraud Patterns</span><span class="panel-val" id="panel-patterns">—</span></div>
+    <div class="panel-row"><span class="panel-label">Last Filed</span><span class="panel-val">Mar 2025</span></div>
+    <div class="panel-row"><span class="panel-label">Compliance Rate</span><span class="panel-val green">94.2%</span></div>
+
+    <div class="panel-section-title">Risk Indicators</div>
+    <div class="panel-indicator">
+      <div class="pi-dot red"></div>
+      <div class="pi-text">Circular trading pattern detected in Q3 FY25</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot yellow"></div>
+      <div class="pi-text">ITC claims exceed purchase value by 18%</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot yellow"></div>
+      <div class="pi-text">Multiple GSTINs linked to same address</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot green"></div>
+      <div class="pi-text">Bank account verified — active transactions</div>
+    </div>
+
+    <div class="panel-section-title">Recent Activity</div>
+    <div class="panel-indicator">
+      <div class="pi-dot blue"></div>
+      <div class="pi-text">Case CASE-2025-00098 opened — Shell entity match</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot yellow"></div>
+      <div class="pi-text">GSTR-3B filing delayed by 12 days in Q4 FY25</div>
+    </div>
+    <div class="panel-indicator">
+      <div class="pi-dot red"></div>
+      <div class="pi-text">Flagged by AI model v4.2 — confidence 96%</div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="panel-btn danger" onclick="confirmBlacklist()">🚫 Blacklist Entity</button>
+      <button class="panel-btn primary" onclick="assignCase()">📋 Assign to Case Manager</button>
+      <button class="panel-btn ghost" onclick="exportReport()">⬇ Export PDF Report</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/router.js"></script>
+<script>
+function logout() { window.location.href = 'login.html'; }
+
+function confirmBlacklist() {
+  const name = document.getElementById('panel-name').textContent;
+  if (confirm('Blacklist "' + name + '"? This will flag all linked invoices and notify enforcement.')) {
+    alert('Entity blacklisted. Case auto-created in Case Manager.');
+    closePanel();
+  }
+}
+function assignCase() {
+  const name = document.getElementById('panel-name').textContent;
+  alert('Case assigned for "' + name + '". Redirecting to Case Manager...');
+  window.location.href = 'case-manager.html';
+}
+function exportReport() {
+  const name = document.getElementById('panel-name').textContent;
+  alert('Generating PDF report for "' + name + '"... Download will start shortly.');
+}
+
+function openPanel(name, gstin, risk, status, zone, invoices, fraud, patterns) {
+  document.getElementById('panel-name').textContent = name;
+  document.getElementById('panel-gstin').textContent = gstin;
+  document.getElementById('panel-risk').textContent = risk;
+  document.getElementById('panel-status').textContent = status;
+  document.getElementById('panel-zone').textContent = zone;
+  document.getElementById('panel-invoices').textContent = invoices;
+  document.getElementById('panel-fraud').textContent = fraud;
+  document.getElementById('panel-patterns').textContent = patterns;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('panel-overlay').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('panel-overlay').classList.remove('open');
+}
+
+// Search filter
+document.getElementById('entity-search').addEventListener('input', function() {
+  const term = this.value.toLowerCase();
+  document.querySelectorAll('#entity-table tbody tr').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+
+// Select all checkbox
+document.getElementById('select-all').addEventListener('change', function() {
+  document.querySelectorAll('#entity-table tbody input[type="checkbox"]').forEach(cb => cb.checked = this.checked);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+    <link rel="stylesheet" href="pages/fraud-alerts.css">
+</head>
+<body>
+    <div class="shell">
+        <main class="main" style="padding: 20px;">
+            <h1>Simple Assign Button Test</h1>
+            <button class="abtn" onclick="openAssignModal()">Test Assign Button</button>
+            
+            <div style="margin-top: 20px; padding: 15px; background: var(--bg-card); border-radius: 8px;">
+                <h3>Instructions:</h3>
+                <ol>
+                    <li>Start the server: <code>cd frontend && npx http-server . -p 3001</code></li>
+                    <li>Open browser to: <code>http://localhost:3001/pages/fraud-alert.html</code></li>
+                    <li>Click the "Assign Case" button in the right panel</li>
+                    <li>Select an officer and click "Assign Case"</li>
+                </ol>
+                
+                <h3>If it still doesn't work:</h3>
+                <ul>
+                    <li>Check browser console (F12) for JavaScript errors</li>
+                    <li>Make sure you're accessing through http://localhost:3001 not file://</li>
+                    <li>Try this simple test button first</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div class="overlay" id="modalOverlay" onclick="closeModalOut(event)">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const modals = {
+            assign: `<div class="modal-title">Assign Case to Officer</div>
+                <div class="modal-sub">Select an officer to handle this fraud alert case.</div>
+                <div class="mfield">
+                    <label class="mlabel">Alert ID</label>
+                    <input class="minput" id="assignAlertId" value="TEST-001" readonly />
+                </div>
+                <div class="mfield">
+                    <label class="mlabel">Select Officer</label>
+                    <select class="minput" id="officerSelect">
+                        <option value="">Choose an officer...</option>
+                        <option value="1">GST Officer</option>
+                        <option value="2">Inspection Officer</option>
+                    </select>
+                </div>
+                <div class="mfooter">
+                    <button class="mbtn" onclick="closeModal()">Cancel</button>
+                    <button class="mbtn ok" onclick="assignCase()">Assign Case</button>
+                </div>`
+        };
+
+        function openModal(t) {
+            document.getElementById('modalContent').innerHTML = modals[t];
+            document.getElementById('modalOverlay').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+        }
+
+        function closeModalOut(e) {
+            if (e.target === document.getElementById('modalOverlay')) closeModal();
+        }
+
+        function openAssignModal() {
+            openModal('assign');
+            console.log('Assign modal opened');
+        }
+
+        function assignCase() {
+            const officerId = document.getElementById('officerSelect').value;
+            if (!officerId) {
+                alert('Please select an officer');
+                return;
+            }
+            alert('Case assigned successfully!');
+            closeModal();
+        }
+    </script>
+</body>
+</html>

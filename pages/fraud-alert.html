@@ -32,6 +32,11 @@
       <span>Fraud Alerts</span>
       <span class="nav-badge red">12</span>
     </a>
+    <a class="nav-item" href="case-assignments.html">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      <span>Case Assignments</span>
+      <span class="nav-badge blue" id="assignCount">0</span>
+    </a>
     <a class="nav-item" href="#">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <span>GSTIN Lookup</span>
@@ -472,6 +477,10 @@
             <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             Freeze GSTIN
           </button>
+          <button class="abtn" onclick="openAssignModal()">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Assign Case
+          </button>
           <button class="abtn success" onclick="resolveAlert()">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             Mark as Resolved
@@ -623,12 +632,127 @@ const modals={
     <div class="mfield"><label class="mlabel">Severity</label><select class="minput"><option>All</option><option>Critical only</option><option>High & Critical</option><option>Medium</option></select></div>
     <div class="mfield"><label class="mlabel">Fraud Type</label><select class="minput"><option>All Types</option><option>Circular Trading</option><option>Fake Invoices</option><option>ITC Mismatch</option><option>Shell Entity</option></select></div>
     <div class="mfield"><label class="mlabel">Date Range</label><input class="minput" type="date"/></div>
-    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Apply Filter</button></div>`
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Apply Filter</button></div>`,
+
+  assign:`<div class="modal-title">Assign Case to Officer</div><div class="modal-sub">Select an officer to handle this fraud alert case.</div>
+    <div class="mfield"><label class="mlabel">Alert ID</label><input class="minput" id="assignAlertId" value="" readonly style="font-family:var(--font-m);color:var(--text-2)"/></div>
+    <div class="mfield"><label class="mlabel">Select Officer</label><select class="minput" id="officerSelect">
+      <option value="">Choose an officer...</option>
+      <option value="1">GST Officer (sumitverse26@gmail.com)</option>
+      <option value="2">Inspection Officer (sidhantpandey3@gmail.com)</option>
+      <option value="3">Tax Officer (tanwarkunalsingh22@gmail.com)</option>
+      <option value="4">Admin User (admin@gst.gov.in)</option>
+    </select></div>
+    <div class="mfield"><label class="mlabel">Priority</label><select class="minput" id="prioritySelect">
+      <option value="high">High Priority</option>
+      <option value="medium">Medium Priority</option>
+      <option value="low">Low Priority</option>
+    </select></div>
+    <div class="mfield"><label class="mlabel">Notes</label><textarea class="minput mta" id="assignNotes" placeholder="Add any specific instructions for the officer..."></textarea></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="assignCase()">Assign Case</button></div>`
 };
 
 function openModal(t){document.getElementById('modalContent').innerHTML=modals[t];document.getElementById('modalOverlay').classList.add('open');}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
 function closeModalOut(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+function openAssignModal(){
+  openModal('assign');
+  // Set the current alert ID
+  const alertId = document.getElementById('adId').textContent;
+  document.getElementById('assignAlertId').value = alertId;
+}
+
+function assignCase(){
+  const officerId = document.getElementById('officerSelect').value;
+  const priority = document.getElementById('prioritySelect').value;
+  const notes = document.getElementById('assignNotes').value;
+  const alertId = document.getElementById('assignAlertId').value;
+  
+  if(!officerId){
+    alert('Please select an officer to assign the case to.');
+    return;
+  }
+  
+  // Store assignment data (in real app, this would be sent to backend)
+  const assignmentData = {
+    alertId: alertId,
+    officerId: officerId,
+    priority: priority,
+    notes: notes,
+    assignedAt: new Date().toISOString(),
+    assignedBy: 'Current User' // In real app, this would be the logged-in user
+  };
+  
+  // Store in localStorage for demo purposes
+  let assignments = JSON.parse(localStorage.getItem('caseAssignments') || '[]');
+  assignments.push(assignmentData);
+  localStorage.setItem('caseAssignments', JSON.stringify(assignments));
+  
+  // Update the UI to show assignment
+  updateAssignedOfficer(officerId);
+  
+  // Show success message and close modal
+  alert('Case assigned successfully!');
+  closeModal();
+  
+  // Clear the form
+  document.getElementById('officerSelect').value = '';
+  document.getElementById('prioritySelect').value = 'high';
+  document.getElementById('assignNotes').value = '';
+}
+
+function updateAssignedOfficer(officerId){
+  const officerNames = {
+    '1': 'GST Officer',
+    '2': 'Inspection Officer', 
+    '3': 'Tax Officer',
+    '4': 'Admin User'
+  };
+  
+  const officerCodes = {
+    '1': 'GO',
+    '2': 'IO', 
+    '3': 'TO',
+    '4': 'AD'
+  };
+  
+  const officerName = officerNames[officerId];
+  const officerCode = officerCodes[officerId];
+  
+  // Update the case hero section to show assigned officer
+  const officerElement = document.querySelector('.case-officer');
+  if(officerElement){
+    officerElement.textContent = `Assigned: ${officerCode} · ${officerName}`;
+  }
+  
+  // Update the assigned officer display in the details section
+  const assignedDisplay = document.querySelector('.assigned-officer-display');
+  if(assignedDisplay){
+    assignedDisplay.textContent = officerName;
+  }
+  
+  // Update assignment count in navigation
+  updateAssignmentCount();
+}
+
+function updateAssignmentCount(){
+  const assignments = JSON.parse(localStorage.getItem('caseAssignments') || '[]');
+  const assignCount = document.getElementById('assignCount');
+  if(assignCount){
+    assignCount.textContent = assignments.length;
+  }
+}
+
+function loadCurrentAssignment(){
+  const currentAlertId = document.getElementById('adId').textContent;
+  const assignments = JSON.parse(localStorage.getItem('caseAssignments') || '[]');
+  const currentAssignment = assignments.find(a => a.alertId === currentAlertId);
+  
+  if(currentAssignment){
+    updateAssignedOfficer(currentAssignment.officerId);
+  }
+}
 
 // ── NETWORK GRAPH ──
 window.addEventListener('load',()=>{
@@ -732,6 +856,20 @@ window.addEventListener('load',()=>{
   });
 
   renderFeed();
+  updateAssignmentCount();
+  loadCurrentAssignment();
+  
+  // Check if we need to highlight a specific alert from navigation
+  const targetAlertId = sessionStorage.getItem('targetAlertId');
+  if(targetAlertId){
+    sessionStorage.removeItem('targetAlertId');
+    // Find and highlight the alert
+    const targetAlert = alerts.find(a => a.id === targetAlertId.split('-').pop());
+    if(targetAlert){
+      const index = alerts.indexOf(targetAlert);
+      loadAlert(index);
+    }
+  }
 });
 </script>
 </body>

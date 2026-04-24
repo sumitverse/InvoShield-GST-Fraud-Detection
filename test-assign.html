@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Assign Button</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 50px auto; padding: 20px; width: 400px; }
+    </style>
+</head>
+<body>
+    <h1>Test Assign Button</h1>
+    <button onclick="openAssignModal()">Open Assign Modal</button>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3>Assign Case</h3>
+            <p>Alert ID: <span id="alertId">TEST-001</span></p>
+            <select id="officerSelect">
+                <option value="">Choose officer...</option>
+                <option value="1">GST Officer</option>
+                <option value="2">Inspection Officer</option>
+            </select>
+            <br><br>
+            <button onclick="assignCase()">Assign</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        function openAssignModal() {
+            console.log('Opening assign modal');
+            document.getElementById('modal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            console.log('Closing modal');
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function assignCase() {
+            const officerId = document.getElementById('officerSelect').value;
+            if (!officerId) {
+                alert('Please select an officer');
+                return;
+            }
+            alert('Case assigned to officer ' + officerId);
+            closeModal();
+        }
+    </script>
+</body>
+</html>

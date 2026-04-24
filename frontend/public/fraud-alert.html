@@ -149,8 +149,8 @@
             <span class="tag suspicious">High Risk</span>
           </div>
           <div class="ac-footer">
-            <button class="ac-action view">View Details</button>
-            <button class="ac-action assign">Assign</button>
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
           </div>
         </div>
 
@@ -189,8 +189,8 @@
             <span class="tag verified">Needs Review</span>
           </div>
           <div class="ac-footer">
-            <button class="ac-action view">View Details</button>
-            <button class="ac-action assign">Assign</button>
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
           </div>
         </div>
 
@@ -229,8 +229,8 @@
             <span class="tag fraud">Blacklisted</span>
           </div>
           <div class="ac-footer">
-            <button class="ac-action view">View Details</button>
-            <button class="ac-action assign">Assign</button>
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
           </div>
         </div>
 
@@ -268,20 +268,101 @@
             <span class="tag suspicious">Suspicious</span>
           </div>
           <div class="ac-footer">
-            <button class="ac-action view">View Details</button>
-            <button class="ac-action assign">Assign</button>
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
           </div>
         </div>
       </div>
+    </div>
     </div>
   </main>
 </div>
 
 <script src="/js/router.js"></script>
 <script>
+function openAssignmentPage(button) {
+  try {
+    // Get the alert ID from the clicked card
+    const alertCard = button.closest('.alert-card');
+    const alertIdElement = alertCard.querySelector('.ac-id');
+    const alertId = alertIdElement ? alertIdElement.textContent : 'ALT-001';
+    
+    console.log('Opening assignment page for alert:', alertId);
+    window.location.href = `/public/assignment-simple.html?alertId=${encodeURIComponent(alertId)}`;
+  } catch (error) {
+    console.error('Error opening assignment page:', error);
+    // Fallback without alert ID
+    window.location.href = '/public/assignment-simple.html';
+  }
+}
+
+function openDetailsPage(button) {
+  try {
+    // Get the alert ID from the clicked card
+    const alertCard = button.closest('.alert-card');
+    const alertIdElement = alertCard.querySelector('.ac-id');
+    const alertId = alertIdElement ? alertIdElement.textContent : 'ALT-001';
+    
+    console.log('Opening details page for alert:', alertId);
+    window.location.href = `/public/alert-details.html?alertId=${encodeURIComponent(alertId)}`;
+  } catch (error) {
+    console.error('Error opening details page:', error);
+    // Fallback without alert ID
+    window.location.href = '/public/alert-details.html';
+  }
+}
+
 function logout() {
   window.location.href = 'login.html';
 }
+
+// Add event listeners for button clicks
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, setting up button listeners');
+  
+  // Add click listeners to all assign and view buttons
+  document.querySelectorAll('.ac-action.assign').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const alertCard = this.closest('.alert-card');
+      if (!alertCard) {
+        console.log('No alert card found');
+        return;
+      }
+      
+      const alertIdElement = alertCard.querySelector('.ac-id');
+      const alertId = alertIdElement ? alertIdElement.textContent.trim() : 'ALT-001';
+      
+      console.log('Assign button clicked, Alert ID:', alertId);
+      console.log('Full URL:', `/public/assignment-simple.html?alertId=${encodeURIComponent(alertId)}`);
+      window.location.href = `/public/assignment-simple.html?alertId=${encodeURIComponent(alertId)}`;
+    });
+  });
+  
+  document.querySelectorAll('.ac-action.view').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const alertCard = this.closest('.alert-card');
+      if (!alertCard) {
+        console.log('No alert card found');
+        return;
+      }
+      
+      const alertIdElement = alertCard.querySelector('.ac-id');
+      const alertId = alertIdElement ? alertIdElement.textContent.trim() : 'ALT-001';
+      
+      console.log('View details button clicked, Alert ID:', alertId);
+      console.log('Full URL:', `/public/alert-details.html?alertId=${encodeURIComponent(alertId)}`);
+      window.location.href = `/public/alert-details.html?alertId=${encodeURIComponent(alertId)}`;
+    });
+  });
+  
+  console.log('Button listeners set up for', document.querySelectorAll('.ac-action.assign').length, 'assign buttons and', document.querySelectorAll('.ac-action.view').length, 'view buttons');
+});
 </script>
 </body>
 </html>

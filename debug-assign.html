@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Assign Button</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #060809;
+            color: #edf0f2;
+        }
+        button { 
+            padding: 10px 20px; 
+            margin: 10px; 
+            cursor: pointer; 
+            background: #ff6d00;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+        button:hover { background: #ff8c33; }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: #0c0f12;
+            border: 1px solid rgba(255,61,61,0.2);
+            border-radius: 16px;
+            padding: 22px;
+            width: 460px;
+            max-width: 90vw;
+        }
+        .modal-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+        .modal-sub {
+            font-size: 0.74rem;
+            color: #637282;
+            margin-bottom: 16px;
+        }
+        .mfield {
+            margin-bottom: 10px;
+        }
+        .mlabel {
+            display: block;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #637282;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .minput {
+            width: 100%;
+            background: #0f151c;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 7px;
+            padding: 7px 10px;
+            font-size: 0.8rem;
+            color: #edf0f2;
+            outline: none;
+        }
+        .mfooter {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .mbtn {
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: #edf0f2;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .mbtn.ok {
+            background: #ff6d00;
+            border-color: #ff6d00;
+            color: white;
+        }
+        .mbtn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .mbtn.ok:hover {
+            background: #ff8c33;
+        }
+        .debug-info {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Assign Button</h1>
+    <div class="debug-info" id="debugInfo">Checking JavaScript...</div>
+    
+    <button onclick="openAssignModal()">Open Assign Modal</button>
+    <button onclick="testBasicAlert()">Test Basic Alert</button>
+    <button onclick="testConsole()">Test Console Log</button>
+    
+    <div id="modalOverlay" class="overlay" onclick="closeModalOut(event)">
+        <div class="modal">
+            <div class="modal-title">Assign Case to Officer</div>
+            <div class="modal-sub">Select an officer to handle this fraud alert case.</div>
+            <div class="mfield">
+                <label class="mlabel">Alert ID</label>
+                <input class="minput" id="assignAlertId" value="ALERT-TEST-001" readonly />
+            </div>
+            <div class="mfield">
+                <label class="mlabel">Select Officer</label>
+                <select class="minput" id="officerSelect">
+                    <option value="">Choose an officer...</option>
+                    <option value="1">GST Officer (sumitverse26@gmail.com)</option>
+                    <option value="2">Inspection Officer (sidhantpandey3@gmail.com)</option>
+                    <option value="3">Tax Officer (tanwarkunalsingh22@gmail.com)</option>
+                    <option value="4">Admin User (admin@gst.gov.in)</option>
+                </select>
+            </div>
+            <div class="mfield">
+                <label class="mlabel">Priority</label>
+                <select class="minput" id="prioritySelect">
+                    <option value="high">High Priority</option>
+                    <option value="medium">Medium Priority</option>
+                    <option value="low">Low Priority</option>
+                </select>
+            </div>
+            <div class="mfield">
+                <label class="mlabel">Notes</label>
+                <textarea class="minput" id="assignNotes" placeholder="Add any specific instructions for the officer..." rows="3"></textarea>
+            </div>
+            <div class="mfooter">
+                <button class="mbtn" onclick="closeModal()">Cancel</button>
+                <button class="mbtn ok" onclick="assignCase()">Assign Case</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update debug info
+        document.getElementById('debugInfo').innerHTML = 'JavaScript is working! Ready to test functions.';
+        
+        function openAssignModal() {
+            console.log('openAssignModal called');
+            document.getElementById('debugInfo').innerHTML = 'openAssignModal() called - opening modal...';
+            document.getElementById('modalOverlay').classList.add('open');
+        }
+        
+        function closeModal() {
+            console.log('closeModal called');
+            document.getElementById('debugInfo').innerHTML = 'closeModal() called - closing modal...';
+            document.getElementById('modalOverlay').classList.remove('open');
+        }
+        
+        function closeModalOut(event) {
+            if (event.target === document.getElementById('modalOverlay')) {
+                closeModal();
+            }
+        }
+        
+        function assignCase() {
+            console.log('assignCase called');
+            const officerId = document.getElementById('officerSelect').value;
+            const priority = document.getElementById('prioritySelect').value;
+            const notes = document.getElementById('assignNotes').value;
+            const alertId = document.getElementById('assignAlertId').value;
+            
+            document.getElementById('debugInfo').innerHTML = `assignCase() called - officerId: ${officerId}, priority: ${priority}`;
+            
+            if (!officerId) {
+                alert('Please select an officer to assign the case to.');
+                return;
+            }
+            
+            // Store assignment data
+            const assignmentData = {
+                alertId: alertId,
+                officerId: officerId,
+                priority: priority,
+                notes: notes,
+                assignedAt: new Date().toISOString()
+            };
+            
+            // Store in localStorage
+            let assignments = JSON.parse(localStorage.getItem('caseAssignments') || '[]');
+            assignments.push(assignmentData);
+            localStorage.setItem('caseAssignments', JSON.stringify(assignments));
+            
+            alert('Case assigned successfully!');
+            closeModal();
+        }
+        
+        function testBasicAlert() {
+            console.log('testBasicAlert called');
+            document.getElementById('debugInfo').innerHTML = 'Basic alert test - JavaScript working!';
+            alert('Basic JavaScript is working!');
+        }
+        
+        function testConsole() {
+            console.log('testConsole called');
+            document.getElementById('debugInfo').innerHTML = 'Console test - check browser console for messages';
+            console.log('Debug test - console logging is working');
+            console.log('Current assignments:', JSON.parse(localStorage.getItem('caseAssignments') || '[]'));
+        }
+        
+        // Test on load
+        window.addEventListener('load', function() {
+            console.log('Page loaded successfully');
+            document.getElementById('debugInfo').innerHTML = 'Page loaded - all functions ready. Try clicking the buttons!';
+        });
+    </script>
+</body>
+</html>

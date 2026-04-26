@@ -88,7 +88,7 @@
       <strong>GSTIN Lookup</strong>
     </div>
     <div class="topbar-spacer"></div>
-    <button class="logout-btn" onclick="logout()">
+    <button class="tbtn ghost" onclick="logout()">
       <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Logout
     </button>
@@ -114,10 +114,45 @@
           </p>
           
           <div style="display:flex;gap:8px;margin-bottom:16px;">
-            <input type="text" placeholder="Enter GSTIN (15 digits)" style="flex:1;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text-1);font-family:var(--font-m);" />
-            <button style="padding:12px 24px;background:linear-gradient(135deg,#007c31,#00e676);color:#07090b;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+            <input id="gstinInput" type="text" placeholder="Enter GSTIN (15 digits)" style="flex:1;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text-1);font-family:var(--font-m);" />
+            <button id="searchBtn" style="padding:12px 24px;background:linear-gradient(135deg,#007c31,#00e676);color:#07090b;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
               Search
             </button>
+          </div>
+          
+          <div id="loadingIndicator" style="display:none; color:var(--text-2); margin-top:20px;">
+            Searching registry...
+          </div>
+          
+          <div id="errorMsg" style="display:none; color:#ff4444; margin-top:20px; font-weight:600;"></div>
+
+          <div id="resultContainer" style="display:none; background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:24px;margin-top:20px;text-align:left;">
+            <div style="font-size:.8rem;color:var(--text-2);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Company Name</div>
+            <div id="resCompany" style="font-family:var(--font-m);color:var(--text-1);font-size:1.4rem;font-weight:800;margin-bottom:16px;"></div>
+            
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;">
+                <div style="font-size:.75rem;color:var(--text-2);margin-bottom:4px;">Total Sales</div>
+                <div id="resSales" style="color:var(--text-1);font-family:var(--font-m);font-weight:700;font-size:1.1rem;"></div>
+              </div>
+              <div style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;">
+                <div style="font-size:.75rem;color:var(--text-2);margin-bottom:4px;">Total Purchase</div>
+                <div id="resPurchase" style="color:var(--text-1);font-family:var(--font-m);font-weight:700;font-size:1.1rem;"></div>
+              </div>
+              <div style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;">
+                <div style="font-size:.75rem;color:var(--text-2);margin-bottom:4px;">ITC Claimed</div>
+                <div id="resITC" style="color:var(--text-1);font-family:var(--font-m);font-weight:700;font-size:1.1rem;"></div>
+              </div>
+              <div style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;">
+                <div style="font-size:.75rem;color:var(--text-2);margin-bottom:4px;">Refund Amount</div>
+                <div id="resRefund" style="color:var(--text-1);font-family:var(--font-m);font-weight:700;font-size:1.1rem;"></div>
+              </div>
+            </div>
+            
+            <div style="padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+               <div style="font-size:.9rem;color:var(--text-1);font-weight:600;">Risk Score Assessment</div>
+               <div id="resRisk" style="padding:6px 12px;border-radius:20px;font-weight:700;font-size:.8rem;"></div>
+            </div>
           </div>
 
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:20px;margin-top:20px;text-align:left;">
@@ -145,6 +180,76 @@
 
 <script src="/js/router.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const searchBtn = document.getElementById('searchBtn');
+  const gstinInput = document.getElementById('gstinInput');
+  const resultContainer = document.getElementById('resultContainer');
+  const errorMsg = document.getElementById('errorMsg');
+  const loadingIndicator = document.getElementById('loadingIndicator');
+  
+  // Elements to populate
+  const resCompany = document.getElementById('resCompany');
+  const resSales = document.getElementById('resSales');
+  const resPurchase = document.getElementById('resPurchase');
+  const resITC = document.getElementById('resITC');
+  const resRefund = document.getElementById('resRefund');
+  const resRisk = document.getElementById('resRisk');
+
+  const formatCurrency = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumSignificantDigits: 3 }).format(val);
+
+  searchBtn.addEventListener('click', async () => {
+    const gstin = gstinInput.value.trim().toUpperCase();
+    if (gstin.length !== 15) {
+      errorMsg.textContent = 'Please enter a valid 15-character GSTIN.';
+      errorMsg.style.display = 'block';
+      resultContainer.style.display = 'none';
+      return;
+    }
+
+    errorMsg.style.display = 'none';
+    resultContainer.style.display = 'none';
+    loadingIndicator.style.display = 'block';
+
+    try {
+      // Assuming backend is running on 5000
+      const response = await fetch(`http://localhost:5000/api/gstin/lookup/${gstin}`);
+      const result = await response.json();
+      
+      loadingIndicator.style.display = 'none';
+
+      if (result.success) {
+        resCompany.textContent = result.data.companyName;
+        resSales.textContent = formatCurrency(result.data.sales);
+        resPurchase.textContent = formatCurrency(result.data.purchase);
+        resITC.textContent = formatCurrency(result.data.itc);
+        resRefund.textContent = formatCurrency(result.data.refund);
+        
+        if (result.data.riskScore === 'HIGH') {
+          resRisk.textContent = 'HIGH RISK';
+          resRisk.style.background = 'rgba(255, 68, 68, 0.1)';
+          resRisk.style.color = '#ff4444';
+          resRisk.style.border = '1px solid rgba(255, 68, 68, 0.3)';
+        } else {
+          resRisk.textContent = 'LOW RISK';
+          resRisk.style.background = 'rgba(0, 230, 118, 0.1)';
+          resRisk.style.color = '#00e676';
+          resRisk.style.border = '1px solid rgba(0, 230, 118, 0.3)';
+        }
+
+        resultContainer.style.display = 'block';
+      } else {
+        errorMsg.textContent = result.message || 'GSTIN not found.';
+        errorMsg.style.display = 'block';
+      }
+    } catch (err) {
+      loadingIndicator.style.display = 'none';
+      errorMsg.textContent = 'Error connecting to the server. Is the backend running?';
+      errorMsg.style.display = 'block';
+      console.error(err);
+    }
+  });
+});
+
 function logout() {
   window.location.href = 'login.html';
 }

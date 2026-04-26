@@ -3,26 +3,22 @@ const cors = require('cors');
 const { PORT } = require('./config/env');
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const gstinRoutes = require('./routes/gstinRoutes');
 
 const app = express();
-
-// Middleware
 app.use(express.json());
 app.use(cors({
   origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'file://'],
   credentials: true
 }));
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/gstin', gstinRoutes);
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running' });
 });
-
-// Root route
 app.get('/', (req, res) => {
   res.json({
     success: true,
@@ -37,7 +33,7 @@ app.get('/', (req, res) => {
   });
 });
 
-// 404 handler
+// koi bhi error pe
 app.use((req, res) => {
   res.status(404).json({
     success: false,

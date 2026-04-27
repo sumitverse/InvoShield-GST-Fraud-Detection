@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>InvoShield — Fraud Alerts</title>
+  <link rel="stylesheet" href="fraud-alerts.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="logo-name">Invo<span>Shield</span></div>
+    </div>
+    <div class="sidebar-section">Main</div>
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="nav-badge red">34</span>
+    </a>
+    <a class="nav-item active" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="nav-badge red">12</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+    <div class="sidebar-section">Enforcement</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="nav-badge green">3</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Reports</span></a>
+    <a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Settings</span></a>
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div><div class="user-name">Sumit Kumar</div><div class="user-role">Senior Officer</div></div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Fraud Alerts</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="alert-ticker">
+      <div class="ticker-dot"></div>
+      <span class="ticker-label">NEW</span>
+      <span class="ticker-text" id="tickerText">Circular trading detected · GSTIN 27AABC1234D1Z5 · ₹42L loop</span>
+    </div>
+    <button class="tbtn ghost" onclick="openModal('filter')">
+      <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      Filter
+    </button>
+    <button class="tbtn danger" onclick="openModal('escalate')">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      Bulk Escalate
+    </button>
+  </header>
+
+  <main class="main">
+
+    <div class="alert-banner">
+      <div class="banner-icon">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="banner-stats">
+        <div class="bstat">
+          <div class="bval r" id="critCount">4</div>
+          <div class="blbl">Critical</div>
+        </div>
+        <div class="bstat">
+          <div class="bval o">5</div>
+          <div class="blbl">High</div>
+        </div>
+        <div class="bstat">
+          <div class="bval y">3</div>
+          <div class="blbl">Medium</div>
+        </div>
+        <div class="bstat">
+          <div class="bval w">12</div>
+          <div class="blbl">Total Active</div>
+        </div>
+        <div class="bstat">
+          <div class="bval r">₹68.4Cr</div>
+          <div class="blbl">Total at Risk</div>
+        </div>
+        <div class="bstat">
+          <div class="bval g">7</div>
+          <div class="blbl">Resolved Today</div>
+        </div>
+        <div class="bstat">
+          <div class="bval b" style="color:#82b1ff">34 min</div>
+          <div class="blbl">Avg Response Time</div>
+        </div>
+      </div>
+      <div class="banner-right">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,61,61,.1)" stroke-width="6"/>
+          <circle cx="32" cy="32" r="26" fill="none" stroke="#ff3d3d" stroke-width="6"
+            stroke-dasharray="163" stroke-dashoffset="57"
+            stroke-linecap="round" transform="rotate(-90 32 32)"
+            style="filter:drop-shadow(0 0 5px rgba(255,61,61,.5));transition:stroke-dashoffset 1s"/>
+          <text x="32" y="36" text-anchor="middle" fill="#ff3d3d" font-size="13" font-weight="800" font-family="'Geist Mono',monospace">75</text>
+        </svg>
+        <div style="font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-2);text-align:center;">Zone<br>Risk</div>
+      </div>
+    </div>
+    <div class="body-grid">
+
+      <div class="feed-panel">
+        <div class="fp-head">
+          <span class="fp-title"><span class="live-dot"></span>Live Feed</span>
+          <div class="fp-actions">
+            <button class="fp-btn active-fp" onclick="setFeedFilter(this,'all')">All</button>
+            <button class="fp-btn" onclick="setFeedFilter(this,'crit')">Critical</button>
+            <button class="fp-btn" onclick="setFeedFilter(this,'new')">New</button>
+          </div>
+        </div>
+        <div class="feed-list" id="feedList"></div>
+      </div>
+
+      <div class="center-panel">
+
+        <div class="alert-detail-head">
+          <div class="adh-top">
+            <div class="adh-left">
+              <div class="alert-id" id="adId">ALERT-2025-03-21-001</div>
+              <div class="alert-title-main" id="adTitle">Circular Trading Network — Apex Traders Pvt. Ltd.</div>
+              <div class="alert-gstin-row">
+                <span class="ag-item" id="adGstin1">27AABC1234D1Z5</span>
+                <span class="ag-item">27ZZZX9900P1Z8</span>
+                <span class="ag-item">27MMMK4421R1Z3</span>
+                <span class="ag-item" style="background:rgba(255,61,61,.06);border-color:rgba(255,61,61,.2);color:var(--red)">+3 entities</span>
+              </div>
+            </div>
+            <div class="adh-right">
+              <span class="severity-chip crit" id="adSeverity">CRITICAL</span>
+              <span class="amount-chip" id="adAmount">₹42,00,000</span>
+            </div>
+          </div>
+          <div class="adh-metrics">
+            <div class="adh-metric">
+              <div class="adh-metric-val r" id="adRisk">92</div>
+              <div class="adh-metric-label">Risk Score</div>
+            </div>
+            <div class="adh-metric">
+              <div class="adh-metric-val o">6</div>
+              <div class="adh-metric-label">Entities Linked</div>
+            </div>
+            <div class="adh-metric">
+              <div class="adh-metric-val y">48h</div>
+              <div class="adh-metric-label">Loop Duration</div>
+            </div>
+            <div class="adh-metric">
+              <div class="adh-metric-val b">4</div>
+              <div class="adh-metric-label">Transactions</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center tabs -->
+        <div class="center-tabs">
+          <div class="ctab act" onclick="setCTab(this)">Network Graph</div>
+          <div class="ctab" onclick="setCTab(this)">Transaction Chain</div>
+          <div class="ctab" onclick="setCTab(this)">Evidence Log</div>
+          <div class="ctab" onclick="setCTab(this)">Severity Trends</div>
+          <div class="ctab-spacer"></div>
+          <span style="font-size:.68rem;color:var(--text-2);">Detected: <strong style="color:var(--text-1)">Today, 09:14 AM</strong></span>
+        </div>
+
+        <div class="center-body">
+
+          <!--  Graph Network wala-->
+          <div class="network-section">
+            <div class="sec-head">
+              <div class="sec-title"><span></span>Entity Network Graph</div>
+              <span class="sec-badge">6 nodes · 8 edges</span>
+            </div>
+            <div class="network-canvas">
+              <canvas id="networkGraph" height="220"></canvas>
+            </div>
+          </div>
+
+          <div class="network-section">
+            <div class="sec-head">
+              <div class="sec-title"><span></span>Circular Transaction Chain</div>
+              <span class="sec-badge">₹42L loop · 48 hrs</span>
+            </div>
+            <div class="chain-wrap">
+              <div class="chain-node">
+                <div class="cn-box origin">
+                  <div class="cn-label r">Origin</div>
+                  <div class="cn-gstin">27AABC…D1Z5</div>
+                  <div class="cn-amt">₹42L</div>
+                </div>
+              </div>
+              <div class="chain-arrow">
+                <div class="ca-amt">₹42,00,000</div>
+                <div class="ca-line"></div>
+                <div class="ca-arrow">→</div>
+              </div>
+              <div class="chain-node">
+                <div class="cn-box mid">
+                  <div class="cn-label o">Node 2</div>
+                  <div class="cn-gstin">27ZZZX…P1Z8</div>
+                  <div class="cn-amt">₹41.8L</div>
+                </div>
+              </div>
+              <div class="chain-arrow">
+                <div class="ca-amt">₹41,80,000</div>
+                <div class="ca-line"></div>
+                <div class="ca-arrow">→</div>
+              </div>
+              <div class="chain-node">
+                <div class="cn-box mid">
+                  <div class="cn-label o">Node 3</div>
+                  <div class="cn-gstin">27MMMK…R1Z3</div>
+                  <div class="cn-amt">₹41.5L</div>
+                </div>
+              </div>
+              <div class="chain-arrow">
+                <div class="ca-amt">₹41,50,000</div>
+                <div class="ca-line"></div>
+                <div class="ca-arrow">→</div>
+              </div>
+              <div class="chain-node">
+                <div class="cn-box mid">
+                  <div class="cn-label o">Node 4</div>
+                  <div class="cn-gstin">27PPPV…K1Z7</div>
+                  <div class="cn-amt">₹41.1L</div>
+                </div>
+              </div>
+              <div class="chain-arrow">
+                <div class="ca-amt" style="color:var(--red)">↩ Returns</div>
+                <div class="ca-line" style="background:linear-gradient(90deg,rgba(255,61,61,.5),rgba(255,61,61,.5))"></div>
+                <div class="ca-arrow" style="color:var(--red)">→</div>
+              </div>
+              <div class="chain-node">
+                <div class="cn-box return">
+                  <div class="cn-label r">Origin</div>
+                  <div class="cn-gstin">27AABC…D1Z5</div>
+                  <div class="cn-amt" style="color:var(--red)">+ITC ₹6.4L</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaction table -->
+          <div class="txn-table">
+            <div class="txn-head">
+              <span class="txn-title">Linked Transactions</span>
+              <span class="txn-export">↓ Export</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Txn ID</th>
+                  <th>From GSTIN</th>
+                  <th>To GSTIN</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>ITC Claimed</th>
+                  <th>Flag</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="td-m">TXN-094821-A</td>
+                  <td class="td-m" style="color:#82b1ff">27AABC1234D1Z5</td>
+                  <td class="td-m" style="color:#82b1ff">27ZZZX9900P1Z8</td>
+                  <td style="color:var(--text-2);font-size:.72rem">20 Mar 09:41</td>
+                  <td class="td-r">₹42,00,000</td>
+                  <td class="td-r">₹6,40,678</td>
+                  <td><span class="sbadge crit">Circular</span></td>
+                </tr>
+                <tr>
+                  <td class="td-m">TXN-094821-B</td>
+                  <td class="td-m" style="color:#82b1ff">27ZZZX9900P1Z8</td>
+                  <td class="td-m" style="color:#82b1ff">27MMMK4421R1Z3</td>
+                  <td style="color:var(--text-2);font-size:.72rem">20 Mar 14:22</td>
+                  <td class="td-o">₹41,80,000</td>
+                  <td class="td-o">₹6,37,627</td>
+                  <td><span class="sbadge crit">Circular</span></td>
+                </tr>
+                <tr>
+                  <td class="td-m">TXN-094821-C</td>
+                  <td class="td-m" style="color:#82b1ff">27MMMK4421R1Z3</td>
+                  <td class="td-m" style="color:#82b1ff">27PPPV8812K1Z7</td>
+                  <td style="color:var(--text-2);font-size:.72rem">21 Mar 08:05</td>
+                  <td class="td-o">₹41,50,000</td>
+                  <td class="td-o">₹6,32,881</td>
+                  <td><span class="sbadge high">Shell</span></td>
+                </tr>
+                <tr>
+                  <td class="td-m">TXN-094821-D</td>
+                  <td class="td-m" style="color:#82b1ff">27PPPV8812K1Z7</td>
+                  <td class="td-m" style="color:#82b1ff">27AABC1234D1Z5</td>
+                  <td style="color:var(--text-2);font-size:.72rem">21 Mar 09:11</td>
+                  <td class="td-r">₹41,10,000</td>
+                  <td class="td-r">₹6,26,441</td>
+                  <td><span class="sbadge crit">Circular</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Severity trends chart -->
+          <div class="chart-card">
+            <div class="cc-head">
+              <span class="cc-title">Alert Severity — Last 14 Days</span>
+              <div class="cc-legend">
+                <div class="cc-leg-item"><div class="cc-leg-dot" style="background:#ff3d3d"></div>Critical</div>
+                <div class="cc-leg-item"><div class="cc-leg-dot" style="background:#ff6d00"></div>High</div>
+                <div class="cc-leg-item"><div class="cc-leg-dot" style="background:#ffab00"></div>Medium</div>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ RIGHT PANEL ══ -->
+      <div class="right-panel">
+
+        <!-- Case hero -->
+        <div class="case-hero">
+          <div class="case-id">CASE-MH-2025-0094</div>
+          <div class="case-status-row">
+            <span class="case-status open">Open</span>
+            <span class="case-officer">Assigned: AK · AO Mumbai-West</span>
+          </div>
+          <div class="case-amount">₹42,00,000</div>
+          <div class="case-label">Total Fraud Amount</div>
+          <div class="case-progress-wrap">
+            <div class="cp-head"><span>Investigation progress</span><strong>35%</strong></div>
+            <div class="cp-track"><div class="cp-fill" style="width:35%"></div></div>
+          </div>
+        </div>
+
+        <!-- Officer checklist -->
+        <div class="checklist">
+          <div class="cl-title">Investigation Checklist</div>
+          <div class="cl-item">
+            <div class="cl-check done" onclick="toggleCheck(this)">
+              <svg viewBox="0 0 10 10"><polyline points="2 5 4 7 8 3"/></svg>
+            </div>
+            <span class="cl-text done-text">GSTIN cross-verification</span>
+            <span class="cl-pri g">Done</span>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check done" onclick="toggleCheck(this)">
+              <svg viewBox="0 0 10 10"><polyline points="2 5 4 7 8 3"/></svg>
+            </div>
+            <span class="cl-text done-text">Network loop confirmed</span>
+            <span class="cl-pri g">Done</span>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggleCheck(this)" style="border-color:var(--orange)">
+              <svg viewBox="0 0 10 10"><polyline points="2 5 4 7 8 3"/></svg>
+            </div>
+            <span class="cl-text">Physical entity verification</span>
+            <span class="cl-pri o">In Progress</span>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggleCheck(this)" style="border-color:var(--text-3)">
+              <svg viewBox="0 0 10 10"><polyline points="2 5 4 7 8 3"/></svg>
+            </div>
+            <span class="cl-text">SCN notice preparation</span>
+            <span class="cl-pri r">Pending</span>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggleCheck(this)" style="border-color:var(--text-3)">
+              <svg viewBox="0 0 10 10"><polyline points="2 5 4 7 8 3"/></svg>
+            </div>
+            <span class="cl-text">ITC recovery initiation</span>
+            <span class="cl-pri r">Pending</span>
+          </div>
+          <div class="cl-item">
+            <div class="cl-check" onclick="toggleCheck(this)" style="border-color:var(--text-3)">
+              <svg viewBox="0 0 10 10"><polyline points="2 5 4 7 8 3"/></svg>
+            </div>
+            <span class="cl-text">Enforcement report filed</span>
+            <span class="cl-pri r">Pending</span>
+          </div>
+        </div>
+
+        <!-- Related alerts -->
+        <div class="related-section">
+          <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);font-weight:700;margin-bottom:8px;">Related Alerts</div>
+          <div class="rel-item" onclick="loadAlert(1)">
+            <div class="rel-dot" style="background:var(--orange)"></div>
+            <div class="rel-info">
+              <div class="rel-title">Shell Entity — Global Supply</div>
+              <div class="rel-sub">Same network cluster</div>
+            </div>
+            <div class="rel-amt r">₹1.2Cr</div>
+          </div>
+          <div class="rel-item" onclick="loadAlert(2)">
+            <div class="rel-dot" style="background:var(--orange)"></div>
+            <div class="rel-info">
+              <div class="rel-title">Fake Invoice — Pinnacle Exp.</div>
+              <div class="rel-sub">Buyer GSTIN match</div>
+            </div>
+            <div class="rel-amt o">₹30L</div>
+          </div>
+          <div class="rel-item" onclick="loadAlert(3)">
+            <div class="rel-dot" style="background:var(--yellow)"></div>
+            <div class="rel-info">
+              <div class="rel-title">ITC Mismatch — Sunrise</div>
+              <div class="rel-sub">Overlapping period</div>
+            </div>
+            <div class="rel-amt" style="color:var(--yellow)">₹8.4L</div>
+          </div>
+          <div class="rel-item" onclick="loadAlert(4)">
+            <div class="rel-dot" style="background:var(--red)"></div>
+            <div class="rel-info">
+              <div class="rel-title">Circular — Prakash Steel</div>
+              <div class="rel-sub">Same zone, same pattern</div>
+            </div>
+            <div class="rel-amt r">₹50L</div>
+          </div>
+        </div>
+
+        <!-- Officer actions -->
+        <div style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);font-weight:700;">Officer Actions</div>
+        <div class="action-section">
+          <button class="abtn danger" onclick="openModal('escalate')">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Escalate to Enforcement
+          </button>
+          <button class="abtn warn" onclick="openModal('notice')">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.9 19.5 19.5 0 0 1 4.14 13a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 3 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+            Issue SCN Notice
+          </button>
+          <button class="abtn blue" onclick="openModal('note')">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Add Investigation Note
+          </button>
+          <button class="abtn" onclick="openModal('freeze')">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Freeze GSTIN
+          </button>
+          <button class="abtn success" onclick="resolveAlert()">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Mark as Resolved
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modalOverlay" onclick="closeModalOut(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ── FEED DATA ──
+const alerts = [
+  {id:'ALT-001',title:'Circular Trading Loop',sub:'Apex Traders · 4 entities · 48h',sev:'crit',amt:'₹42L',time:'2m',isNew:true},
+  {id:'ALT-002',title:'Shell Entity Detected',sub:'Global Supply Co. · blacklisted GSTIN',sev:'crit',amt:'₹1.2Cr',time:'18m',isNew:true},
+  {id:'ALT-003',title:'Fake Invoice Cluster',sub:'Pinnacle Exports · 7 duplicate INVs',sev:'high',amt:'₹30L',time:'34m',isNew:false},
+  {id:'ALT-004',title:'Circular Trading Loop',sub:'Prakash Steel · 3 entity chain',sev:'crit',amt:'₹50L',time:'1h',isNew:false},
+  {id:'ALT-005',title:'ITC Mismatch',sub:'Sunrise Enterprises · GSTR-2B diff',sev:'high',amt:'₹8.4L',time:'1h',isNew:false},
+  {id:'ALT-006',title:'Suspicious HSN Code',sub:'Zephyr Commodities · 9 invoices',sev:'high',amt:'₹9Cr',time:'2h',isNew:false},
+  {id:'ALT-007',title:'Duplicate Invoice Filing',sub:'Rajdhani Logistics · INV-MH-087244',sev:'med',amt:'₹3.75L',time:'3h',isNew:false},
+  {id:'ALT-008',title:'ITC Reversal Evasion',sub:'NextGen Pharma · GSTR-3B anomaly',sev:'med',amt:'₹7.5L',time:'4h',isNew:false},
+  {id:'ALT-009',title:'Missing E-way Bill',sub:'Lakshmi Textiles · 12 invoices',sev:'med',amt:'₹1L',time:'5h',isNew:false},
+  {id:'ALT-010',title:'Mismatch: GSTR-1 vs 3B',sub:'Sai Industries · ₹2.5L diff',sev:'high',amt:'₹2.5L',time:'6h',isNew:false},
+  {id:'ALT-011',title:'Address Verification Fail',sub:'Metro Parts Ltd. · no physical addr',sev:'crit',amt:'₹58K',time:'7h',isNew:false},
+  {id:'ALT-012',title:'Blacklisted Buyer Link',sub:'Bharat Electronics · 3 invoices',sev:'high',amt:'₹2L',time:'8h',isNew:false},
+];
+
+const sevColor={crit:'var(--red)',high:'var(--orange)',med:'var(--yellow)',low:'var(--green)'};
+let selAlert=0, feedFilter='all';
+
+function renderFeed(){
+  const list=document.getElementById('feedList');
+  list.innerHTML='';
+  const data = feedFilter==='all' ? alerts
+    : feedFilter==='crit' ? alerts.filter(a=>a.sev==='crit')
+    : alerts.filter(a=>a.isNew);
+  data.forEach((a,i) => {
+    const div=document.createElement('div');
+    div.className=`feed-item ${a.sev}${i===selAlert&&feedFilter==='all'?' sel-alert':''}`;
+    div.innerHTML=`
+      <div class="fi-top">
+        <div class="fi-title">${a.title}</div>
+        <div class="fi-time">${a.time} ago</div>
+      </div>
+      <div class="fi-sub">${a.sub}</div>
+      <div class="fi-footer">
+        <span class="fi-badge ${a.sev}">${a.sev.toUpperCase()}</span>
+        ${a.isNew?'<span class="new-tag">NEW</span>':''}
+        <span class="fi-amount ${a.sev==='crit'?'r':a.sev==='high'?'o':'y'}">${a.amt}</span>
+      </div>`;
+    div.onclick=()=>{selAlert=i;renderFeed();loadAlertData(a);};
+    list.appendChild(div);
+  });
+}
+
+function loadAlertData(a){
+  document.getElementById('adTitle').textContent = a.title + ' — ' + a.sub.split('·')[0].trim();
+  document.getElementById('adSeverity').textContent = a.sev.toUpperCase();
+  document.getElementById('adSeverity').className = 'severity-chip '+a.sev;
+  document.getElementById('adAmount').textContent = a.amt;
+  document.getElementById('adId').textContent = 'ALERT-2025-03-21-'+a.id.split('-')[1];
+}
+
+function setFeedFilter(el,f){
+  document.querySelectorAll('.fp-btn').forEach(b=>b.classList.remove('active-fp'));
+  el.classList.add('active-fp');
+  feedFilter=f; selAlert=0;
+  renderFeed();
+}
+
+function setCTab(el){
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('act'));
+  el.classList.add('act');
+}
+
+function loadAlert(i){ selAlert=i; renderFeed(); loadAlertData(alerts[i]); }
+
+function toggleCheck(el){
+  const isD=el.classList.contains('done');
+  const textEl=el.nextElementSibling;
+  const priEl=textEl.nextElementSibling;
+  if(isD){
+    el.classList.remove('done');
+    el.style.borderColor='var(--text-3)';
+    textEl.classList.remove('done-text');
+    priEl.textContent='Pending';
+    priEl.className='cl-pri r';
+  } else {
+    el.classList.add('done');
+    el.style.borderColor='';
+    textEl.classList.add('done-text');
+    priEl.textContent='Done';
+    priEl.className='cl-pri g';
+  }
+}
+
+function resolveAlert(){
+  const chip=document.getElementById('adSeverity');
+  chip.textContent='RESOLVED';
+  chip.className='severity-chip';
+  chip.style.background='var(--green-dim)';
+  chip.style.color='var(--green)';
+  chip.style.borderColor='rgba(0,230,118,.3)';
+}
+
+// ── TICKER ──
+const tickers=['Circular trading · GSTIN 27AABC1234D1Z5 · ₹42L loop','Shell entity detected · Global Supply Co. · ₹1.2Cr','Fake invoice cluster · Pinnacle Exports · 7 invoices','Blacklisted buyer linked · Bharat Electronics · 3 invoices'];
+let tickIdx=0;
+setInterval(()=>{
+  tickIdx=(tickIdx+1)%tickers.length;
+  document.getElementById('tickerText').textContent=tickers[tickIdx];
+},3500);
+
+// ── MODALS ──
+const modals={
+  escalate:`<div class="modal-title" style="color:var(--red)">Escalate to Enforcement</div><div class="modal-sub">Creates an official case and notifies the zonal AO.</div>
+    <div class="mfield"><label class="mlabel">Alert ID</label><input class="minput" value="ALERT-2025-03-21-001" readonly style="font-family:var(--font-m);color:var(--text-2)"/></div>
+    <div class="mfield"><label class="mlabel">Escalation Type</label><select class="minput"><option>Criminal Prosecution (Sec 132)</option><option>Provisional Attachment</option><option>Summons (Sec 70)</option><option>Arrest (Sec 69)</option></select></div>
+    <div class="mfield"><label class="mlabel">Remarks</label><textarea class="minput mta" placeholder="Summarise the fraud pattern…"></textarea></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok-red" onclick="closeModal()">Escalate</button></div>`,
+
+  notice:`<div class="modal-title">Issue Show Cause Notice</div><div class="modal-sub">SCN under GST Act sent via GSTN portal to taxpayer.</div>
+    <div class="mfield"><label class="mlabel">Section</label><select class="minput"><option>Sec 73 — No Fraud</option><option>Sec 74 — Fraud/Suppression</option><option>Sec 76 — Collected not Paid</option></select></div>
+    <div class="mfield"><label class="mlabel">Demand Amount (₹)</label><input class="minput" placeholder="42,00,000"/></div>
+    <div class="mfield"><label class="mlabel">Reply Due Date</label><input class="minput" type="date"/></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Issue Notice</button></div>`,
+
+  note:`<div class="modal-title">Add Investigation Note</div><div class="modal-sub">Logged with officer ID and timestamp.</div>
+    <div class="mfield"><label class="mlabel">Note Type</label><select class="minput"><option>Observation</option><option>Evidence Collected</option><option>Field Visit Report</option><option>Follow-up Required</option></select></div>
+    <div class="mfield"><label class="mlabel">Note</label><textarea class="minput mta" placeholder="Enter investigation findings…"></textarea></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Save Note</button></div>`,
+
+  freeze:`<div class="modal-title" style="color:var(--orange)">Freeze GSTIN</div><div class="modal-sub">Temporarily suspends GSTIN on GSTN network. Requires supervisor approval.</div>
+    <div class="mfield"><label class="mlabel">GSTIN</label><input class="minput" value="27AABC1234D1Z5" style="font-family:var(--font-m)"/></div>
+    <div class="mfield"><label class="mlabel">Freeze Duration</label><select class="minput"><option>24 Hours</option><option>72 Hours</option><option>7 Days</option><option>Indefinite</option></select></div>
+    <div class="mfield"><label class="mlabel">Reason</label><textarea class="minput mta" placeholder="Justify the freeze request…"></textarea></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok-red" onclick="closeModal()">Submit for Approval</button></div>`,
+
+  filter:`<div class="modal-title">Filter Alerts</div><div class="modal-sub">Narrow alerts by severity, type or date range.</div>
+    <div class="mfield"><label class="mlabel">Severity</label><select class="minput"><option>All</option><option>Critical only</option><option>High & Critical</option><option>Medium</option></select></div>
+    <div class="mfield"><label class="mlabel">Fraud Type</label><select class="minput"><option>All Types</option><option>Circular Trading</option><option>Fake Invoices</option><option>ITC Mismatch</option><option>Shell Entity</option></select></div>
+    <div class="mfield"><label class="mlabel">Date Range</label><input class="minput" type="date"/></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Apply Filter</button></div>`
+};
+
+function openModal(t){document.getElementById('modalContent').innerHTML=modals[t];document.getElementById('modalOverlay').classList.add('open');}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function closeModalOut(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+// ── NETWORK GRAPH ──
+window.addEventListener('load',()=>{
+  // draw network
+  const nc=document.getElementById('networkGraph');
+  const W=nc.parentElement.offsetWidth;
+  nc.width=W; nc.height=220;
+  const ctx=nc.getContext('2d');
+
+  const nodes=[
+    {x:W/2,   y:50,  label:'Apex Traders',  gstin:'D1Z5',r:22,col:'#ff3d3d',rim:'rgba(255,61,61,.3)'},
+    {x:W*0.8, y:90,  label:'Global Supply', gstin:'P1Z8',r:16,col:'#ff6d00',rim:'rgba(255,109,0,.25)'},
+    {x:W*0.85,y:165, label:'Rajdhani Log',  gstin:'M1Z4',r:14,col:'#ff6d00',rim:'rgba(255,109,0,.25)'},
+    {x:W/2,   y:185, label:'Pinnacle Exp',  gstin:'P1Z6',r:16,col:'#ff6d00',rim:'rgba(255,109,0,.25)'},
+    {x:W*0.15,y:165, label:'Zephyr Comm',   gstin:'U1Z9',r:14,col:'#ffab00',rim:'rgba(255,171,0,.2)'},
+    {x:W*0.2, y:90,  label:'Prakash Steel', gstin:'R1Z7',r:18,col:'#ff3d3d',rim:'rgba(255,61,61,.25)'},
+  ];
+
+  const edges=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[0,3],[1,5]];
+
+  function drawGraph(){
+    ctx.clearRect(0,0,W,220);
+    // bg grid
+    ctx.strokeStyle='rgba(255,255,255,.03)';
+    ctx.lineWidth=1;
+    for(let x=0;x<W;x+=32){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,220);ctx.stroke();}
+    for(let y=0;y<220;y+=32){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // edges
+    edges.forEach(([a,b])=>{
+      const na=nodes[a],nb=nodes[b];
+      const grad=ctx.createLinearGradient(na.x,na.y,nb.x,nb.y);
+      grad.addColorStop(0,na.col.replace(')',', .3)').replace('rgb','rgba'));
+      grad.addColorStop(1,nb.col.replace(')',', .15)').replace('rgb','rgba'));
+      ctx.beginPath();
+      ctx.moveTo(na.x,na.y);
+      ctx.lineTo(nb.x,nb.y);
+      ctx.strokeStyle=grad;
+      ctx.lineWidth=a===0||b===0?2:1;
+      ctx.setLineDash(a===0&&b===3?[4,3]:[]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    // nodes
+    nodes.forEach(n=>{
+      // glow
+      const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r+10);
+      grd.addColorStop(0,n.rim);
+      grd.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r+10,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+      // circle
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle='#0c0f12';ctx.fill();
+      ctx.strokeStyle=n.col;ctx.lineWidth=2;ctx.stroke();
+      // label
+      ctx.fillStyle='#edf0f2';
+      ctx.font=`600 ${Math.max(8,n.r*0.55)}px 'Plus Jakarta Sans'`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(n.gstin,n.x,n.y);
+      // name below
+      ctx.fillStyle='rgba(237,240,242,.45)';
+      ctx.font=`500 9px 'Plus Jakarta Sans'`;
+      ctx.fillText(n.label,n.x,n.y+n.r+9);
+    });
+  }
+  drawGraph();
+
+  // ── TREND CHART ──
+  const days=['Mar 8','9','10','11','12','13','14','15','16','17','18','19','20','21'];
+  const crit=[1,2,1,3,2,1,4,2,3,5,2,3,4,4];
+  const high=[2,3,2,4,3,2,5,3,4,6,3,4,5,5];
+  const med =[1,2,3,2,3,2,3,2,2,3,3,2,3,3];
+
+  new Chart(document.getElementById('trendChart'),{
+    type:'line',
+    data:{
+      labels:days,
+      datasets:[
+        {label:'Critical',data:crit,borderColor:'#ff3d3d',backgroundColor:'rgba(255,61,61,.06)',fill:true,tension:.4,borderWidth:2,pointRadius:0,pointHoverRadius:4},
+        {label:'High',    data:high,borderColor:'#ff6d00',backgroundColor:'rgba(255,109,0,.04)',fill:true,tension:.4,borderWidth:1.5,pointRadius:0,pointHoverRadius:4},
+        {label:'Medium',  data:med, borderColor:'#ffab00',backgroundColor:'rgba(255,171,0,.03)',fill:true,tension:.4,borderWidth:1.5,borderDash:[4,3],pointRadius:0,pointHoverRadius:4},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#0c0f12',borderColor:'rgba(255,255,255,.08)',borderWidth:1,
+          titleColor:'#edf0f2',bodyColor:'#637282',padding:9,
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#2a3540',font:{size:10},maxTicksLimit:8},grid:{color:'rgba(255,255,255,.025)'},border:{display:false}},
+        y:{ticks:{color:'#2a3540',font:{size:10},stepSize:1},grid:{color:'rgba(255,255,255,.025)'},border:{display:false},min:0}
+      }
+    }
+  });
+
+  renderFeed();
+});
+</script>
+</body>
+</html>

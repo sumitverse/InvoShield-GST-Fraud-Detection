@@ -1,0 +1,8 @@
+{
+  "name": "invoshield-frontend",
+  "version": "1.0.0",
+  "description": "InvoShield Frontend",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -c-1"
+  }
+}

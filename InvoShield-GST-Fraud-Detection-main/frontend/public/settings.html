@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Settings</title>
+  <link rel="stylesheet" href="../css/settings.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div><div class="logo-name">Invo<span>Shield</span></div></div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span><span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span><span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span><span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item active" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div><div class="user-name">Sumit Kumar</div><div class="user-role">Senior Officer</div></div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Settings</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="tbtn ghost" onclick="showToast('Settings saved locally.','success')">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Save Draft
+    </button>
+    <button class="tbtn primary" onclick="showToast('Changes saved successfully.','success')">
+      <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Apply Settings
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2 2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+    <div class="settings-layout">
+      <aside class="settings-nav">
+        <div class="nav-header">
+          <h3>Configuration</h3>
+          <p>Manage system preferences</p>
+        </div>
+        <button class="sn-item active" data-section="general">
+          <div class="sn-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <div class="sn-content">
+            <span>General</span>
+            <small>Organization & system</small>
+          </div>
+        </button>
+        <button class="sn-item" data-section="alerts">
+          <div class="sn-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div class="sn-content">
+            <span>Alert Policy</span>
+            <small>Notifications & thresholds</small>
+          </div>
+        </button>
+        <button class="sn-item" data-section="access">
+          <div class="sn-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          </div>
+          <div class="sn-content">
+            <span>Access Control</span>
+            <small>Users & permissions</small>
+          </div>
+        </button>
+        <button class="sn-item" data-section="security">
+          <div class="sn-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 3.8 9.7 9 10 5.2-.3 9-5 9-10V6l-9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="sn-content">
+            <span>Security</span>
+            <small>API & integrations</small>
+          </div>
+        </button>
+        <button class="sn-item" data-section="audit">
+          <div class="sn-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+          </div>
+          <div class="sn-content">
+            <span>Audit Trail</span>
+            <small>Activity log</small>
+          </div>
+        </button>
+      </aside>
+
+      <section class="settings-body">
+
+        <div class="section active" id="general">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            </div>
+            <div>
+              <h2>General System Settings</h2>
+              <p>Configure organization details, reporting defaults and incident pipelines</p>
+            </div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M3 21h18M3 7h18M3 3h18v4H3z"/></svg>
+                </div>
+                <h3>Organization</h3>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Organization Name</label>
+                  <input class="form-input" type="text" value="Punjab GST Intelligence"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Primary Domain</label>
+                  <input class="form-input" type="text" value="gstin-punjab.gov.in"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Contact Phone</label>
+                  <input class="form-input" type="tel" value="+91-172-274-1234"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Address</label>
+                  <input class="form-input" type="text" value="GST Bhawan, Sector 17, Chandigarh"/>
+                </div>
+                <div class="form-group full">
+                  <label class="form-label">Incident Response Address</label>
+                  <input class="form-input" type="text" value="security@gstin-punjab.gov.in"/>
+                </div>
+                <div class="form-group full">
+                  <label class="form-label">Support Contact</label>
+                  <input class="form-input" type="text" value="support@gstin-punjab.gov.in"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3>Localization</h3>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Timezone</label>
+                  <select class="form-select">
+                    <option>Asia/Kolkata</option>
+                    <option>Asia/Dubai</option>
+                    <option>Asia/Singapore</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Default Language</label>
+                  <select class="form-select">
+                    <option>English</option>
+                    <option>Hindi</option>
+                    <option>Punjabi</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Date Format</label>
+                  <select class="form-select">
+                    <option>DD/MM/YYYY</option>
+                    <option>MM/DD/YYYY</option>
+                    <option>YYYY-MM-DD</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Currency</label>
+                  <select class="form-select">
+                    <option>INR (₹)</option>
+                    <option>USD ($)</option>
+                    <option>EUR (€)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <h3>Reporting Defaults</h3>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Report Frequency</label>
+                  <select class="form-select">
+                    <option>Daily</option>
+                    <option>Weekly</option>
+                    <option>Monthly</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Report Format</label>
+                  <select class="form-select">
+                    <option>PDF</option>
+                    <option>Excel</option>
+                    <option>CSV</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Auto-generate Reports</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Include Charts</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <h3>Incident Pipeline</h3>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Auto-escalation</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Escalation Delay (hours)</label>
+                  <input class="form-input" type="number" value="24" min="1" max="168"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Priority Threshold</label>
+                  <select class="form-select">
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Case Assignment</label>
+                  <select class="form-select">
+                    <option>Round Robin</option>
+                    <option>Load Balanced</option>
+                    <option>Manual</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-save" onclick="showToast('General settings updated.','success')">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Save Changes
+            </button>
+            <button class="btn-cancel" onclick="showToast('No changes saved.','warning')">
+              <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Discard
+            </button>
+          </div>
+        </div>
+
+        <div class="section" id="alerts">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div>
+              <h2>Alert Policy & Notifications</h2>
+              <p>Control fraud alert sensitivity, escalation channels and report triggers</p>
+            </div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <h3>Alert Configuration</h3>
+              </div>
+
+              <div class="settings-list">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">High-risk invoice alerts</div>
+                    <div class="setting-desc">Receive instant alerts for invoices flagged above threshold</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Bulk transaction alerts</div>
+                    <div class="setting-desc">Alert on suspicious bulk invoice patterns</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Daily executive summary</div>
+                    <div class="setting-desc">Send daily report summary to senior officers</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Email escalation</div>
+                    <div class="setting-desc">Notify the escalation chain for critical fraud events</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item slider-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Risk threshold</div>
+                    <div class="setting-desc">Adjust the score at which invoices are promoted to the fraud review queue</div>
+                  </div>
+                  <div class="slider-container">
+                    <div class="slider-header">
+                      <span class="slider-label">Threshold</span>
+                      <span class="slider-val">72%</span>
+                    </div>
+                    <input type="range" min="20" max="100" value="72" oninput="document.querySelector('.slider-val').textContent=this.value+'%'"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <h3>Notification Channels</h3>
+              </div>
+
+              <div class="settings-list">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Email Notifications</div>
+                    <div class="setting-desc">Send alerts via email to configured recipients</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">SMS Alerts</div>
+                    <div class="setting-desc">Send critical alerts via SMS to on-duty officers</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Slack Integration</div>
+                    <div class="setting-desc">Post alerts to designated Slack channels</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Dashboard Alerts</div>
+                    <div class="setting-desc">Show real-time alerts in the main dashboard</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <h3>Escalation Rules</h3>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Escalation Delay</label>
+                  <select class="form-select">
+                    <option>Immediate</option>
+                    <option>15 minutes</option>
+                    <option>1 hour</option>
+                    <option>4 hours</option>
+                    <option>24 hours</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Escalation Recipients</label>
+                  <input class="form-input" type="text" value="senior.officer@gstin-punjab.gov.in"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Auto-assign Cases</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Priority Inheritance</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" id="access">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            </div>
+            <div>
+              <h2>Access Control</h2>
+              <p>Manage profiles, roles and secure access for your enforcement team</p>
+            </div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3>Team Management</h3>
+              </div>
+
+              <div class="table-wrap">
+                <table class="team-table">
+                  <thead>
+                    <tr>
+                      <th>Officer</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Last Login</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="member-info">
+                          <span class="member-avatar">SK</span>
+                          <div>
+                            <div class="member-name">Sumit Kumar</div>
+                            <div class="member-email">sumit.kumar@gstin-punjab.gov.in</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="role-badge admin">Admin</span></td>
+                      <td><span class="status-dot online"></span> Active</td>
+                      <td>2 hours ago</td>
+                      <td><button class="act-btn" onclick="showToast('Access settings updated.','success')">Edit</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="member-info">
+                          <span class="member-avatar">AR</span>
+                          <div>
+                            <div class="member-name">Aarti Raj</div>
+                            <div class="member-email">aarti.raj@gstin-punjab.gov.in</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="role-badge officer">Officer</span></td>
+                      <td><span class="status-dot online"></span> Active</td>
+                      <td>1 day ago</td>
+                      <td><button class="act-btn" onclick="showToast('Access settings updated.','success')">Edit</button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="member-info">
+                          <span class="member-avatar">VS</span>
+                          <div>
+                            <div class="member-name">Vikram Singh</div>
+                            <div class="member-email">vikram.singh@gstin-punjab.gov.in</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="role-badge viewer">Viewer</span></td>
+                      <td><span class="status-dot offline"></span> Inactive</td>
+                      <td>1 week ago</td>
+                      <td><button class="act-btn" onclick="showToast('Access settings updated.','success')">Edit</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-primary" onclick="showToast('Invite sent.','success')">
+                  <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11h6m-3-3v6"/></svg>
+                  Invite User
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                </div>
+                <h3>Role Permissions</h3>
+              </div>
+
+              <div class="permissions-grid">
+                <div class="perm-row">
+                  <div class="perm-label">View Dashboard</div>
+                  <div class="perm-checks">
+                    <span class="perm-check admin">✓</span>
+                    <span class="perm-check officer">✓</span>
+                    <span class="perm-check viewer">✓</span>
+                  </div>
+                </div>
+                <div class="perm-row">
+                  <div class="perm-label">Create Cases</div>
+                  <div class="perm-checks">
+                    <span class="perm-check admin">✓</span>
+                    <span class="perm-check officer">✓</span>
+                    <span class="perm-check viewer">✗</span>
+                  </div>
+                </div>
+                <div class="perm-row">
+                  <div class="perm-label">Edit Settings</div>
+                  <div class="perm-checks">
+                    <span class="perm-check admin">✓</span>
+                    <span class="perm-check officer">✗</span>
+                    <span class="perm-check viewer">✗</span>
+                  </div>
+                </div>
+                <div class="perm-row">
+                  <div class="perm-label">Export Reports</div>
+                  <div class="perm-checks">
+                    <span class="perm-check admin">✓</span>
+                    <span class="perm-check officer">✓</span>
+                    <span class="perm-check viewer">✓</span>
+                  </div>
+                </div>
+                <div class="perm-row">
+                  <div class="perm-label">Manage Users</div>
+                  <div class="perm-checks">
+                    <span class="perm-check admin">✓</span>
+                    <span class="perm-check officer">✗</span>
+                    <span class="perm-check viewer">✗</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3>Session Management</h3>
+              </div>
+
+              <div class="settings-list">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Session Timeout</div>
+                    <div class="setting-desc">Automatically log out inactive users</div>
+                  </div>
+                  <select class="form-select small">
+                    <option>30 minutes</option>
+                    <option>1 hour</option>
+                    <option>4 hours</option>
+                    <option>8 hours</option>
+                  </select>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Concurrent Sessions</div>
+                    <div class="setting-desc">Allow multiple simultaneous logins</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Force Password Change</div>
+                    <div class="setting-desc">Require password reset on next login</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" id="security">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2 3 6v6c0 5 3.8 9.7 9 10 5.2-.3 9-5 9-10V6l-9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <div>
+              <h2>Security & Integrations</h2>
+              <p>Control API access, audit integration and advanced security features</p>
+            </div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M15 7h5.5a2.5 2.5 0 0 1 0 5h-1.5a2.5 2.5 0 0 0 0 5H15"/></svg>
+                </div>
+                <h3>API Management</h3>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">API Key</label>
+                <div class="api-key-row">
+                  <span class="api-key-val">9f8d7a6b-3c2f-4d1e-8b55-7f9a8c6d4e2f</span>
+                  <button class="api-copy" onclick="showToast('API key copied.','success')">
+                    <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Integration Endpoint</label>
+                <input class="form-input" type="text" value="https://api.gstin-punjab.gov.in/integration"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Rate Limit (requests/min)</label>
+                <input class="form-input" type="number" value="1000" min="100" max="10000"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Webhook URL</label>
+                <input class="form-input" type="url" value="https://webhook.gstin-punjab.gov.in/alerts"/>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                </div>
+                <h3>Authentication</h3>
+              </div>
+              <div class="settings-list">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">SAML SSO</div>
+                    <div class="setting-desc">Enable single sign-on with SAML</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Two-Factor Authentication</div>
+                    <div class="setting-desc">Require 2FA for all user accounts</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Auto user provisioning</div>
+                    <div class="setting-desc">Automatically create user accounts</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Session Recording</div>
+                    <div class="setting-desc">Log all user session activities</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <h3>Password Policy</h3>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Minimum Length</label>
+                  <input class="form-input" type="number" value="12" min="8" max="32"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Require Special Characters</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Require Numbers</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password Expiry (days)</label>
+                  <input class="form-input" type="number" value="90" min="30" max="365"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Prevent Reuse</label>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Lockout Attempts</label>
+                  <input class="form-input" type="number" value="5" min="3" max="10"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3>Network Security</h3>
+              </div>
+              <div class="settings-list">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">IP Whitelisting</div>
+                    <div class="setting-desc">Restrict access to approved IP addresses</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">VPN Required</div>
+                    <div class="setting-desc">Enforce VPN connection for external access</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Geo-blocking</div>
+                    <div class="setting-desc">Block access from high-risk countries</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox"/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Allowed IP Ranges</label>
+                <textarea class="form-textarea" rows="3" placeholder="192.168.1.0/24&#10;10.0.0.0/8">192.168.1.0/24
+10.0.0.0/8</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-save" onclick="showToast('Security settings saved.','success')">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Save Security
+            </button>
+            <button class="btn-danger" onclick="showToast('Security reset requested.','warning')">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              Reset Key
+            </button>
+          </div>
+        </div>
+
+        <div class="section" id="audit">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+            </div>
+            <div>
+              <h2>Audit Trail</h2>
+              <p>Review the last configuration changes and login events</p>
+            </div>
+          </div>
+
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3>Recent Activity</h3>
+              </div>
+
+              <div class="audit-filters">
+                <div class="filter-row">
+                  <select class="form-select small">
+                    <option>All Events</option>
+                    <option>Login Events</option>
+                    <option>Configuration Changes</option>
+                    <option>Security Events</option>
+                    <option>API Access</option>
+                  </select>
+                  <input class="form-input small" type="date" value="2024-01-15"/>
+                  <input class="form-input small" type="date" value="2024-01-15"/>
+                  <button class="btn-secondary small">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export
+                  </button>
+                </div>
+              </div>
+
+              <div class="audit-list">
+                <div class="audit-item">
+                  <div class="audit-icon success">
+                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  </div>
+                  <div class="audit-content">
+                    <div class="audit-action">Report schedule updated</div>
+                    <div class="audit-meta">by Sumit Kumar · 18 minutes ago · IP: 192.168.1.45</div>
+                  </div>
+                  <div class="audit-time">2:34 PM</div>
+                </div>
+
+                <div class="audit-item">
+                  <div class="audit-icon warning">
+                    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  </div>
+                  <div class="audit-content">
+                    <div class="audit-action">Alert threshold changed from 65% to 72%</div>
+                    <div class="audit-meta">by Aarti Raj · 2 hours ago · IP: 192.168.1.67</div>
+                  </div>
+                  <div class="audit-time">12:45 PM</div>
+                </div>
+
+                <div class="audit-item">
+                  <div class="audit-icon info">
+                    <svg viewBox="0 0 24 24"><path d="M15 7h5.5a2.5 2.5 0 0 1 0 5h-1.5a2.5 2.5 0 0 0 0 5H15"/></svg>
+                  </div>
+                  <div class="audit-content">
+                    <div class="audit-action">API key rotated</div>
+                    <div class="audit-meta">by system · yesterday · IP: 10.0.0.15</div>
+                  </div>
+                  <div class="audit-time">3:22 PM</div>
+                </div>
+
+                <div class="audit-item">
+                  <div class="audit-icon danger">
+                    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  </div>
+                  <div class="audit-content">
+                    <div class="audit-action">Failed administrator login attempt</div>
+                    <div class="audit-meta">from 192.168.1.34 · 2 days ago · IP: 192.168.1.34</div>
+                  </div>
+                  <div class="audit-time">9:15 AM</div>
+                </div>
+
+                <div class="audit-item">
+                  <div class="audit-icon success">
+                    <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11h6m-3-3v6"/></svg>
+                  </div>
+                  <div class="audit-content">
+                    <div class="audit-action">New user invited: Rajesh Gupta</div>
+                    <div class="audit-meta">by Sumit Kumar · 3 days ago · IP: 192.168.1.45</div>
+                  </div>
+                  <div class="audit-time">11:20 AM</div>
+                </div>
+              </div>
+
+              <div class="audit-pagination">
+                <button class="btn-secondary small" disabled>
+                  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                  Previous
+                </button>
+                <span class="page-info">Page 1 of 15</span>
+                <button class="btn-secondary small">
+                  Next
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/></svg>
+                </div>
+                <h3>Audit Statistics</h3>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">1,247</div>
+                  <div class="stat-label">Total Events</div>
+                  <div class="stat-change positive">+12%</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">23</div>
+                  <div class="stat-label">Security Events</div>
+                  <div class="stat-change negative">+5%</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">89</div>
+                  <div class="stat-label">Login Attempts</div>
+                  <div class="stat-change positive">+8%</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">5</div>
+                  <div class="stat-label">Failed Logins</div>
+                  <div class="stat-change negative">-15%</div>
+                </div>
+              </div>
+
+              <div class="settings-list">
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Log Retention</div>
+                    <div class="setting-desc">Keep audit logs for specified period</div>
+                  </div>
+                  <select class="form-select small">
+                    <option>90 days</option>
+                    <option>180 days</option>
+                    <option>1 year</option>
+                    <option>2 years</option>
+                  </select>
+                </div>
+
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <div class="setting-label">Real-time Monitoring</div>
+                    <div class="setting-desc">Monitor and alert on suspicious activities</div>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" checked/>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="../js/router.js"></script>
+<script>
+function logout() { window.location.href = 'login.html'; }
+function showToast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type||'success');setTimeout(()=>t.className='toast',3200);}
+const items = document.querySelectorAll('.sn-item');
+items.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sn-item').forEach(i => i.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

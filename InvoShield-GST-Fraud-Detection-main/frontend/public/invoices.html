@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Invoices</title>
+  <link rel="stylesheet" href="../css/invoices.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item active" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Invoices</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="tbtn primary">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Invoice
+    </button>
+    <button class="tbtn ghost">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M9 11v8m6-8v8M5 20h14a2 2 0 002-2V7H3v11a2 2 0 002 2z"/></svg>
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+    <div class="subheader">
+      <div class="sh-left">
+        <span class="sh-title">GST Invoices Database</span>
+        <span class="sh-count">3,247 invoices</span>
+      </div>
+      <div class="sh-right">
+        <button class="sh-btn">Filter by Status</button>
+        <button class="sh-btn">Export</button>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <span class="filter-label">GSTIN</span>
+          <input type="text" class="filter-input" placeholder="Search GSTIN..." />
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <select class="filter-select">
+            <option value="">All Status</option>
+            <option value="pending">Pending Review</option>
+            <option value="flagged">Flagged</option>
+            <option value="cleared">Cleared</option>
+            <option value="approved">Approved</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Amount Range</span>
+          <input type="text" class="filter-input" placeholder="Min - Max" />
+        </div>
+        <div class="spacer"></div>
+        <div class="bulk-actions">
+          <button class="action-btn">Bulk Verify</button>
+          <button class="action-btn danger">Bulk Reject</button>
+        </div>
+      </div>
+
+      <div class="tbl-wrapper">
+        <div class="tbl-head">
+          <span class="tbl-title">Recent Invoices</span>
+          <div class="tbl-actions">
+            <button class="tbl-btn">Sort by Date ↓</button>
+            <button class="tbl-btn">Columns</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th><input type="checkbox" /></th>
+                <th>Invoice ID</th>
+                <th>GSTIN</th>
+                <th>Supplier</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Risk Score</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td class="td-id">INV-2025-00847</td>
+                <td class="td-gstin">27AABC1234D1Z5</td>
+                <td class="td-entity">Apex Traders Pvt Ltd</td>
+                <td class="td-amount debit">₹42,00,000</td>
+                <td class="td-date">Mar 21, 2025</td>
+                <td><span class="status-badge flagged">Flagged</span></td>
+                <td><span class="rscore hi">98</span></td>
+                <td class="td-actions">
+                  <button class="action-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td class="td-id">INV-2025-00843</td>
+                <td class="td-gstin">27BBBZ9988K1Z2</td>
+                <td class="td-entity">Sunrise Enterprises</td>
+                <td class="td-amount debit">₹8,40,000</td>
+                <td class="td-date">Mar 21, 2025</td>
+                <td><span class="status-badge pending">Pending</span></td>
+                <td><span class="rscore md">65</span></td>
+                <td class="td-actions">
+                  <button class="action-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td class="td-id">INV-2025-00831</td>
+                <td class="td-gstin">27CCCM5567L1Z9</td>
+                <td class="td-entity">Global Supply Co</td>
+                <td class="td-amount debit">₹1,20,00,000</td>
+                <td class="td-date">Mar 20, 2025</td>
+                <td><span class="status-badge flagged">Flagged</span></td>
+                <td><span class="rscore hi">94</span></td>
+                <td class="td-actions">
+                  <button class="action-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td class="td-id">INV-2025-00827</td>
+                <td class="td-gstin">27DDDP3321M1Z4</td>
+                <td class="td-entity">Rajdhani Logistics</td>
+                <td class="td-amount credit">₹3,75,000</td>
+                <td class="td-date">Mar 20, 2025</td>
+                <td><span class="status-badge cleared">Cleared</span></td>
+                <td><span class="rscore lo">12</span></td>
+                <td class="td-actions">
+                  <button class="action-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td class="td-id">INV-2025-00819</td>
+                <td class="td-gstin">27EEEK7712N1Z1</td>
+                <td class="td-entity">Metro Parts Ltd</td>
+                <td class="td-amount credit">₹58,000</td>
+                <td class="td-date">Mar 19, 2025</td>
+                <td><span class="status-badge cleared">Cleared</span></td>
+                <td><span class="rscore lo">8</span></td>
+                <td class="td-actions">
+                  <button class="action-icon"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <span class="pag-info">Showing 1-5 of 3,247 invoices</span>
+          <div class="pag-controls">
+            <button class="pag-btn" disabled><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="pag-btn active">1</button>
+            <button class="pag-btn">2</button>
+            <button class="pag-btn">3</button>
+            <button class="pag-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/router.js"></script>
+<script>
+function logout() {
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>

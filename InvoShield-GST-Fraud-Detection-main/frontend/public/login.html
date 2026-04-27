@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvoShield — GST Fraud Detection</title>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow-left"></div>
+  <div class="bg-glow-right"></div>
+  <div class="scan-line"></div>
+
+  <div class="page">
+
+    <aside class="left-panel">
+      <div>
+        <h1 class="tagline">Detect.<br><em>Shield.</em><br>Verify.</h1>
+        <p class="sub">AI-powered GST invoice fraud detection trusted by tax authorities across India.</p>
+      </div>
+
+      <div class="badge-row">
+        <span class="badge">GSTN Certified</span>
+        <span class="badge">ISO 27001</span>
+        <span class="badge">AES-24</span>
+        
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-val">₹4.8 Cr+</div>
+            <div class="stat-label">Fraud Prevented This Month</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-val">2.3M+</div>
+            <div class="stat-label">Invoices Scanned Today</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-val">99.7%</div>
+            <div class="stat-label">Detection Accuracy</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="login-card">
+        <div class="card-inner-glow"></div>
+
+        <div class="logo-wrap">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="logo-text">Invo<span>Shield</span></div>
+            <div class="logo-sub">GST Fraud Detection Platform</div>
+          </div>
+        </div>
+
+        <h2 class="card-title">Secure <span>Access</span></h2>
+        <p class="card-desc">Sign in to your enforcement dashboard</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label">Official Email / GSTIN</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input type="email" id="email" placeholder="officer@gst.gov.in" autocomplete="email" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input type="password" id="password" placeholder="••••••••••••" autocomplete="current-password" required />
+              <button type="button" class="eye-btn" onclick="togglePwd()" aria-label="Toggle password">
+                <svg id="eyeIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="options-row">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="remember" />
+              <span class="custom-check">
+                <svg viewBox="0 0 12 12" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="2 6 5 9 10 3"/>
+                </svg>
+              </span>
+              <span class="check-label">Keep me signed in</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn-login" id="loginBtn">
+            Sign In to Dashboard
+          </button>
+        </form>
+
+        <div class="divider"><span>or access with</span></div>
+
+        <button class="gstin-btn" type="button">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+          Continue with GSTIN Portal SSO
+        </button>
+
+        <p class="signup-row">
+          New agency? <a href="#">Request access →</a>
+        </p>
+
+        <div class="security-row">
+          <span class="sec-badge">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            End-to-End Encrypted
+          </span>
+          <span class="sec-badge">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Session Expiry 8h
+          </span>
+          <span class="sec-badge">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            MFA Enabled
+          </span>
+        </div>
+      </div>
+    </main>
+
+    <aside class="right-panel">
+      <div>
+        <p class="alert-title">Live Threat Feed</p>
+
+        <div class="alert-card">
+          <span class="alert-dot red"></span>
+          <div class="alert-body">
+            <div class="alert-head">Circular Trading Detected</div>
+            <div class="alert-sub">GSTIN 27AABC1234D1Z5 — ₹42L loop</div>
+          </div>
+          <span class="alert-time">2m ago</span>
+        </div>
+
+        <div class="alert-card">
+          <span class="alert-dot yellow"></span>
+          <div class="alert-body">
+            <div class="alert-head">Duplicate Invoice Flag</div>
+            <div class="alert-sub">INV-2024-09872 filed twice</div>
+          </div>
+          <span class="alert-time">11m ago</span>
+        </div>
+
+        <div class="alert-card">
+          <span class="alert-dot red"></span>
+          <div class="alert-body">
+            <div class="alert-head">Shell Entity Match</div>
+            <div class="alert-sub">7 invoices linked to blacklist</div>
+          </div>
+          <span class="alert-time">34m ago</span>
+        </div>
+
+        <div class="alert-card">
+          <span class="alert-dot green"></span>
+          <div class="alert-body">
+            <div class="alert-head">Bulk Verification Passed</div>
+            <div class="alert-sub">1,204 invoices — Maharashtra cluster</div>
+          </div>
+          <span class="alert-time">1h ago</span>
+        </div>
+      </div>
+
+      <div class="meter-card">
+        <div class="meter-head">
+          <span class="meter-label">Scan Activity (last 12h)</span>
+          <span class="meter-val">↑ 18%</span>
+        </div>
+        <div class="bars">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    function togglePwd() {
+      const inp = document.getElementById('password');
+      const icon = document.getElementById('eyeIcon');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+      } else {
+        inp.type = 'password';
+        icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+      }
+    }
+
+    document.querySelectorAll('.alert-dot.red').forEach(dot => {
+      setInterval(() => {
+        dot.style.opacity = dot.style.opacity === '0.3' ? '1' : '0.3';
+      }, 900);
+    });
+  </script>
+  <script src="/js/login.js"></script>
+
+</body>
+</html>

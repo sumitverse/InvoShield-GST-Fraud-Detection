@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InvoShield — Analytics</title>
+  <link rel="stylesheet" href="/css/dashboard.css"/>
+  <link rel="stylesheet" href="/css/enforcement.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item active" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div>
+      <div class="topbar-title">Analytics</div>
+      <div class="topbar-sub">Trends, anomaly signals, and performance KPIs (demo realtime)</div>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="an-q" type="text" placeholder="Search metric, zone, period…"/>
+    </div>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      Live Trends
+    </div>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+
+    <section class="page-head">
+      <div>
+        <div class="title">Operational analytics</div>
+        <div class="subtitle">
+          Monitor invoice ingestion, fraud flags, network loops, and enforcement outcomes. This page is designed for leadership review:
+          it summarizes risk, efficiency, and impact with drill-down-ready charts. Values here are demo-realtime to showcase UI.
+        </div>
+        <div class="pill-row">
+          <div class="pill live"><strong>Live</strong> refresh every 3s</div>
+          <div class="pill info"><strong id="an-sla">92%</strong> SLA met</div>
+          <div class="pill warn"><strong id="an-backlog">21</strong> backlog</div>
+          <div class="pill danger"><strong id="an-critical">7</strong> critical loops</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn ghost" id="an-pause">
+          <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          Pause
+        </button>
+        <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="if(window.InvoShield && window.InvoShield.parseCSVAndAnalyze && this.files[0]) window.InvoShield.parseCSVAndAnalyze(this.files[0])" />
+        <button class="btn primary" id="an-export" onclick="document.getElementById('csv-upload').click()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Upload CSV
+        </button>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <div class="kpi-box">
+        <div class="lbl">Invoices ingested</div>
+        <div class="val" id="an-kpi-ingest">2,34,817</div>
+        <div class="meta"><span class="chip b">Today</span><span class="muted">All sources</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Flags raised</div>
+        <div class="val" id="an-kpi-flags">1,284</div>
+        <div class="meta"><span class="chip r">Risk</span><span class="muted">Needs triage</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">False positive rate</div>
+        <div class="val" id="an-kpi-fpr">3.1%</div>
+        <div class="meta"><span class="chip g">Model v4.2</span><span class="muted">Rolling 7d</span></div>
+      </div>
+      <div class="kpi-box">
+        <div class="lbl">Blocked / recovered</div>
+        <div class="val" id="an-kpi-impact">₹4.8Cr</div>
+        <div class="meta"><span class="chip y">Month</span><span class="muted">Net impact</span></div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Risk signal trend</div>
+            <div class="panel-sub">Rolling 24 points (demo) — flags & severity.</div>
+          </div>
+        </div>
+        <div style="height: 280px;">
+          <canvas id="anTrend"></canvas>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Severity split</div>
+            <div class="panel-sub">Current distribution of alerts by severity.</div>
+          </div>
+        </div>
+        <div style="height: 280px;">
+          <canvas id="anSeverity"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-3">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Zone performance</div>
+            <div class="panel-sub">SLA, backlog, and throughput (demo data).</div>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl" id="an-zone">
+            <thead>
+              <tr>
+                <th>Zone</th>
+                <th>SLA</th>
+                <th>Backlog</th>
+                <th>Throughput</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Top patterns</div>
+            <div class="panel-sub">What triggered most flags this hour.</div>
+          </div>
+        </div>
+        <div class="mini-list" id="an-patterns"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Model notes</div>
+            <div class="panel-sub">Quality tracking + guardrails.</div>
+          </div>
+        </div>
+        <div class="mini-list">
+          <div class="mini-item">
+            <div class="mini-dot g"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Drift watch</div><div class="tag g">Stable</div></div>
+              <div class="mini-sub">Feature drift within bounds; seasonal adjustments applied to invoice velocity baseline.</div>
+              <div class="mini-meta"><span class="pill">Window <strong>30d</strong></span><span class="pill">Alerts <strong>low</strong></span></div>
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot y"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Calibration</div><div class="tag y">Tuning</div></div>
+              <div class="mini-sub">Critical band threshold tuned to reduce false positives without reducing recall for loop patterns.</div>
+              <div class="mini-meta"><span class="pill">Target FPR <strong>&lt;4%</strong></span><span class="pill">Current <strong id="an-fpr-pill">3.1%</strong></span></div>
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-dot b"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">Explainability</div><div class="tag b">On</div></div>
+              <div class="mini-sub">Each flag stores top contributing factors (velocity, mismatch, blacklist proximity, graph centrality).</div>
+              <div class="mini-meta"><span class="pill">Evidence <strong>attached</strong></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analysis-results-section" style="display: none; margin-top: 24px;">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Batch Import Analysis</div>
+            <div class="panel-sub">Custom rules applied: ITC Anomaly, Refund Anomaly, Transaction Pattern.</div>
+          </div>
+        </div>
+        <div class="tbl-wrap" style="max-height: 400px; overflow-y: auto;">
+          <table class="tbl" id="analysis-results-table">
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>Company Name</th>
+                <th>Sales</th>
+                <th>Purchase</th>
+                <th>ITC</th>
+                <th>Refund</th>
+                <th>Rule Triggers</th>
+                <th>Risk Level</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <p style="padding:10px 0;color:var(--text-2);font-size:.78rem;text-align:center;position:relative;z-index:1;">
+      Analytics uses demo data; connect to backend aggregates for production.
+    </p>
+
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script src="/js/analytics.js"></script>
+<script>
+function logout() {
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
+

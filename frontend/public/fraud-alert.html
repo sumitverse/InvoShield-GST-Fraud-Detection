@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>InvoShield — Fraud Alerts</title>
+  <link rel="stylesheet" href="/css/fraud-alerts.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Invo<span>Shield</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main</div>
+
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item" href="invoices.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="badge-count">34</span>
+    </a>
+    <a class="nav-item active" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="badge-count">12</span>
+    </a>
+    <a class="nav-item" href="gstin-lookup.html">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="analytics.html">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+
+    <div class="sidebar-section">Enforcement</div>
+
+    <a class="nav-item" href="entities.html">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="case-manager.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="badge-count ok">3</span>
+    </a>
+    <a class="nav-item" href="blacklist.html">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+
+    <div class="sidebar-divider"></div>
+
+    <a class="nav-item" href="reports.html">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+      <span>Reports</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      <span>Settings</span>
+    </a>
+
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div>
+        <div class="user-name">Sumit Kumar</div>
+        <div class="user-role">Senior Officer</div>
+      </div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Fraud Alerts</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="tbtn ghost">
+      <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      Search
+    </button>
+    <button class="tbtn ghost">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+    </button>
+    <button class="logout-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </header>
+
+  <main class="main">
+    <div class="banner">
+      <div class="banner-icon">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      </div>
+      <div class="banner-content">
+        <div class="banner-title">Active Fraud Alerts</div>
+        <div class="banner-sub">12 high-priority cases require immediate review and action</div>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="cards-grid">
+        <div class="alert-card">
+          <div class="ac-header">
+            <div class="ac-left">
+              <span class="ac-status">CRITICAL</span>
+              <div class="ac-id">ALT-2025-00847</div>
+              <div class="ac-title">Circular Trading Loop Detected</div>
+            </div>
+            <div class="ac-right">
+              <div class="ac-severity">CRITICAL</div>
+              <div class="ac-amount">₹42,00,000</div>
+            </div>
+          </div>
+          <div class="ac-body">
+            <div class="ac-row">
+              <span class="ac-label">GSTIN</span>
+              <span class="ac-value mono">27AABC1234D1Z5</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Entity</span>
+              <span class="ac-value">Apex Traders Pvt Ltd</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Detected</span>
+              <span class="ac-value">2m ago</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Pattern Score</span>
+              <span class="ac-value red">98/100</span>
+            </div>
+          </div>
+          <div class="ac-tags">
+            <span class="tag fraud">Fraud Confirmed</span>
+            <span class="tag suspicious">High Risk</span>
+          </div>
+          <div class="ac-footer">
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
+          </div>
+        </div>
+
+        <div class="alert-card">
+          <div class="ac-header">
+            <div class="ac-left">
+              <span class="ac-status">HIGH</span>
+              <div class="ac-id">ALT-2025-00843</div>
+              <div class="ac-title">Duplicate Invoice Filing</div>
+            </div>
+            <div class="ac-right">
+              <div class="ac-severity" style="background:#ff9100;color:#000;">HIGH</div>
+              <div class="ac-amount">₹8,40,000</div>
+            </div>
+          </div>
+          <div class="ac-body">
+            <div class="ac-row">
+              <span class="ac-label">GSTIN</span>
+              <span class="ac-value mono">27BBBZ9988K1Z2</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Entity</span>
+              <span class="ac-value">Sunrise Enterprises</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Detected</span>
+              <span class="ac-value">11m ago</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Confidence</span>
+              <span class="ac-value orange">85%</span>
+            </div>
+          </div>
+          <div class="ac-tags">
+            <span class="tag suspicious">Suspicious</span>
+            <span class="tag verified">Needs Review</span>
+          </div>
+          <div class="ac-footer">
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
+          </div>
+        </div>
+
+        <div class="alert-card">
+          <div class="ac-header">
+            <div class="ac-left">
+              <span class="ac-status">CRITICAL</span>
+              <div class="ac-id">ALT-2025-00838</div>
+              <div class="ac-title">Shell Entity Match - Blacklist</div>
+            </div>
+            <div class="ac-right">
+              <div class="ac-severity">CRITICAL</div>
+              <div class="ac-amount">₹1,20,00,000</div>
+            </div>
+          </div>
+          <div class="ac-body">
+            <div class="ac-row">
+              <span class="ac-label">GSTIN</span>
+              <span class="ac-value mono">27CCCM5567L1Z9</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Entity</span>
+              <span class="ac-value">Global Supply Co</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Detected</span>
+              <span class="ac-value">34m ago</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Match Type</span>
+              <span class="ac-value red">Exact Match</span>
+            </div>
+          </div>
+          <div class="ac-tags">
+            <span class="tag fraud">Fraud Confirmed</span>
+            <span class="tag fraud">Blacklisted</span>
+          </div>
+          <div class="ac-footer">
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
+          </div>
+        </div>
+
+        <div class="alert-card">
+          <div class="ac-header">
+            <div class="ac-left">
+              <span class="ac-status">MEDIUM</span>
+              <div class="ac-id">ALT-2025-00831</div>
+              <div class="ac-title">ITC Claim Mismatch</div>
+            </div>
+            <div class="ac-right">
+              <div class="ac-severity" style="background:#ffab00;color:#000;">MEDIUM</div>
+              <div class="ac-amount">₹8,40,000</div>
+            </div>
+          </div>
+          <div class="ac-body">
+            <div class="ac-row">
+              <span class="ac-label">GSTIN</span>
+              <span class="ac-value mono">27DDDP3321M1Z4</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Entity</span>
+              <span class="ac-value">Rajdhani Logistics</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Detected</span>
+              <span class="ac-value">1h ago</span>
+            </div>
+            <div class="ac-row">
+              <span class="ac-label">Excess Claim</span>
+              <span class="ac-value orange">₹3.2L</span>
+            </div>
+          </div>
+          <div class="ac-tags">
+            <span class="tag suspicious">Suspicious</span>
+          </div>
+          <div class="ac-footer">
+            <a href="/public/alert-details.html" class="ac-action view">View Details</a>
+            <a href="/public/assignment-simple.html" class="ac-action assign">Assign</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+</div>
+
+<script src="/js/router.js"></script>
+<script>
+function openAssignmentPage(button) {
+  try {
+    // Get the alert ID from the clicked card
+    const alertCard = button.closest('.alert-card');
+    const alertIdElement = alertCard.querySelector('.ac-id');
+    const alertId = alertIdElement ? alertIdElement.textContent : 'ALT-001';
+    
+    console.log('Opening assignment page for alert:', alertId);
+    window.location.href = `/public/assignment-simple.html?alertId=${encodeURIComponent(alertId)}`;
+  } catch (error) {
+    console.error('Error opening assignment page:', error);
+    // Fallback without alert ID
+    window.location.href = '/public/assignment-simple.html';
+  }
+}
+
+function openDetailsPage(button) {
+  try {
+    // Get the alert ID from the clicked card
+    const alertCard = button.closest('.alert-card');
+    const alertIdElement = alertCard.querySelector('.ac-id');
+    const alertId = alertIdElement ? alertIdElement.textContent : 'ALT-001';
+    
+    console.log('Opening details page for alert:', alertId);
+    window.location.href = `/public/alert-details.html?alertId=${encodeURIComponent(alertId)}`;
+  } catch (error) {
+    console.error('Error opening details page:', error);
+    // Fallback without alert ID
+    window.location.href = '/public/alert-details.html';
+  }
+}
+
+function logout() {
+  window.location.href = 'login.html';
+}
+
+// Add event listeners for button clicks
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, setting up button listeners');
+  
+  // Add click listeners to all assign and view buttons
+  document.querySelectorAll('.ac-action.assign').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const alertCard = this.closest('.alert-card');
+      if (!alertCard) {
+        console.log('No alert card found');
+        return;
+      }
+      
+      const alertIdElement = alertCard.querySelector('.ac-id');
+      const alertId = alertIdElement ? alertIdElement.textContent.trim() : 'ALT-001';
+      
+      console.log('Assign button clicked, Alert ID:', alertId);
+      console.log('Full URL:', `/public/assignment-simple.html?alertId=${encodeURIComponent(alertId)}`);
+      window.location.href = `/public/assignment-simple.html?alertId=${encodeURIComponent(alertId)}`;
+    });
+  });
+  
+  document.querySelectorAll('.ac-action.view').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const alertCard = this.closest('.alert-card');
+      if (!alertCard) {
+        console.log('No alert card found');
+        return;
+      }
+      
+      const alertIdElement = alertCard.querySelector('.ac-id');
+      const alertId = alertIdElement ? alertIdElement.textContent.trim() : 'ALT-001';
+      
+      console.log('View details button clicked, Alert ID:', alertId);
+      console.log('Full URL:', `/public/alert-details.html?alertId=${encodeURIComponent(alertId)}`);
+      window.location.href = `/public/alert-details.html?alertId=${encodeURIComponent(alertId)}`;
+    });
+  });
+  
+  console.log('Button listeners set up for', document.querySelectorAll('.ac-action.assign').length, 'assign buttons and', document.querySelectorAll('.ac-action.view').length, 'view buttons');
+});
+</script>
+</body>
+</html>

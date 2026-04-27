@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>InvoShield — Invoice Intelligence</title>
+  <link rel="stylesheet" href="invoices.css"/>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="logo-name">Invo<span>Shield</span></div>
+    </div>
+    <div class="sidebar-section">Main</div>
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Overview</span>
+    </a>
+    <a class="nav-item active" href="#">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Invoices</span>
+      <span class="nav-badge red">34</span>
+    </a>
+    <a class="nav-item" href="fraud-alert.html">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Fraud Alerts</span>
+      <span class="nav-badge red">12</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>GSTIN Lookup</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Analytics</span>
+    </a>
+    <div class="sidebar-section">Enforcement</div>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      <span>Entities</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Case Manager</span>
+      <span class="nav-badge green">3</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Blacklist</span>
+    </a>
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Reports</span></a>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Settings</span></a>
+    <div class="user-tile">
+      <div class="user-avatar">SK</div>
+      <div><div class="user-name">Sumit Kumar</div><div class="user-role">Senior Officer</div></div>
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  </nav>
+
+  <!-- ══ TOPBAR ══ -->
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="sep">/</span>
+      <strong>Invoice Intelligence</strong>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="tsearch">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Invoice ID, GSTIN, entity…"/>
+    </div>
+    <button class="tbtn ghost" onclick="openModal('upload')">
+      <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      Upload Batch
+    </button>
+    <button class="tbtn primary" onclick="openModal('scan')">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      Scan Invoice
+    </button>
+    <button class="tbtn ghost" onclick="exportCSV()">
+      <svg viewBox="0 0 24 24"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.13"/></svg>
+      Export
+    </button>
+    <div class="live-pill"><div class="live-dot"></div>Live Scan</div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+
+    <!-- SCAN RIBBON -->
+    <div class="scan-ribbon">
+      <div class="ribbon-stats">
+        <div class="rstat">
+          <div class="rval w">2,34,817</div>
+          <div class="rlbl">Total Scanned</div>
+        </div>
+        <div class="rstat">
+          <div class="rval r">1,284</div>
+          <div class="rlbl">Flagged</div>
+        </div>
+        <div class="rstat">
+          <div class="rval o">342</div>
+          <div class="rlbl">Under Review</div>
+        </div>
+        <div class="rstat">
+          <div class="rval g">2,32,891</div>
+          <div class="rlbl">Cleared</div>
+        </div>
+        <div class="rstat">
+          <div class="rval y">₹48.7Cr</div>
+          <div class="rlbl">Amount at Risk</div>
+        </div>
+        <div class="rstat">
+          <div class="rval b">99.7%</div>
+          <div class="rlbl">AI Accuracy</div>
+        </div>
+      </div>
+      <div class="ribbon-right">
+        <div class="sp-head"><span>Today's scan progress</span><strong id="scanPct">78%</strong></div>
+        <div class="sp-track"><div class="sp-fill" id="spFill" style="width:78%"></div></div>
+        <div class="sp-sub">1,82,957 of 2,34,817 invoices processed</div>
+      </div>
+    </div>
+
+    <!-- 3-PANEL BODY -->
+    <div class="body-grid">
+
+      <!-- ══ LEFT PANEL ══ -->
+      <div class="left-panel">
+        <div class="lp-head">
+          <span class="lp-title">Fraud Categories</span>
+          <span class="lp-count">6 types</span>
+        </div>
+
+        <div class="type-list">
+          <div class="type-item sel" onclick="filterType(this,'all')">
+            <div class="ti-icon g"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+            <div class="ti-info"><div class="ti-name">All Invoices</div><div class="ti-count">2,34,817 total</div></div>
+            <span class="ti-badge g">ALL</span>
+          </div>
+          <div class="type-item" onclick="filterType(this,'circular')">
+            <div class="ti-icon r"><svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg></div>
+            <div class="ti-info"><div class="ti-name">Circular Trading</div><div class="ti-count">487 cases · ₹18.4Cr</div></div>
+            <span class="ti-badge r">38%</span>
+          </div>
+          <div class="type-item" onclick="filterType(this,'fake')">
+            <div class="ti-icon o"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg></div>
+            <div class="ti-info"><div class="ti-name">Fake Invoices</div><div class="ti-count">347 cases · ₹13.1Cr</div></div>
+            <span class="ti-badge o">27%</span>
+          </div>
+          <div class="type-item" onclick="filterType(this,'itc')">
+            <div class="ti-icon y"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="ti-info"><div class="ti-name">ITC Mismatch</div><div class="ti-count">257 cases · ₹9.7Cr</div></div>
+            <span class="ti-badge y">20%</span>
+          </div>
+          <div class="type-item" onclick="filterType(this,'shell')">
+            <div class="ti-icon b"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
+            <div class="ti-info"><div class="ti-name">Shell Entities</div><div class="ti-count">193 cases · ₹7.3Cr</div></div>
+            <span class="ti-badge b">15%</span>
+          </div>
+          <div class="type-item" onclick="filterType(this,'dup')">
+            <div class="ti-icon p"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
+            <div class="ti-info"><div class="ti-name">Duplicate Filing</div><div class="ti-count">0 cases · —</div></div>
+            <span class="ti-badge p">0%</span>
+          </div>
+        </div>
+
+        <div class="lp-sep"></div>
+
+        <!-- Fraud heatmap -->
+        <div class="heatmap-section">
+          <div class="hm-label">Fraud Activity — Last 28 Days</div>
+          <div class="hm-days">
+            <div class="hm-day">M</div><div class="hm-day">T</div><div class="hm-day">W</div>
+            <div class="hm-day">T</div><div class="hm-day">F</div><div class="hm-day">S</div><div class="hm-day">S</div>
+          </div>
+          <div class="hm-grid" id="heatmap"></div>
+        </div>
+
+        <div class="lp-sep"></div>
+
+        <!-- Flagged GSTINs -->
+        <div class="lp-head" style="border-top:none;">
+          <span class="lp-title">Recent Flagged GSTINs</span>
+        </div>
+        <div class="gstin-section" id="gstinList"></div>
+      </div>
+
+      <!-- ══ CENTER PANEL ══ -->
+      <div class="center-panel">
+        <!-- Tabs -->
+        <div class="tab-bar">
+          <div class="tab at" onclick="setTab(this,'flagged')">Flagged<span class="tc red">34</span></div>
+          <div class="tab" onclick="setTab(this,'review')">Review<span class="tc yellow">12</span></div>
+          <div class="tab" onclick="setTab(this,'cleared')">Cleared<span class="tc green">891</span></div>
+          <div class="tab" onclick="setTab(this,'pending')">Pending<span class="tc blue">58</span></div>
+          <div class="tab" onclick="setTab(this,'all')">All</div>
+          <div class="tab-spacer"></div>
+          <div class="sort-row">
+            <select onchange="sortTable(this.value)">
+              <option value="risk-desc">Risk: High → Low</option>
+              <option value="amount-desc">Amount: High → Low</option>
+              <option value="date-desc">Date: Newest</option>
+              <option value="date-asc">Date: Oldest</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:32px"><input type="checkbox" style="accent-color:var(--green);cursor:pointer;" onclick="toggleAll(this)"></th>
+                <th>Invoice ID</th>
+                <th>Supplier GSTIN</th>
+                <th>Entity</th>
+                <th>Date</th>
+                <th>Total Amt</th>
+                <th>GST Amt</th>
+                <th>Fraud Type</th>
+                <th>Risk</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="invoiceBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="tbl-footer">
+          <div class="tbl-info" id="tableInfo">Showing <strong>12</strong> of 1,284 invoices</div>
+          <div class="pg-wrap">
+            <button class="pg"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="pg cur">1</button>
+            <button class="pg">2</button>
+            <button class="pg">3</button>
+            <button class="pg">…</button>
+            <button class="pg">107</button>
+            <button class="pg"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ RIGHT PANEL ══ -->
+      <div class="right-panel">
+
+        <!-- Invoice hero -->
+        <div class="inv-hero">
+          <div class="inv-chip" id="rpChip">FLAGGED · HIGH RISK</div>
+          <div class="inv-id" id="rpId">INV-MH-094821</div>
+          <div class="inv-ename" id="rpEntity">Apex Traders Pvt. Ltd.</div>
+          <div class="inv-gstin" id="rpGstin">27AABC1234D1Z5</div>
+          <div class="risk-meter">
+            <div class="rm-head"><span>Fraud Risk Score</span><strong class="hi" id="rpRiskLbl">92 / 100</strong></div>
+            <div class="rm-track"><div class="rm-fill hi" id="rpRiskBar" style="width:92%"></div></div>
+          </div>
+        </div>
+
+        <!-- Amount breakdown -->
+        <div class="dsec">
+          <div class="dsec-title">Amount Breakdown</div>
+          <div class="drow"><span class="dk">Taxable Value</span><span class="dv" id="rpTaxable">₹35,59,322</span></div>
+          <div class="drow"><span class="dk">CGST (9%)</span><span class="dv yellow">₹3,20,339</span></div>
+          <div class="drow"><span class="dk">SGST (9%)</span><span class="dv yellow">₹3,20,339</span></div>
+          <div class="drow"><span class="dk">Total Invoice</span><span class="dv red" id="rpTotal">₹42,00,000</span></div>
+          <div class="drow"><span class="dk">ITC Claimed</span><span class="dv red">₹6,40,678</span></div>
+        </div>
+
+        <!-- Invoice details -->
+        <div class="dsec">
+          <div class="dsec-title">Invoice Details</div>
+          <div class="drow"><span class="dk">Invoice Date</span><span class="dv" id="rpDate">21 Mar 2025</span></div>
+          <div class="drow"><span class="dk">Filing Date</span><span class="dv">22 Mar 2025</span></div>
+          <div class="drow"><span class="dk">Buyer GSTIN</span><span class="dv mono">27ZZZX9900P1Z8</span></div>
+          <div class="drow"><span class="dk">HSN / SAC</span><span class="dv mono">8471</span></div>
+          <div class="drow"><span class="dk">Supply Type</span><span class="dv">B2B Intrastate</span></div>
+          <div class="drow"><span class="dk">Zone</span><span class="dv">Maharashtra West</span></div>
+        </div>
+
+        <!-- Fraud signals -->
+        <div class="dsec" style="padding:0;">
+          <div class="dsec-title" style="padding:8px 14px 0;">Fraud Signals</div>
+          <div class="signal-item">
+            <div class="sig-icon r"><svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg></div>
+            <div><div class="sig-title">Circular Loop Detected</div><div class="sig-desc">₹42L routed via 4 entities returning to origin GSTIN in 48 hrs.</div></div>
+          </div>
+          <div class="signal-item">
+            <div class="sig-icon r"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg></div>
+            <div><div class="sig-title">Blacklisted Buyer GSTIN</div><div class="sig-desc">Buyer 27ZZZX9900P1Z8 in 2023 enforcement blacklist.</div></div>
+          </div>
+          <div class="signal-item">
+            <div class="sig-icon y"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div><div class="sig-title">ITC Mismatch ₹1.2L</div><div class="sig-desc">GSTR-2B credit differs from GSTR-1 outward by ₹1,20,000.</div></div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="dsec">
+          <div class="dsec-title">Case Timeline</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot r"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
+          <div><div class="tl-action">AI flagged as High Risk</div><div class="tl-time">Today, 09:14 AM</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="tl-action">Assigned to Officer AK</div><div class="tl-time">Today, 09:15 AM</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot y"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div>
+          <div><div class="tl-action">Circular loop cross-verified</div><div class="tl-time">Today, 10:02 AM</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot r"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="tl-action">Awaiting escalation decision</div><div class="tl-time">Pending</div></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="dsec" style="padding-bottom:4px;">
+          <div class="dsec-title">Officer Actions</div>
+        </div>
+        <div class="act-section">
+          <button class="abtn danger" onclick="openModal('escalate')">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Escalate to Enforcement
+          </button>
+          <button class="abtn orange" onclick="openModal('notice')">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.9 19.5 19.5 0 0 1 4.14 13a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 3 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+            Issue SCN Notice
+          </button>
+          <button class="abtn" onclick="openModal('note')">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Add Investigation Note
+          </button>
+          <button class="abtn success" onclick="markCleared()">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Mark as Cleared
+          </button>
+        </div>
+
+      </div><!-- /right-panel -->
+    </div><!-- /body-grid -->
+  </main>
+</div><!-- /shell -->
+
+<!-- ══ MODAL ══ -->
+<div class="overlay" id="modalOverlay" onclick="closeModalOut(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+let invoices = [];
+let currentPage = 1;
+const itemsPerPage = 10;
+
+// Load CSV data
+async function loadCSVData() {
+  try {
+    const response = await fetch('../backend/data/real_companies_gst_data.csv');
+    const csvText = await response.text();
+    const lines = csvText.split('\n').filter(line => line.trim());
+    
+    // Skip header and parse data
+    invoices = lines.slice(1).map((line, index) => {
+      const [gstin, company, sales, purchase, itc, refund] = line.split(',').map(item => item.replace(/"/g, '').trim());
+      
+      // Generate invoice ID and random data for missing fields
+      const invoiceId = `INV-${gstin.substring(0, 2)}-${String(index + 1).padStart(6, '0')}`;
+      const totalAmount = parseInt(sales) || Math.floor(Math.random() * 10000000) + 100000;
+      const gstAmount = Math.floor(totalAmount * 0.18);
+      const riskScore = Math.floor(Math.random() * 100);
+      
+      // Determine fraud type and status based on risk
+      let fraudType = null;
+      let status = 'cleared';
+      
+      if (riskScore >= 80) {
+        status = 'flagged';
+        const types = ['circular', 'fake', 'shell', 'itc'];
+        fraudType = types[Math.floor(Math.random() * types.length)];
+      } else if (riskScore >= 50) {
+        status = 'review';
+        const types = ['itc', 'dup'];
+        fraudType = types[Math.floor(Math.random() * types.length)];
+      } else if (riskScore >= 30) {
+        status = 'pending';
+      }
+      
+      // Generate random date within last 30 days
+      const daysAgo = Math.floor(Math.random() * 30);
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      const formattedDate = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      
+      return {
+        id: invoiceId,
+        gstin: gstin,
+        entity: company,
+        date: formattedDate,
+        total: totalAmount,
+        gst: gstAmount,
+        type: fraudType,
+        risk: riskScore,
+        status: status
+      };
+    });
+    
+    // Initialize the page after data is loaded
+    renderTable();
+    selectInvoice(invoices[0]);
+    updatePagination();
+    
+  } catch (error) {
+    console.error('Error loading CSV data:', error);
+    // Fallback to empty array if loading fails
+    invoices = [];
+  }
+}
+
+const typeMap = {circular:{label:'Circular',cls:'circ'},fake:{label:'Fake Inv.',cls:'fake'},itc:{label:'ITC Mis.',cls:'itc'},shell:{label:'Shell',cls:'shell'},dup:{label:'Duplicate',cls:'dup'}};
+const fmt = n => '₹' + n.toLocaleString('en-IN');
+const riskCls = r => r>=80?'hi':r>=50?'md':'lo';
+const amtCls = r => r>=80?'r':r>=50?'o':'g';
+
+let selIdx = 0, activeTab = 'flagged', activeType = 'all';
+
+function getFiltered(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  return invoices.filter(inv => {
+    const tabOk = activeTab==='all' || inv.status===activeTab;
+    const typeOk = activeType==='all' || inv.type===activeType;
+    const qOk = !q || inv.id.toLowerCase().includes(q) || inv.gstin.toLowerCase().includes(q) || inv.entity.toLowerCase().includes(q);
+    return tabOk && typeOk && qOk;
+  });
+}
+
+function getPaginatedData(){
+  const filtered = getFiltered();
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return filtered.slice(startIndex, endIndex);
+}
+
+function renderTable(){
+  const data = getPaginatedData();
+  const filtered = getFiltered();
+  const body = document.getElementById('invoiceBody');
+  body.innerHTML = '';
+  data.forEach((inv,i) => {
+    const tr = document.createElement('tr');
+    const globalIndex = (currentPage - 1) * itemsPerPage + i;
+    if(globalIndex===selIdx) tr.classList.add('sel-row');
+    const t = inv.type ? typeMap[inv.type] : null;
+    tr.innerHTML = `
+      <td class="td-cb"><input type="checkbox" style="accent-color:var(--green);cursor:pointer;width:12px;height:12px;"></td>
+      <td class="td-id">${inv.id}</td>
+      <td class="td-gstin">${inv.gstin}</td>
+      <td class="td-entity">${inv.entity}</td>
+      <td style="color:var(--text-2);font-size:.72rem">${inv.date}</td>
+      <td class="td-amt ${amtCls(inv.risk)}">${fmt(inv.total)}</td>
+      <td style="color:var(--text-2);font-size:.72rem;font-family:var(--font-m)">${fmt(inv.gst)}</td>
+      <td>${t ? `<span class="ftag ${t.cls}">${t.label}</span>` : '<span class="ftag none">—</span>'}</td>
+      <td><span class="rscore ${riskCls(inv.risk)}">${inv.risk}</span></td>
+      <td><span class="sbadge ${inv.status}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span></td>
+    `;
+    tr.onclick = () => { selIdx = globalIndex; selectInvoice(inv); renderTable(); };
+    body.appendChild(tr);
+  });
+  
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, filtered.length);
+  document.getElementById('tableInfo').innerHTML = `Showing <strong>${startItem}-${endItem}</strong> of <strong>${filtered.length}</strong> invoices`;
+}
+
+function selectInvoice(inv){
+  const rc = riskCls(inv.risk);
+  document.getElementById('rpId').textContent = inv.id;
+  document.getElementById('rpEntity').textContent = inv.entity;
+  document.getElementById('rpGstin').textContent = inv.gstin;
+  document.getElementById('rpDate').textContent = inv.date;
+  document.getElementById('rpTaxable').textContent = fmt(Math.round(inv.total/1.18));
+  document.getElementById('rpTotal').textContent = fmt(inv.total);
+  document.getElementById('rpTotal').className = 'dv '+(rc==='hi'?'red':rc==='md'?'yellow':'green');
+  document.getElementById('rpRiskLbl').textContent = inv.risk+' / 100';
+  document.getElementById('rpRiskLbl').className = rc;
+  document.getElementById('rpRiskBar').style.width = inv.risk+'%';
+  document.getElementById('rpRiskBar').className = 'rm-fill '+rc;
+  const chipTxt = inv.risk>=80?'FLAGGED · HIGH RISK':inv.risk>=50?'UNDER REVIEW · MEDIUM':'CLEARED · LOW RISK';
+  document.getElementById('rpChip').textContent = chipTxt;
+}
+
+function setTab(el,tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('at'));
+  el.classList.add('at');
+  activeTab = tab; selIdx = 0; currentPage = 1;
+  renderTable(); updatePagination();
+}
+
+function filterType(el,type){
+  document.querySelectorAll('.type-item').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');
+  activeType = type; selIdx = 0; currentPage = 1;
+  renderTable(); updatePagination();
+}
+
+function sortTable(val){
+  const data = [...invoices];
+  if(val==='risk-desc') data.sort((a,b)=>b.risk-a.risk);
+  else if(val==='amount-desc') data.sort((a,b)=>b.total-a.total);
+  else if(val==='date-asc') data.reverse();
+  invoices.splice(0,invoices.length,...data);
+  renderTable();
+}
+
+function toggleAll(cb){ document.querySelectorAll('#invoiceBody input[type=checkbox]').forEach(c=>c.checked=cb.checked); }
+
+document.getElementById('searchInput').addEventListener('input',()=>{selIdx=0;currentPage=1;renderTable();updatePagination();});
+
+// ── Pagination Functions ──
+function updatePagination(){
+  const filtered = getFiltered();
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginationContainer = document.querySelector('.pg-wrap');
+  
+  if (totalPages <= 1) {
+    paginationContainer.innerHTML = '';
+    return;
+  }
+  
+  let paginationHTML = '<button class="pg" onclick="changePage(\'prev\')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>';
+  
+  // Show page numbers
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  
+  if (endPage - startPage < maxVisiblePages - 1) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+  
+  if (startPage > 1) {
+    paginationHTML += `<button class="pg" onclick="changePage(1)">1</button>`;
+    if (startPage > 2) {
+      paginationHTML += `<button class="pg">...</button>`;
+    }
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    const activeClass = i === currentPage ? 'cur' : '';
+    paginationHTML += `<button class="pg ${activeClass}" onclick="changePage(${i})">${i}</button>`;
+  }
+  
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      paginationHTML += `<button class="pg">...</button>`;
+    }
+    paginationHTML += `<button class="pg" onclick="changePage(${totalPages})">${totalPages}</button>`;
+  }
+  
+  paginationHTML += '<button class="pg" onclick="changePage(\'next\')"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>';
+  
+  paginationContainer.innerHTML = paginationHTML;
+}
+
+function changePage(page){
+  const filtered = getFiltered();
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  
+  if (page === 'prev') {
+    currentPage = Math.max(1, currentPage - 1);
+  } else if (page === 'next') {
+    currentPage = Math.min(totalPages, currentPage + 1);
+  } else if (typeof page === 'number') {
+    currentPage = page;
+  }
+  
+  selIdx = (currentPage - 1) * itemsPerPage;
+  renderTable();
+  updatePagination();
+}
+
+// ── Heatmap ──
+const hm = document.getElementById('heatmap');
+const levels = [0,0,1,2,0,1,3,0,2,1,0,4,3,2,1,0,0,3,2,1,4,2,0,1,3,0,2,4];
+levels.forEach(l=>{
+  const c = document.createElement('div');
+  c.className = 'hmc'+(l>0?' l'+l:'');
+  hm.appendChild(c);
+});
+
+// ── Flagged GSTINs ──
+const gstins = [
+  {id:'27AABC1234D1Z5',fl:'r',label:'HIGH'},
+  {id:'27CCCM5567L1Z9',fl:'r',label:'HIGH'},
+  {id:'27KKKB2287U1Z9',fl:'r',label:'HIGH'},
+  {id:'27FFFR4490P1Z6',fl:'o',label:'MED'},
+  {id:'27BBBZ9988K1Z2',fl:'o',label:'MED'},
+  {id:'27EEEK7712N1Z1',fl:'g',label:'SAFE'},
+];
+const gl = document.getElementById('gstinList');
+const dotColors = {r:'var(--red)',o:'var(--orange)',g:'var(--green)'};
+gstins.forEach(g=>{
+  gl.innerHTML += `<div class="gs-item">
+    <div class="gs-dot" style="background:${dotColors[g.fl]}"></div>
+    <span class="gs-id">${g.id}</span>
+    <span class="gs-fl ${g.fl}">${g.label}</span>
+  </div>`;
+});
+
+// ── Modals ──
+const modals = {
+  scan:`<div class="modal-title">Scan New Invoice</div><div class="modal-sub">Enter details for AI-powered fraud analysis.</div>
+    <div class="mfield"><label class="mlabel">Invoice ID</label><input class="minput" placeholder="e.g. INV-MH-099001"/></div>
+    <div class="mfield"><label class="mlabel">Supplier GSTIN</label><input class="minput" style="font-family:var(--font-m)" placeholder="27AABC1234D1Z5"/></div>
+    <div class="mfield"><label class="mlabel">Invoice Amount (₹)</label><input class="minput" placeholder="5,00,000"/></div>
+    <div class="mfield"><label class="mlabel">HSN Code</label><input class="minput" style="font-family:var(--font-m)" placeholder="8471"/></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Run AI Scan</button></div>`,
+
+  upload:`<div class="modal-title">Upload Batch Invoices</div><div class="modal-sub">Bulk fraud detection via CSV, JSON or XLSX.</div>
+    <div style="border:2px dashed rgba(0,230,118,.2);border-radius:10px;padding:28px;text-align:center;background:var(--green-dim);margin-bottom:14px;cursor:pointer">
+      <div style="font-size:1.8rem;margin-bottom:6px">📂</div>
+      <div style="font-size:.82rem;color:var(--green);font-weight:700">Drop files or click to browse</div>
+      <div style="font-size:.7rem;color:var(--text-2);margin-top:3px">CSV · JSON · XLSX · Max 50MB</div>
+    </div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Upload & Scan</button></div>`,
+
+  escalate:`<div class="modal-title" style="color:var(--red)">Escalate to Enforcement</div><div class="modal-sub">Creates an official enforcement case and notifies the zonal officer.</div>
+    <div class="mfield"><label class="mlabel">Escalation Reason</label><select class="minput"><option>Circular Trading</option><option>Shell Entity</option><option>ITC Fraud</option><option>Fake Invoice</option></select></div>
+    <div class="mfield"><label class="mlabel">Notes</label><textarea class="minput mta" placeholder="Describe the fraud pattern…"></textarea></div>
+    <div class="mfield"><label class="mlabel">Priority</label><select class="minput"><option>High</option><option>Critical</option><option>Medium</option></select></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok-red" onclick="closeModal()">Escalate Now</button></div>`,
+
+  notice:`<div class="modal-title">Issue Show Cause Notice</div><div class="modal-sub">SCN will be sent to the taxpayer via GSTN portal.</div>
+    <div class="mfield"><label class="mlabel">Notice Type</label><select class="minput"><option>Sec 73 — No Fraud</option><option>Sec 74 — Fraud/Suppression</option><option>Sec 76 — Collected not Paid</option></select></div>
+    <div class="mfield"><label class="mlabel">Demand Amount (₹)</label><input class="minput" placeholder="42,00,000"/></div>
+    <div class="mfield"><label class="mlabel">Reply Due Date</label><input class="minput" type="date"/></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Issue Notice</button></div>`,
+
+  note:`<div class="modal-title">Add Investigation Note</div><div class="modal-sub">Logged with officer ID and timestamp.</div>
+    <div class="mfield"><label class="mlabel">Note Type</label><select class="minput"><option>Observation</option><option>Evidence</option><option>Suspicion</option><option>Follow-up Required</option></select></div>
+    <div class="mfield"><label class="mlabel">Note</label><textarea class="minput mta" placeholder="Enter investigation findings…"></textarea></div>
+    <div class="mfooter"><button class="mbtn cancel" onclick="closeModal()">Cancel</button><button class="mbtn ok" onclick="closeModal()">Save Note</button></div>`
+};
+
+function openModal(type){ document.getElementById('modalContent').innerHTML = modals[type]; document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalOut(e){ if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+
+function markCleared(){
+  const chip = document.getElementById('rpChip');
+  chip.textContent = 'CLEARED · VERIFIED';
+  chip.style.background = 'var(--green-dim)';
+  chip.style.borderColor = 'rgba(0,230,118,.3)';
+}
+
+function exportCSV(){
+  const data = getFiltered();
+  const csv = ['Invoice ID,GSTIN,Entity,Date,Total,GST,Type,Risk,Status',
+    ...data.map(i=>[i.id,i.gstin,i.entity,i.date,i.total,i.gst,i.type||'',i.risk,i.status].join(','))].join('\n');
+  const a = document.createElement('a'); a.href='data:text/csv,'+encodeURIComponent(csv); a.download='invoshield_invoices.csv'; a.click();
+}
+
+// init
+loadCSVData();
+</script>
+</body>
+</html>

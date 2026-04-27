@@ -41,7 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const currentMain = document.querySelector('.main');
                 const newMain = doc.querySelector('.main');
-                if (currentMain && newMain) currentMain.innerHTML = newMain.innerHTML;
+                if (currentMain && newMain) {
+                    currentMain.innerHTML = newMain.innerHTML;
+                    currentMain.removeAttribute('data-page');
+                }
 
                 // Remove old page-specific CSS files (fraud-alerts.css, dashboard.css, etc.)
                 const pageSpecificCss = ['/css/fraud-alerts.css', '/css/dashboard.css', '/css/invoices.css', '/css/enforcement.css', '/css/login.css', '/css/analytics.css'];
@@ -122,6 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     await ensureChartJs();
                     await loadScript('/js/analytics.js');
                     if (window.InvoShield?.initAnalytics) window.InvoShield.initAnalytics();
+                } else if (url.includes('gstin-lookup.html')) {
+                    await loadScript('/js/gstin-lookup.js');
+                    if (window.InvoShield?.initGSTINLookup) window.InvoShield.initGSTINLookup();
                 } else if (url.includes('reports.html')) {
                     await loadScript('/js/reports.js');
                     if (window.InvoShield?.initReports) window.InvoShield.initReports();

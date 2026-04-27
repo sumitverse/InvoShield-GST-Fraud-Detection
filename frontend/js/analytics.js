@@ -222,68 +222,73 @@
     state.intervalId = null;
   }
 
+  function processCSVText(text) {
+    const rows = text.split('\n').map(r => r.trim()).filter(r => r);
+    if (rows.length < 2) return alert('Invalid CSV: Needs header and at least one row');
+
+    const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
+    
+    const idx = {
+      sales: headers.findIndex(h => h.includes('sales')),
+      purchase: headers.findIndex(h => h.includes('purchase')),
+      itc: headers.findIndex(h => h.includes('itc') || h.includes('tax')),
+      refund: headers.findIndex(h => h.includes('refund')),
+      id: headers.findIndex(h => h.includes('gstin') || h.includes('identifier') || (h.includes('id') && !h.includes('name'))),
+      company: headers.findIndex(h => h.includes('company') || h.includes('name'))
+    };
+
+    if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) {
+      return alert('CSV must contain columns for Sales, Purchase, ITC, and Refund.');
+    }
+
+    const tbody = document.querySelector('#analysis-results-table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    rows.slice(1).forEach((row, i) => {
+      // match columns considering basic comma separation without quotes handling for MVP
+      const cols = row.split(',').map(c => c.trim());
+      const sales = parseFloat(cols[idx.sales]) || 0;
+      const purchase = parseFloat(cols[idx.purchase]) || 0;
+      const itc = parseFloat(cols[idx.itc]) || 0;
+      const refund = parseFloat(cols[idx.refund]) || 0;
+      const identifier = idx.id !== -1 ? cols[idx.id] : `Row ${i + 1}`;
+      const companyName = idx.company !== -1 ? cols[idx.company] : '-';
+
+      let triggers = [];
+      if (itc > 0.5 * sales) triggers.push('ITC > 50% Sales');
+      if (refund > 0.3 * sales) triggers.push('Refund > 30% Sales');
+      if (purchase > 1.5 * sales) triggers.push('Purchase >> Sales');
+
+      let riskLevel = 'Low';
+      let riskClass = 'g';
+      if (triggers.length === 1) { riskLevel = 'Medium'; riskClass = 'b'; }
+      else if (triggers.length === 2) { riskLevel = 'High'; riskClass = 'y'; }
+      else if (triggers.length >= 3) { riskLevel = 'Critical'; riskClass = 'r'; }
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="font-weight:600;">${identifier}</td>
+        <td style="color:var(--text-2); font-size:0.85rem;">${companyName}</td>
+        <td class="mono muted">${fmtInt(sales)}</td>
+        <td class="mono muted">${fmtInt(purchase)}</td>
+        <td class="mono muted">${fmtInt(itc)}</td>
+        <td class="mono muted">${fmtInt(refund)}</td>
+        <td style="font-size:0.75rem;">${triggers.length ? triggers.join(', ') : '<span style="color:var(--text-3)">None</span>'}</td>
+        <td><span class="tag ${riskClass}">${riskLevel}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('analysis-results-section').style.display = 'block';
+  }
+
   function parseCSVAndAnalyze(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
       const text = e.target.result;
-      const rows = text.split('\n').map(r => r.trim()).filter(r => r);
-      if (rows.length < 2) return alert('Invalid CSV: Needs header and at least one row');
-
-      const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
-      
-      const idx = {
-        sales: headers.findIndex(h => h.includes('sales')),
-        purchase: headers.findIndex(h => h.includes('purchase')),
-        itc: headers.findIndex(h => h.includes('itc') || h.includes('tax')),
-        refund: headers.findIndex(h => h.includes('refund')),
-        id: headers.findIndex(h => h.includes('gstin') || h.includes('identifier') || (h.includes('id') && !h.includes('name'))),
-        company: headers.findIndex(h => h.includes('company') || h.includes('name'))
-      };
-
-      if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) {
-        return alert('CSV must contain columns for Sales, Purchase, ITC, and Refund.');
-      }
-
-      const tbody = document.querySelector('#analysis-results-table tbody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      rows.slice(1).forEach((row, i) => {
-        // match columns considering basic comma separation without quotes handling for MVP
-        const cols = row.split(',').map(c => c.trim());
-        const sales = parseFloat(cols[idx.sales]) || 0;
-        const purchase = parseFloat(cols[idx.purchase]) || 0;
-        const itc = parseFloat(cols[idx.itc]) || 0;
-        const refund = parseFloat(cols[idx.refund]) || 0;
-        const identifier = idx.id !== -1 ? cols[idx.id] : `Row ${i + 1}`;
-        const companyName = idx.company !== -1 ? cols[idx.company] : '-';
-
-        let triggers = [];
-        if (itc > 0.5 * sales) triggers.push('ITC > 50% Sales');
-        if (refund > 0.3 * sales) triggers.push('Refund > 30% Sales');
-        if (purchase > 1.5 * sales) triggers.push('Purchase >> Sales');
-
-        let riskLevel = 'Low';
-        let riskClass = 'g';
-        if (triggers.length === 1) { riskLevel = 'Medium'; riskClass = 'b'; }
-        else if (triggers.length === 2) { riskLevel = 'High'; riskClass = 'y'; }
-        else if (triggers.length >= 3) { riskLevel = 'Critical'; riskClass = 'r'; }
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="font-weight:600;">${identifier}</td>
-          <td style="color:var(--text-2); font-size:0.85rem;">${companyName}</td>
-          <td class="mono muted">${fmtInt(sales)}</td>
-          <td class="mono muted">${fmtInt(purchase)}</td>
-          <td class="mono muted">${fmtInt(itc)}</td>
-          <td class="mono muted">${fmtInt(refund)}</td>
-          <td style="font-size:0.75rem;">${triggers.length ? triggers.join(', ') : '<span style="color:var(--text-3)">None</span>'}</td>
-          <td><span class="tag ${riskClass}">${riskLevel}</span></td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      document.getElementById('analysis-results-section').style.display = 'block';
+      sessionStorage.setItem('analytics_csv_data', text);
+      processCSVText(text);
       document.getElementById('analysis-results-section').scrollIntoView({ behavior: 'smooth' });
     };
     reader.readAsText(file);
@@ -313,6 +318,18 @@
     bind();
     stop();
     start();
+
+    // Restore CSV results if available
+    const savedCsvData = sessionStorage.getItem('analytics_csv_data');
+    if (savedCsvData) {
+      setTimeout(() => {
+        try {
+          processCSVText(savedCsvData);
+        } catch (e) {
+          console.error("Error restoring CSV data:", e);
+        }
+      }, 100);
+    }
   }
 
   window.InvoShield = window.InvoShield || {};

@@ -360,20 +360,73 @@
 
 <script>
 // ── DATA ──
-const invoices = [
-  {id:'INV-MH-094821',gstin:'27AABC1234D1Z5',entity:'Apex Traders Pvt.',date:'21 Mar 2025',total:4200000,gst:640678,type:'circular',risk:92,status:'flagged'},
-  {id:'INV-MH-091033',gstin:'27BBBZ9988K1Z2',entity:'Sunrise Enterprises',date:'21 Mar 2025',total:840000,gst:128136,type:'itc',risk:74,status:'review'},
-  {id:'INV-MH-088712',gstin:'27CCCM5567L1Z9',entity:'Global Supply Co.',date:'20 Mar 2025',total:12000000,gst:1830509,type:'shell',risk:97,status:'flagged'},
-  {id:'INV-MH-087244',gstin:'27DDDP3321M1Z4',entity:'Rajdhani Logistics',date:'20 Mar 2025',total:375000,gst:57203,type:'dup',risk:61,status:'review'},
-  {id:'INV-MH-084901',gstin:'27EEEK7712N1Z1',entity:'Metro Parts Ltd.',date:'19 Mar 2025',total:58000,gst:8847,type:null,risk:8,status:'cleared'},
-  {id:'INV-MH-083305',gstin:'27FFFR4490P1Z6',entity:'Pinnacle Exports',date:'19 Mar 2025',total:3000000,gst:457627,type:'fake',risk:88,status:'flagged'},
-  {id:'INV-MH-081122',gstin:'27GGGW1123Q1Z3',entity:'Bharat Electronics',date:'18 Mar 2025',total:200000,gst:30508,type:null,risk:15,status:'cleared'},
-  {id:'INV-MH-079900',gstin:'27HHHJ6654R1Z7',entity:'Prakash Steel Works',date:'18 Mar 2025',total:5000000,gst:762712,type:'circular',risk:83,status:'flagged'},
-  {id:'INV-MH-078411',gstin:'27IIIV8832S1Z2',entity:'NextGen Pharma',date:'17 Mar 2025',total:750000,gst:114407,type:'itc',risk:55,status:'review'},
-  {id:'INV-MH-076209',gstin:'27JJJA5510T1Z5',entity:'Lakshmi Textiles',date:'17 Mar 2025',total:100000,gst:15255,type:null,risk:12,status:'cleared'},
-  {id:'INV-MH-074500',gstin:'27KKKB2287U1Z9',entity:'Zephyr Commodities',date:'16 Mar 2025',total:9000000,gst:1372882,type:'shell',risk:94,status:'flagged'},
-  {id:'INV-MH-073188',gstin:'27LLLC9965V1Z4',entity:'Sai Industries',date:'16 Mar 2025',total:250000,gst:38136,type:'dup',risk:48,status:'pending'},
-];
+let invoices = [];
+let currentPage = 1;
+const itemsPerPage = 10;
+
+// Load CSV data
+async function loadCSVData() {
+  try {
+    const response = await fetch('../backend/data/real_companies_gst_data.csv');
+    const csvText = await response.text();
+    const lines = csvText.split('\n').filter(line => line.trim());
+    
+    // Skip header and parse data
+    invoices = lines.slice(1).map((line, index) => {
+      const [gstin, company, sales, purchase, itc, refund] = line.split(',').map(item => item.replace(/"/g, '').trim());
+      
+      // Generate invoice ID and random data for missing fields
+      const invoiceId = `INV-${gstin.substring(0, 2)}-${String(index + 1).padStart(6, '0')}`;
+      const totalAmount = parseInt(sales) || Math.floor(Math.random() * 10000000) + 100000;
+      const gstAmount = Math.floor(totalAmount * 0.18);
+      const riskScore = Math.floor(Math.random() * 100);
+      
+      // Determine fraud type and status based on risk
+      let fraudType = null;
+      let status = 'cleared';
+      
+      if (riskScore >= 80) {
+        status = 'flagged';
+        const types = ['circular', 'fake', 'shell', 'itc'];
+        fraudType = types[Math.floor(Math.random() * types.length)];
+      } else if (riskScore >= 50) {
+        status = 'review';
+        const types = ['itc', 'dup'];
+        fraudType = types[Math.floor(Math.random() * types.length)];
+      } else if (riskScore >= 30) {
+        status = 'pending';
+      }
+      
+      // Generate random date within last 30 days
+      const daysAgo = Math.floor(Math.random() * 30);
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      const formattedDate = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      
+      return {
+        id: invoiceId,
+        gstin: gstin,
+        entity: company,
+        date: formattedDate,
+        total: totalAmount,
+        gst: gstAmount,
+        type: fraudType,
+        risk: riskScore,
+        status: status
+      };
+    });
+    
+    // Initialize the page after data is loaded
+    renderTable();
+    selectInvoice(invoices[0]);
+    updatePagination();
+    
+  } catch (error) {
+    console.error('Error loading CSV data:', error);
+    // Fallback to empty array if loading fails
+    invoices = [];
+  }
+}
 
 const typeMap = {circular:{label:'Circular',cls:'circ'},fake:{label:'Fake Inv.',cls:'fake'},itc:{label:'ITC Mis.',cls:'itc'},shell:{label:'Shell',cls:'shell'},dup:{label:'Duplicate',cls:'dup'}};
 const fmt = n => '₹' + n.toLocaleString('en-IN');
@@ -392,13 +445,22 @@ function getFiltered(){
   });
 }
 
+function getPaginatedData(){
+  const filtered = getFiltered();
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return filtered.slice(startIndex, endIndex);
+}
+
 function renderTable(){
-  const data = getFiltered();
+  const data = getPaginatedData();
+  const filtered = getFiltered();
   const body = document.getElementById('invoiceBody');
   body.innerHTML = '';
   data.forEach((inv,i) => {
     const tr = document.createElement('tr');
-    if(i===selIdx) tr.classList.add('sel-row');
+    const globalIndex = (currentPage - 1) * itemsPerPage + i;
+    if(globalIndex===selIdx) tr.classList.add('sel-row');
     const t = inv.type ? typeMap[inv.type] : null;
     tr.innerHTML = `
       <td class="td-cb"><input type="checkbox" style="accent-color:var(--green);cursor:pointer;width:12px;height:12px;"></td>
@@ -412,10 +474,13 @@ function renderTable(){
       <td><span class="rscore ${riskCls(inv.risk)}">${inv.risk}</span></td>
       <td><span class="sbadge ${inv.status}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span></td>
     `;
-    tr.onclick = () => { selIdx = i; selectInvoice(inv); renderTable(); };
+    tr.onclick = () => { selIdx = globalIndex; selectInvoice(inv); renderTable(); };
     body.appendChild(tr);
   });
-  document.getElementById('tableInfo').innerHTML = `Showing <strong>${data.length}</strong> of ${invoices.length} invoices`;
+  
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, filtered.length);
+  document.getElementById('tableInfo').innerHTML = `Showing <strong>${startItem}-${endItem}</strong> of <strong>${filtered.length}</strong> invoices`;
 }
 
 function selectInvoice(inv){
@@ -438,15 +503,15 @@ function selectInvoice(inv){
 function setTab(el,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('at'));
   el.classList.add('at');
-  activeTab = tab; selIdx = 0;
-  renderTable();
+  activeTab = tab; selIdx = 0; currentPage = 1;
+  renderTable(); updatePagination();
 }
 
 function filterType(el,type){
   document.querySelectorAll('.type-item').forEach(t=>t.classList.remove('sel'));
   el.classList.add('sel');
-  activeType = type; selIdx = 0;
-  renderTable();
+  activeType = type; selIdx = 0; currentPage = 1;
+  renderTable(); updatePagination();
 }
 
 function sortTable(val){
@@ -460,7 +525,70 @@ function sortTable(val){
 
 function toggleAll(cb){ document.querySelectorAll('#invoiceBody input[type=checkbox]').forEach(c=>c.checked=cb.checked); }
 
-document.getElementById('searchInput').addEventListener('input',()=>{selIdx=0;renderTable();});
+document.getElementById('searchInput').addEventListener('input',()=>{selIdx=0;currentPage=1;renderTable();updatePagination();});
+
+// ── Pagination Functions ──
+function updatePagination(){
+  const filtered = getFiltered();
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginationContainer = document.querySelector('.pg-wrap');
+  
+  if (totalPages <= 1) {
+    paginationContainer.innerHTML = '';
+    return;
+  }
+  
+  let paginationHTML = '<button class="pg" onclick="changePage(\'prev\')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>';
+  
+  // Show page numbers
+  const maxVisiblePages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  
+  if (endPage - startPage < maxVisiblePages - 1) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+  }
+  
+  if (startPage > 1) {
+    paginationHTML += `<button class="pg" onclick="changePage(1)">1</button>`;
+    if (startPage > 2) {
+      paginationHTML += `<button class="pg">...</button>`;
+    }
+  }
+  
+  for (let i = startPage; i <= endPage; i++) {
+    const activeClass = i === currentPage ? 'cur' : '';
+    paginationHTML += `<button class="pg ${activeClass}" onclick="changePage(${i})">${i}</button>`;
+  }
+  
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      paginationHTML += `<button class="pg">...</button>`;
+    }
+    paginationHTML += `<button class="pg" onclick="changePage(${totalPages})">${totalPages}</button>`;
+  }
+  
+  paginationHTML += '<button class="pg" onclick="changePage(\'next\')"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>';
+  
+  paginationContainer.innerHTML = paginationHTML;
+}
+
+function changePage(page){
+  const filtered = getFiltered();
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  
+  if (page === 'prev') {
+    currentPage = Math.max(1, currentPage - 1);
+  } else if (page === 'next') {
+    currentPage = Math.min(totalPages, currentPage + 1);
+  } else if (typeof page === 'number') {
+    currentPage = page;
+  }
+  
+  selIdx = (currentPage - 1) * itemsPerPage;
+  renderTable();
+  updatePagination();
+}
 
 // ── Heatmap ──
 const hm = document.getElementById('heatmap');
@@ -544,8 +672,7 @@ function exportCSV(){
 }
 
 // init
-renderTable();
-selectInvoice(invoices[0]);
+loadCSVData();
 </script>
 </body>
 </html>

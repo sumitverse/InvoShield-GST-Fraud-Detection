@@ -4,6 +4,7 @@ const { PORT } = require('./config/env');
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const gstinRoutes = require('./routes/gstinRoutes');
+const dataRoutes = require('./routes/dataRoutes');
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(cors({
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/gstin', gstinRoutes);
+app.use('/api/data', dataRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running' });

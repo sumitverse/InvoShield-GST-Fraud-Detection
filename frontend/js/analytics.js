@@ -245,7 +245,38 @@
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    rows.slice(1).forEach((row, i) => {
+    // Stop demo ticks
+    stop();
+    state.paused = true;
+    const pauseBtn = document.getElementById('an-pause');
+    if (pauseBtn) pauseBtn.style.display = 'none';
+
+    const livePill = document.querySelector('.page-head .pill.live');
+    if (livePill) livePill.innerHTML = '<strong>CSV Batch</strong> loaded';
+    
+    let totalSales = 0, totalPurchase = 0, totalITC = 0, totalRefund = 0, totalTriggers = 0, lowCount = 0;
+    let sevCounts = [0, 0, 0, 0]; // Low, Med, High, Crit
+    let zoneStats = {
+      'Punjab': { backlog: 0, critical: 0, sales: 0, total: 0 },
+      'Delhi': { backlog: 0, critical: 0, sales: 0, total: 0 },
+      'Maharashtra': { backlog: 0, critical: 0, sales: 0, total: 0 },
+      'Gujarat': { backlog: 0, critical: 0, sales: 0, total: 0 },
+      'Karnataka': { backlog: 0, critical: 0, sales: 0, total: 0 }
+    };
+    const zoneKeys = Object.keys(zoneStats);
+    
+    let triggerFreq = {
+      'ITC > 50% Sales': { c: 'b', s: 'High ITC claimed compared to sales reported.' },
+      'Refund > 30% Sales': { c: 'y', s: 'Excessive refund requests identified.' },
+      'Purchase >> Sales': { c: 'r', s: 'Potential circular trading or shell entity.' }
+    };
+    let triggerCounts = { 'ITC > 50% Sales': 0, 'Refund > 30% Sales': 0, 'Purchase >> Sales': 0 };
+
+    let flagsBucket = new Array(24).fill(0);
+    let critBucket = new Array(24).fill(0);
+
+    const validRows = rows.slice(1);
+    validRows.forEach((row, i) => {
       // match columns considering basic comma separation without quotes handling for MVP
       const cols = row.split(',').map(c => c.trim());
       const sales = parseFloat(cols[idx.sales]) || 0;
@@ -255,16 +286,42 @@
       const identifier = idx.id !== -1 ? cols[idx.id] : `Row ${i + 1}`;
       const companyName = idx.company !== -1 ? cols[idx.company] : '-';
 
+      totalSales += sales;
+      totalPurchase += purchase;
+
       let triggers = [];
-      if (itc > 0.5 * sales) triggers.push('ITC > 50% Sales');
-      if (refund > 0.3 * sales) triggers.push('Refund > 30% Sales');
-      if (purchase > 1.5 * sales) triggers.push('Purchase >> Sales');
+      if (itc > 0.5 * sales) { triggers.push('ITC > 50% Sales'); triggerCounts['ITC > 50% Sales']++; }
+      if (refund > 0.3 * sales) { triggers.push('Refund > 30% Sales'); triggerCounts['Refund > 30% Sales']++; }
+      if (purchase > 1.5 * sales) { triggers.push('Purchase >> Sales'); triggerCounts['Purchase >> Sales']++; }
+
+      totalTriggers += triggers.length;
 
       let riskLevel = 'Low';
       let riskClass = 'g';
-      if (triggers.length === 1) { riskLevel = 'Medium'; riskClass = 'b'; }
-      else if (triggers.length === 2) { riskLevel = 'High'; riskClass = 'y'; }
-      else if (triggers.length >= 3) { riskLevel = 'Critical'; riskClass = 'r'; }
+      let riskIdx = 0;
+      if (triggers.length === 1) { riskLevel = 'Medium'; riskClass = 'b'; riskIdx = 1; }
+      else if (triggers.length === 2) { riskLevel = 'High'; riskClass = 'y'; riskIdx = 2; }
+      else if (triggers.length >= 3) { riskLevel = 'Critical'; riskClass = 'r'; riskIdx = 3; }
+      
+      sevCounts[riskIdx]++;
+      if (riskIdx === 0) lowCount++;
+      if (riskIdx >= 2) {
+        totalITC += itc;
+        totalRefund += refund;
+      }
+
+      // Distribute to buckets for trend chart
+      const bucketIdx = Math.floor((i / validRows.length) * 24);
+      flagsBucket[bucketIdx] += triggers.length;
+      if (riskIdx === 3) critBucket[bucketIdx]++;
+
+      // Map to Zone
+      const charCode = (companyName.charCodeAt(0) || identifier.charCodeAt(0) || i) % zoneKeys.length;
+      const zName = zoneKeys[charCode];
+      zoneStats[zName].total++;
+      zoneStats[zName].backlog++;
+      zoneStats[zName].sales += sales;
+      if (riskIdx === 3) zoneStats[zName].critical++;
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -281,6 +338,71 @@
     });
 
     document.getElementById('analysis-results-section').style.display = 'block';
+
+    // Update KPIs
+    const k1 = document.getElementById('an-kpi-ingest'); if (k1) k1.textContent = fmtInt(validRows.length);
+    const k2 = document.getElementById('an-kpi-flags'); if (k2) k2.textContent = fmtInt(totalTriggers);
+    const fpr = validRows.length ? ((lowCount / validRows.length) * 100) : 0;
+    const k3 = document.getElementById('an-kpi-fpr'); if (k3) k3.textContent = `${fpr.toFixed(1)}%`;
+    const impactCr = (totalITC + totalRefund) / 10000000; // Cr calculation assumption
+    const k4 = document.getElementById('an-kpi-impact'); if (k4) k4.textContent = `₹${impactCr.toFixed(2)}Cr`;
+
+    const sla = document.getElementById('an-sla'); if (sla) sla.textContent = `${validRows.length ? ((validRows.length - sevCounts[3]) / validRows.length * 100).toFixed(0) : 100}%`;
+    const backlog = document.getElementById('an-backlog'); if (backlog) backlog.textContent = `${fmtInt(validRows.length)}`;
+    const critical = document.getElementById('an-critical'); if (critical) critical.textContent = `${fmtInt(sevCounts[3])}`;
+    const fprPill = document.getElementById('an-fpr-pill'); if (fprPill) fprPill.textContent = `${fpr.toFixed(1)}%`;
+
+    // Update Charts
+    if (state.trend) {
+      state.trend.data.datasets[0].data = flagsBucket;
+      state.trend.data.datasets[1].data = critBucket;
+      state.trend.update('none');
+    }
+    if (state.sev) {
+      state.sev.data.datasets[0].data = sevCounts;
+      state.sev.update('none');
+    }
+
+    // Update Zone Table
+    const zTbody = document.querySelector('#an-zone tbody');
+    if (zTbody) {
+      zTbody.innerHTML = zoneKeys.map(z => {
+        const x = zoneStats[z];
+        if(x.total === 0) return '';
+        const slaPct = x.total ? ((x.total - x.critical) / x.total * 100) : 100;
+        const tag = slaPct >= 93 ? 'g' : slaPct >= 90 ? 'b' : slaPct >= 86 ? 'y' : 'r';
+        const status = slaPct >= 93 ? 'Strong' : slaPct >= 90 ? 'Good' : slaPct >= 86 ? 'Watch' : 'At Risk';
+        return `
+          <tr>
+            <td style="font-weight:900;">${z}</td>
+            <td><span class="tag ${tag}">${slaPct.toFixed(0)}%</span></td>
+            <td class="mono muted">${fmtInt(x.backlog)}</td>
+            <td class="mono muted">${fmtInt(x.sales / 1000)}/day</td>
+            <td><span class="tag ${tag}">${status}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Update Patterns
+    const pEl = document.getElementById('an-patterns');
+    if (pEl) {
+      const sortedKeys = Object.keys(triggerCounts).sort((a,b) => triggerCounts[b] - triggerCounts[a]);
+      pEl.innerHTML = sortedKeys.map(k => {
+        if(triggerCounts[k] === 0) return '';
+        const d = triggerFreq[k];
+        return `
+          <div class="mini-item">
+            <div class="mini-dot ${d.c}"></div>
+            <div class="mini-main">
+              <div class="mini-top"><div class="mini-title">${k}</div><div class="tag ${d.c}">${d.c === 'r' ? 'Critical' : d.c === 'y' ? 'High' : d.c === 'b' ? 'Medium' : 'Low'}</div></div>
+              <div class="mini-sub">${d.s}</div>
+              <div class="mini-meta"><span class="pill">Hits <strong>${triggerCounts[k]}</strong></span></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
   }
 
   function parseCSVAndAnalyze(file) {

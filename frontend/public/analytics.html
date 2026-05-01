@@ -107,16 +107,15 @@
 
     <section class="page-head">
       <div>
-        <div class="title">Operational analytics</div>
+        <div class="title">GST Fraud Analytics</div>
         <div class="subtitle">
-          Monitor invoice ingestion, fraud flags, network loops, and enforcement outcomes. This page is designed for leadership review:
-          it summarizes risk, efficiency, and impact with drill-down-ready charts. Values here are demo-realtime to showcase UI.
+          Monitor total bills processed, suspicious cases, circular trading loops, and estimated tax evasion. This page summarizes risk and efficiency using your uploaded CSV data.
         </div>
         <div class="pill-row">
           <div class="pill live"><strong>Live</strong> refresh every 3s</div>
-          <div class="pill info"><strong id="an-sla">92%</strong> SLA met</div>
-          <div class="pill warn"><strong id="an-backlog">21</strong> backlog</div>
-          <div class="pill danger"><strong id="an-critical">7</strong> critical loops</div>
+          <div class="pill info"><strong id="an-sla">92%</strong> Clean Data</div>
+          <div class="pill warn"><strong id="an-backlog">21</strong> Under Review</div>
+          <div class="pill danger"><strong id="an-critical">7</strong> Critical Fraud Loops</div>
         </div>
       </div>
       <div class="btn-row">
@@ -124,6 +123,10 @@
           <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
           Pause
         </button>
+        <a href="sample_indian_gst_data.csv" download class="btn ghost" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Get Indian Sample Data
+        </a>
         <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="if(window.InvoShield && window.InvoShield.parseCSVAndAnalyze && this.files[0]) window.InvoShield.parseCSVAndAnalyze(this.files[0])" />
         <button class="btn primary" id="an-export" onclick="document.getElementById('csv-upload').click()">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -134,24 +137,24 @@
 
     <section class="kpi-grid">
       <div class="kpi-box">
-        <div class="lbl">Invoices ingested</div>
+        <div class="lbl">Total Bills Processed</div>
         <div class="val" id="an-kpi-ingest">2,34,817</div>
         <div class="meta"><span class="chip b">Today</span><span class="muted">All sources</span></div>
       </div>
       <div class="kpi-box">
-        <div class="lbl">Flags raised</div>
+        <div class="lbl">Suspicious Cases</div>
         <div class="val" id="an-kpi-flags">1,284</div>
-        <div class="meta"><span class="chip r">Risk</span><span class="muted">Needs triage</span></div>
+        <div class="meta"><span class="chip r">High Risk</span><span class="muted">Needs review</span></div>
       </div>
       <div class="kpi-box">
-        <div class="lbl">False positive rate</div>
+        <div class="lbl">Safe / Genuine Cases</div>
         <div class="val" id="an-kpi-fpr">3.1%</div>
-        <div class="meta"><span class="chip g">Model v4.2</span><span class="muted">Rolling 7d</span></div>
+        <div class="meta"><span class="chip g">AI Checked</span><span class="muted">No triggers</span></div>
       </div>
       <div class="kpi-box">
-        <div class="lbl">Blocked / recovered</div>
+        <div class="lbl">Estimated Tax Fraud</div>
         <div class="val" id="an-kpi-impact">₹4.8Cr</div>
-        <div class="meta"><span class="chip y">Month</span><span class="muted">Net impact</span></div>
+        <div class="meta"><span class="chip y">Net</span><span class="muted">Potential evasion</span></div>
       </div>
     </section>
 
@@ -159,8 +162,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <div class="panel-title">Risk signal trend</div>
-            <div class="panel-sub">Rolling 24 points (demo) — flags & severity.</div>
+            <div class="panel-title">Fraud Risk Trend</div>
+            <div class="panel-sub">Trends across the uploaded dataset.</div>
           </div>
         </div>
         <div style="height: 280px;">
@@ -170,8 +173,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <div class="panel-title">Severity split</div>
-            <div class="panel-sub">Current distribution of alerts by severity.</div>
+            <div class="panel-title">Risk Level Breakdown</div>
+            <div class="panel-sub">Current distribution of GSTINs by risk level.</div>
           </div>
         </div>
         <div style="height: 280px;">
@@ -184,18 +187,18 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <div class="panel-title">Zone performance</div>
-            <div class="panel-sub">SLA, backlog, and throughput (demo data).</div>
+            <div class="panel-title">State-wise Performance</div>
+            <div class="panel-sub">SLA, Backlog, and Sales Volume (Cr) per state.</div>
           </div>
         </div>
         <div class="tbl-wrap">
           <table class="tbl" id="an-zone">
             <thead>
               <tr>
-                <th>Zone</th>
-                <th>SLA</th>
-                <th>Backlog</th>
-                <th>Throughput</th>
+                <th>State</th>
+                <th>Clean %</th>
+                <th>Pending Review</th>
+                <th>Sales Volume</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -207,8 +210,8 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <div class="panel-title">Top patterns</div>
-            <div class="panel-sub">What triggered most flags this hour.</div>
+            <div class="panel-title">Common Fraud Methods</div>
+            <div class="panel-sub">What triggered the most flags.</div>
           </div>
         </div>
         <div class="mini-list" id="an-patterns"></div>
@@ -217,33 +220,30 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <div class="panel-title">Model notes</div>
-            <div class="panel-sub">Quality tracking + guardrails.</div>
+            <div class="panel-title">Recommended Actions</div>
+            <div class="panel-sub">Suggested next steps for flagged cases.</div>
           </div>
         </div>
         <div class="mini-list">
           <div class="mini-item">
-            <div class="mini-dot g"></div>
+            <div class="mini-dot r"></div>
             <div class="mini-main">
-              <div class="mini-top"><div class="mini-title">Drift watch</div><div class="tag g">Stable</div></div>
-              <div class="mini-sub">Feature drift within bounds; seasonal adjustments applied to invoice velocity baseline.</div>
-              <div class="mini-meta"><span class="pill">Window <strong>30d</strong></span><span class="pill">Alerts <strong>low</strong></span></div>
+              <div class="mini-top"><div class="mini-title">Block E-Way Bills</div><div class="tag r">Urgent</div></div>
+              <div class="mini-sub">Instantly restrict generation of e-way bills for 'Critical' risk entities to prevent further tax loss.</div>
             </div>
           </div>
           <div class="mini-item">
             <div class="mini-dot y"></div>
             <div class="mini-main">
-              <div class="mini-top"><div class="mini-title">Calibration</div><div class="tag y">Tuning</div></div>
-              <div class="mini-sub">Critical band threshold tuned to reduce false positives without reducing recall for loop patterns.</div>
-              <div class="mini-meta"><span class="pill">Target FPR <strong>&lt;4%</strong></span><span class="pill">Current <strong id="an-fpr-pill">3.1%</strong></span></div>
+              <div class="mini-top"><div class="mini-title">Issue Show Cause Notices</div><div class="tag y">Pending</div></div>
+              <div class="mini-sub">Automatically draft and send GST notices (Form DRC-01) to traders with High ITC claims.</div>
             </div>
           </div>
           <div class="mini-item">
             <div class="mini-dot b"></div>
             <div class="mini-main">
-              <div class="mini-top"><div class="mini-title">Explainability</div><div class="tag b">On</div></div>
-              <div class="mini-sub">Each flag stores top contributing factors (velocity, mismatch, blacklist proximity, graph centrality).</div>
-              <div class="mini-meta"><span class="pill">Evidence <strong>attached</strong></span></div>
+              <div class="mini-top"><div class="mini-title">Physical Verification</div><div class="tag b">Actionable</div></div>
+              <div class="mini-sub">Dispatch tax officers to physically verify the registered office addresses of suspected shell companies.</div>
             </div>
           </div>
         </div>

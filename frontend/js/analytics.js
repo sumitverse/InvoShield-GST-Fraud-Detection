@@ -274,6 +274,8 @@
 
     let flagsBucket = new Array(24).fill(0);
     let critBucket = new Array(24).fill(0);
+    
+    let fraudAlerts = [];
 
     const validRows = rows.slice(1);
     validRows.forEach((row, i) => {
@@ -312,7 +314,7 @@
 
       // Distribute to buckets for trend chart
       const bucketIdx = Math.floor((i / validRows.length) * 24);
-      flagsBucket[bucketIdx] += triggers.length;
+      if (riskIdx > 0) flagsBucket[bucketIdx] += 1;
       if (riskIdx === 3) critBucket[bucketIdx]++;
 
       // Map to Zone
@@ -322,6 +324,21 @@
       zoneStats[zName].backlog++;
       zoneStats[zName].sales += sales;
       if (riskIdx === 3) zoneStats[zName].critical++;
+
+      if (riskIdx > 0) {
+        fraudAlerts.push({
+          id: `ALT-2025-${(1000 + i).toString().slice(-4)}`,
+          gstin: identifier,
+          entity: companyName,
+          detected: 'Just now',
+          score: Math.min(100, 50 + triggers.length * 15 + Math.floor(Math.random() * 10)),
+          amount: itc + refund > 0 ? (itc + refund) : (sales * 0.18),
+          severity: riskLevel.toUpperCase(),
+          riskClass: riskClass,
+          title: triggers.length > 0 ? triggers[0] : 'Suspicious Activity',
+          triggers: triggers
+        });
+      }
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -338,10 +355,12 @@
     });
 
     document.getElementById('analysis-results-section').style.display = 'block';
+    
+    sessionStorage.setItem('fraud_alerts_data', JSON.stringify(fraudAlerts));
 
     // Update KPIs
     const k1 = document.getElementById('an-kpi-ingest'); if (k1) k1.textContent = fmtInt(validRows.length);
-    const k2 = document.getElementById('an-kpi-flags'); if (k2) k2.textContent = fmtInt(totalTriggers);
+    const k2 = document.getElementById('an-kpi-flags'); if (k2) k2.textContent = fmtInt(fraudAlerts.length);
     const fpr = validRows.length ? ((lowCount / validRows.length) * 100) : 0;
     const k3 = document.getElementById('an-kpi-fpr'); if (k3) k3.textContent = `${fpr.toFixed(1)}%`;
     const impactCr = (totalITC + totalRefund) / 10000000; // Cr calculation assumption

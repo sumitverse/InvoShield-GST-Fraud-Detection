@@ -48,6 +48,13 @@
       '24DDDP3321M1Z4',
       '03EEEK7712N1Z1'
     ];
+    const companyNames = [
+      'Apex Traders Pvt Ltd',
+      'Sunrise Enterprises',
+      'Global Supply Co',
+      'Rajdhani Logistics',
+      'Metro Parts Ltd'
+    ];
 
     const now = new Date();
     const list = [];
@@ -57,10 +64,12 @@
       const status = i < 3 ? 'New' : pick(statuses);
       const priority = i < 2 ? 'Critical' : pick(priorities);
       const evidence = Math.floor(40 + Math.random() * 55);
+      const gstinIdx = Math.floor(Math.random() * gstins.length);
       list.push({
         id: `CASE-2026-${String(120 + i).padStart(4, '0')}`,
         title: pick(titles),
-        gstin: pick(gstins),
+        gstin: gstins[gstinIdx],
+        company: companyNames[gstinIdx],
         status,
         priority,
         officer: pick(officers),
@@ -94,6 +103,7 @@
           c.id.toLowerCase().includes(q) ||
           c.title.toLowerCase().includes(q) ||
           c.gstin.toLowerCase().includes(q) ||
+          c.company.toLowerCase().includes(q) ||
           c.officer.toLowerCase().includes(q)
         );
       })
@@ -108,7 +118,7 @@
         <td>
           <div style="font-weight:900; letter-spacing:-0.01em;">${c.id}</div>
           <div class="muted" style="margin-top:4px; font-size:0.78rem; line-height:1.45;">
-            ${c.title} · <span class="mono">${c.gstin}</span>
+            ${c.company} · ${c.title} · <span class="mono">${c.gstin}</span>
           </div>
         </td>
         <td><span class="tag ${tagClassForStatus(c.status)}">${c.status}</span></td>
@@ -152,7 +162,7 @@
         <div class="mini-dot ${tagClassForPriority(c.priority)}"></div>
         <div class="mini-main">
           <div class="mini-top"><div class="mini-title">${c.id}</div><div class="tag ${tagClassForStatus(c.status)}">${c.status}</div></div>
-          <div class="mini-sub"><strong>${c.title}</strong> · GSTIN <span class="mono">${c.gstin}</span> · Priority <strong>${c.priority}</strong></div>
+          <div class="mini-sub"><strong>${c.company}</strong> · ${c.title} · GSTIN <span class="mono">${c.gstin}</span> · Priority <strong>${c.priority}</strong></div>
           <div class="mini-meta">
             <span class="pill">Owner <strong>${c.officer}</strong></span>
             <span class="pill">Due <strong>${fmtDate(c.due)}</strong></span>

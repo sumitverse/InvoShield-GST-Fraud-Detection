@@ -662,7 +662,7 @@
                 <strong>Instructions:</strong> ${assignment.instructions}
               </div>` : ''}
               <div style="margin-top: 15px;">
-                <button class="btn btn-primary" onclick="window.location.href='/public/assignment-simple.html?alertId=${alertId}'">Assign Case</button>
+                <button class="btn btn-primary" onclick="window.location.href='assignment-simple.html?alertId=${alertId}'">Assign Case</button>
               <button class="btn btn-secondary" onclick="removeAssignment('${assignment.alertId}')">Remove Assignment</button>
               </div>
             </div>
@@ -673,7 +673,7 @@
     
     function assignThisCase() {
       console.log('Assign button clicked, alertId:', alertId);
-      window.location.href = `/public/assignment-simple.html?alertId=${alertId}`;
+      window.location.href = `assignment-simple.html?alertId=${alertId}`;
     }
     
     function removeAssignment(alertIdToRemove) {

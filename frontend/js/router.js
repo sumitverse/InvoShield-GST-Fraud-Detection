@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (link && link.getAttribute('href') && link.getAttribute('href') !== '#') {
             e.preventDefault();
             const url = link.getAttribute('href');
-            
+
             // Highlight the clicked link properly
             document.querySelectorAll('a.nav-item').forEach(el => el.classList.remove('active'));
             link.classList.add('active');
@@ -18,27 +18,27 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Immediately fade to black overlay
                 overlay.style.opacity = '1';
-                
+
                 // Wait for overlay to fully cover
                 await new Promise(resolve => setTimeout(resolve, 200));
-                
+
                 const response = await fetch(url);
                 const html = await response.text();
-                
+
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-                
+
                 document.title = doc.title;
 
                 // Swap sidebar too (keeps links + active states consistent)
                 const currentSidebar = document.querySelector('.sidebar');
                 const newSidebar = doc.querySelector('.sidebar');
                 if (currentSidebar && newSidebar) currentSidebar.innerHTML = newSidebar.innerHTML;
-                
+
                 const currentTopbar = document.querySelector('.topbar');
                 const newTopbar = doc.querySelector('.topbar');
                 if (currentTopbar && newTopbar) currentTopbar.innerHTML = newTopbar.innerHTML;
-                
+
                 const currentMain = document.querySelector('.main');
                 const newMain = doc.querySelector('.main');
                 if (currentMain && newMain) {
@@ -70,14 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 });
-                
+
                 // Wait for all CSS files to load
                 await Promise.all(cssLoadPromises);
-                
+
                 // Extra buffer for rendering
                 await new Promise(resolve => setTimeout(resolve, 50));
 
-                window.history.pushState({path: url}, '', url);
+                window.history.pushState({ path: url }, '', url);
 
                 const loadScript = (src) => new Promise((resolve, reject) => {
                     if (document.querySelector(`script[src="${src}"]`)) return resolve();
@@ -132,10 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     await loadScript('/js/reports.js');
                     if (window.InvoShield?.initReports) window.InvoShield.initReports();
                 }
-                
+
                 // Fade out overlay to reveal new page
                 overlay.style.opacity = '0';
-                
+
                 // Update user info
                 updateUserInfo();
             } catch (err) {
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('popstate', () => {
         window.location.reload();
     });
-    
+
     // Function to update user info in the UI
     function updateUserInfo() {
         try {
@@ -161,10 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const nameEls = document.querySelectorAll('.user-name');
                 const roleEls = document.querySelectorAll('.user-role');
                 const avatarEls = document.querySelectorAll('.user-avatar');
-                
+
                 nameEls.forEach(el => el.textContent = user.name || 'User');
                 roleEls.forEach(el => el.textContent = user.role || 'Officer');
-                
+
                 if (user.name) {
                     const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
                     avatarEls.forEach(el => el.textContent = initials);
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error updating user info:', e);
         }
     }
-    
+
     // Initial call on load
     updateUserInfo();
 });

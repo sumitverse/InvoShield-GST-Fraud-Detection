@@ -572,7 +572,7 @@
       // Go to details page immediately to test assignment reflection
       setTimeout(() => {
         console.log('Redirecting to details page with alertId:', alertId.trim());
-        window.location.href = `/public/alert-details.html?alertId=${encodeURIComponent(alertId.trim())}`;
+        window.location.href = `alert-details.html?alertId=${encodeURIComponent(alertId.trim())}`;
       }, 1000); // Wait 1 second to show notification, then go to details
     });
     

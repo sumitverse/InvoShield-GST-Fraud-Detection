@@ -25,6 +25,116 @@ class CurrencyExchange {
     }
     
     this.startRealTimeUpdates();
+    this.initializeKPIs();
+    this.setupCSVDataListener();
+  }
+
+  setupCSVDataListener() {
+    // Listen for custom event from analytics page
+    window.addEventListener('csvDataUpdated', (e) => {
+      this.processCSVDataForDashboard(e.detail.csvData);
+    });
+
+    // Listen for storage changes from other tabs
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'analytics_csv_data') {
+        this.processCSVDataForDashboard(e.newValue);
+      }
+    });
+
+    // Check for existing CSV data on page load
+    const existingData = sessionStorage.getItem('analytics_csv_data');
+    if (existingData) {
+      this.processCSVDataForDashboard(existingData);
+    }
+  }
+
+  processCSVDataForDashboard(csvText) {
+    if (!csvText) {
+      this.updateKPIs(0, 0, 0, 0);
+      return;
+    }
+
+    try {
+      const rows = csvText.split('\n').map(r => r.trim()).filter(r => r);
+      if (rows.length < 2) return;
+
+      const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
+      
+      const idx = {
+        sales: headers.findIndex(h => h.includes('sales')),
+        purchase: headers.findIndex(h => h.includes('purchase')),
+        itc: headers.findIndex(h => h.includes('itc') || h.includes('tax')),
+        refund: headers.findIndex(h => h.includes('refund')),
+        id: headers.findIndex(h => h.includes('gstin') || h.includes('identifier') || (h.includes('id') && !h.includes('name'))),
+        company: headers.findIndex(h => h.includes('company') || h.includes('name'))
+      };
+
+      if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) {
+        return;
+      }
+
+      const validRows = rows.slice(1);
+      let totalSales = 0, totalITC = 0, totalRefund = 0, fraudCount = 0, lowCount = 0;
+
+      validRows.forEach((row, i) => {
+        const cols = row.split(',').map(c => c.trim());
+        const sales = parseFloat(cols[idx.sales]) || 0;
+        const purchase = parseFloat(cols[idx.purchase]) || 0;
+        const itc = parseFloat(cols[idx.itc]) || 0;
+        const refund = parseFloat(cols[idx.refund]) || 0;
+
+        totalSales += sales;
+
+        let triggers = [];
+        if (itc > 0.5 * sales) { triggers.push('ITC > 50% Sales'); }
+        if (refund > 0.3 * sales) { triggers.push('Refund > 30% Sales'); }
+        if (purchase > 1.5 * sales) { triggers.push('Purchase >> Sales'); }
+
+        if (triggers.length > 0) {
+          fraudCount++;
+          if (triggers.length === 0) lowCount++;
+        } else {
+          lowCount++;
+        }
+
+        if (triggers.length >= 2) {
+          totalITC += itc;
+          totalRefund += refund;
+        }
+      });
+
+      const totalInvoices = validRows.length;
+      const fraudAmount = (totalITC + totalRefund) / 10000000; // Convert to Cr
+      const accuracy = totalInvoices > 0 ? ((lowCount / totalInvoices) * 100) : 0;
+
+      this.updateKPIs(totalInvoices, fraudCount, fraudAmount, accuracy);
+    } catch (error) {
+      console.error('Error processing CSV data for dashboard:', error);
+    }
+  }
+
+  initializeKPIs() {
+    // Set KPIs to zero if no CSV data is available
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+      this.updateKPIs(0, 0, 0, 0);
+    }
+  }
+
+  updateKPIs(invoices, fraudCases, fraudAmount, accuracy) {
+    const kpi1 = document.querySelector('.kpi-val.blue');
+    const kpi2 = document.querySelector('.kpi-val.red');
+    const kpi3 = document.querySelector('.kpi-val.yellow');
+    const kpi4 = document.querySelector('.kpi-val.green');
+
+    if (kpi1) kpi1.textContent = this.formatNumber(invoices);
+    if (kpi2) kpi2.textContent = this.formatNumber(fraudCases);
+    if (kpi3) kpi3.textContent = `₹${fraudAmount.toFixed(1)}Cr`;
+    if (kpi4) kpi4.textContent = `${accuracy.toFixed(1)}%`;
+  }
+
+  formatNumber(n) {
+    return new Intl.NumberFormat('en-IN').format(Math.round(n));
   }
 
   startRealTimeUpdates() {

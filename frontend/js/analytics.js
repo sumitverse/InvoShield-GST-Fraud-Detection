@@ -119,6 +119,12 @@
     const tbody = document.querySelector('#an-zone tbody');
     if (!tbody) return;
 
+    // Only show demo data if no CSV has been uploaded
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+      tbody.innerHTML = '';
+      return;
+    }
+
     const zones = [
       { z: 'Punjab', sla: 92, backlog: 21, thr: 1840 },
       { z: 'Delhi', sla: 88, backlog: 34, thr: 2105 },
@@ -151,6 +157,12 @@
     const el = document.getElementById('an-patterns');
     if (!el) return;
 
+    // Only show demo data if no CSV has been uploaded
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+      el.innerHTML = '';
+      return;
+    }
+
     const items = [
       { c: 'r', t: 'Circular trading loop', s: 'Closed-ring counterparties detected with high invoice velocity.' },
       { c: 'y', t: 'Duplicate invoice filing', s: 'Multiple invoices share near-identical metadata and timing.' },
@@ -171,39 +183,56 @@
   }
 
   function tickKpis() {
-    const ingest = 234817 + Math.sin(state.t / 6) * 420 + Math.random() * 60;
-    const flags = 1284 + Math.sin(state.t / 5) * 120 + Math.random() * 25;
-    const fpr = 3.1 + Math.cos(state.t / 10) * 0.6;
-    const impact = 4.8 + Math.sin(state.t / 14) * 0.4;
+    // Only show demo data if no CSV has been uploaded
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+      const ingest = 0;
+      const flags = 0;
+      const fpr = 0;
+      const impact = 0;
 
-    const k1 = document.getElementById('an-kpi-ingest'); if (k1) k1.textContent = fmtInt(ingest);
-    const k2 = document.getElementById('an-kpi-flags'); if (k2) k2.textContent = fmtInt(flags);
-    const k3 = document.getElementById('an-kpi-fpr'); if (k3) k3.textContent = `${clamp(fpr, 1.6, 6.2).toFixed(1)}%`;
-    const k4 = document.getElementById('an-kpi-impact'); if (k4) k4.textContent = `₹${clamp(impact, 3.4, 6.8).toFixed(1)}Cr`;
+      const k1 = document.getElementById('an-kpi-ingest'); if (k1) k1.textContent = fmtInt(ingest);
+      const k2 = document.getElementById('an-kpi-flags'); if (k2) k2.textContent = fmtInt(flags);
+      const k3 = document.getElementById('an-kpi-fpr'); if (k3) k3.textContent = `${fpr.toFixed(1)}%`;
+      const k4 = document.getElementById('an-kpi-impact'); if (k4) k4.textContent = `₹${impact.toFixed(1)}Cr`;
 
-    const sla = document.getElementById('an-sla'); if (sla) sla.textContent = `${clamp(92 + Math.sin(state.t / 9) * 3, 84, 98).toFixed(0)}%`;
-    const backlog = document.getElementById('an-backlog'); if (backlog) backlog.textContent = `${fmtInt(Math.max(8, Math.round(21 + Math.cos(state.t / 7) * 10)))}`;
-    const critical = document.getElementById('an-critical'); if (critical) critical.textContent = `${fmtInt(Math.max(1, Math.round(7 + Math.sin(state.t / 6) * 3)))}`;
+      const sla = document.getElementById('an-sla'); if (sla) sla.textContent = '100%';
+      const backlog = document.getElementById('an-backlog'); if (backlog) backlog.textContent = '0';
+      const critical = document.getElementById('an-critical'); if (critical) critical.textContent = '0';
 
-    const fprPill = document.getElementById('an-fpr-pill'); if (fprPill) fprPill.textContent = `${clamp(fpr, 1.6, 6.2).toFixed(1)}%`;
+      const fprPill = document.getElementById('an-fpr-pill'); if (fprPill) fprPill.textContent = `${fpr.toFixed(1)}%`;
+    }
   }
 
   function tickCharts() {
-    if (!state.trend || !state.sev) return;
-    const dsFlags = state.trend.data.datasets[0].data;
-    const dsCrit = state.trend.data.datasets[1].data;
-    dsFlags.shift();
-    dsCrit.shift();
-    dsFlags.push(48 + Math.abs(Math.sin(state.t / 3)) * 18 + Math.random() * 8);
-    dsCrit.push(6 + Math.abs(Math.cos(state.t / 4)) * 5 + Math.random() * 1.4);
-    state.trend.update('none');
+    // Only update charts with demo data if no CSV has been uploaded
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+      if (!state.trend || !state.sev) return;
+      // Set charts to empty state
+      const emptyFlags = new Array(24).fill(0);
+      const emptyCrit = new Array(24).fill(0);
+      state.trend.data.datasets[0].data = emptyFlags;
+      state.trend.data.datasets[1].data = emptyCrit;
+      state.trend.update('none');
 
-    const crit = Math.max(4, Math.round(7 + Math.sin(state.t / 6) * 3));
-    const high = Math.max(10, Math.round(18 + Math.cos(state.t / 7) * 4));
-    const med = Math.max(20, Math.round(33 + Math.sin(state.t / 8) * 6));
-    const low = Math.max(25, 100 - (crit + high + med));
-    state.sev.data.datasets[0].data = [low, med, high, crit];
-    state.sev.update('none');
+      state.sev.data.datasets[0].data = [0, 0, 0, 0];
+      state.sev.update('none');
+    } else {
+      if (!state.trend || !state.sev) return;
+      const dsFlags = state.trend.data.datasets[0].data;
+      const dsCrit = state.trend.data.datasets[1].data;
+      dsFlags.shift();
+      dsCrit.shift();
+      dsFlags.push(48 + Math.abs(Math.sin(state.t / 3)) * 18 + Math.random() * 8);
+      dsCrit.push(6 + Math.abs(Math.cos(state.t / 4)) * 5 + Math.random() * 1.4);
+      state.trend.update('none');
+
+      const crit = Math.max(4, Math.round(7 + Math.sin(state.t / 6) * 3));
+      const high = Math.max(10, Math.round(18 + Math.cos(state.t / 7) * 4));
+      const med = Math.max(20, Math.round(33 + Math.sin(state.t / 8) * 6));
+      const low = Math.max(25, 100 - (crit + high + med));
+      state.sev.data.datasets[0].data = [low, med, high, crit];
+      state.sev.update('none');
+    }
   }
 
   function start() {
@@ -430,6 +459,12 @@
       const text = e.target.result;
       sessionStorage.setItem('analytics_csv_data', text);
       processCSVText(text);
+      
+      // Dispatch custom event to notify dashboard of CSV update
+      window.dispatchEvent(new CustomEvent('csvDataUpdated', { 
+        detail: { csvData: text } 
+      }));
+      
       document.getElementById('analysis-results-section').scrollIntoView({ behavior: 'smooth' });
     };
     reader.readAsText(file);

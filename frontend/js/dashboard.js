@@ -1,5 +1,5 @@
-// Real-time Currency Exchange API integration
-class CurrencyExchange {
+// Dashboard Controller with Dynamic Charts & Exchange Rates
+class DashboardController {
   constructor() {
     this.apiUrl = 'https://open.er-api.com/v6/latest/INR';
     this.container = document.getElementById('currency-rates');
@@ -7,9 +7,12 @@ class CurrencyExchange {
     this.amountInput = document.getElementById('convert-amount');
     this.convertBtn = document.getElementById('convert-btn');
     this.resultDiv = document.getElementById('conversion-result');
-    this.refreshInterval = 30000; // Update every 30 seconds (free tier limit)
+    this.refreshInterval = 30000; // Update every 30 seconds
     this.previousRates = {};
     this.allRates = {};
+    
+    this.severityChart = null;
+    this.trendChart = null;
     
     // Event listeners
     if (this.searchInput) {
@@ -25,24 +28,79 @@ class CurrencyExchange {
     }
     
     this.startRealTimeUpdates();
+    this.initCharts();
     this.initializeKPIs();
     this.setupCSVDataListener();
   }
 
+  initCharts() {
+    if (typeof Chart === 'undefined') return;
+
+    const sevEl = document.getElementById('dashSeverityChart');
+    const trendEl = document.getElementById('dashTrendChart');
+
+    if (sevEl) {
+      this.severityChart = new Chart(sevEl, {
+        type: 'doughnut',
+        data: {
+          labels: ['Low', 'Medium', 'High', 'Critical'],
+          datasets: [{
+            data: [0, 0, 0, 0],
+            backgroundColor: ['rgba(57,255,140,0.25)', 'rgba(79,163,255,0.22)', 'rgba(255,193,58,0.25)', 'rgba(255,79,79,0.25)'],
+            borderColor: ['rgba(57,255,140,0.65)', 'rgba(79,163,255,0.65)', 'rgba(255,193,58,0.65)', 'rgba(255,79,79,0.65)'],
+            borderWidth: 1.5,
+            hoverOffset: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '72%',
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(15,20,23,0.92)', titleColor: '#eef2ee', bodyColor: '#eef2ee' } }
+        }
+      });
+    }
+
+    if (trendEl) {
+      const gridColor = 'rgba(255,255,255,0.06)';
+      const tickColor = 'rgba(255,255,255,0.35)';
+      this.trendChart = new Chart(trendEl, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Fraud Flags',
+            data: [],
+            backgroundColor: 'rgba(255,79,79,0.1)',
+            borderColor: 'rgba(255,79,79,0.9)',
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+            pointRadius: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: tickColor, maxTicksLimit: 12 } },
+            y: { grid: { color: gridColor }, ticks: { color: tickColor } }
+          }
+        }
+      });
+    }
+  }
+
   setupCSVDataListener() {
-    // Listen for custom event from analytics page
     window.addEventListener('csvDataUpdated', (e) => {
       this.processCSVDataForDashboard(e.detail.csvData);
     });
-
-    // Listen for storage changes from other tabs
     window.addEventListener('storage', (e) => {
       if (e.key === 'analytics_csv_data') {
         this.processCSVDataForDashboard(e.newValue);
       }
     });
-
-    // Check for existing CSV data on page load
     const existingData = sessionStorage.getItem('analytics_csv_data');
     if (existingData) {
       this.processCSVDataForDashboard(existingData);
@@ -50,8 +108,15 @@ class CurrencyExchange {
   }
 
   processCSVDataForDashboard(csvText) {
+    const emptyState = document.getElementById('dash-empty-state');
+    const midRow = document.getElementById('dash-mid-row');
+    const botRow = document.getElementById('dash-bot-row');
+
     if (!csvText) {
       this.updateKPIs(0, 0, 0, 0);
+      if (emptyState) emptyState.style.display = 'block';
+      if (midRow) midRow.style.display = 'none';
+      if (botRow) botRow.style.display = 'none';
       return;
     }
 
@@ -59,8 +124,11 @@ class CurrencyExchange {
       const rows = csvText.split('\n').map(r => r.trim()).filter(r => r);
       if (rows.length < 2) return;
 
+      if (emptyState) emptyState.style.display = 'none';
+      if (midRow) midRow.style.display = 'grid';
+      if (botRow) botRow.style.display = 'grid';
+
       const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
-      
       const idx = {
         sales: headers.findIndex(h => h.includes('sales')),
         purchase: headers.findIndex(h => h.includes('purchase')),
@@ -70,12 +138,18 @@ class CurrencyExchange {
         company: headers.findIndex(h => h.includes('company') || h.includes('name'))
       };
 
-      if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) {
-        return;
-      }
+      if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) return;
 
       const validRows = rows.slice(1);
       let totalSales = 0, totalITC = 0, totalRefund = 0, fraudCount = 0, lowCount = 0;
+      let sevCounts = [0, 0, 0, 0]; // Low, Med, High, Crit
+      let alerts = [];
+      let entities = [];
+      let triggerCounts = { 'ITC Mismatch': 0, 'High Refund': 0, 'Circular Trading': 0 };
+
+      // For trend chart (buckets)
+      const numBuckets = 20;
+      let trendBuckets = new Array(numBuckets).fill(0);
 
       validRows.forEach((row, i) => {
         const cols = row.split(',').map(c => c.trim());
@@ -83,39 +157,160 @@ class CurrencyExchange {
         const purchase = parseFloat(cols[idx.purchase]) || 0;
         const itc = parseFloat(cols[idx.itc]) || 0;
         const refund = parseFloat(cols[idx.refund]) || 0;
+        const gstin = idx.id !== -1 ? cols[idx.id] : `Row ${i + 1}`;
+        const company = idx.company !== -1 ? cols[idx.company] : 'Unknown Entity';
 
         totalSales += sales;
 
         let triggers = [];
-        if (itc > 0.5 * sales) { triggers.push('ITC > 50% Sales'); }
-        if (refund > 0.3 * sales) { triggers.push('Refund > 30% Sales'); }
-        if (purchase > 1.5 * sales) { triggers.push('Purchase >> Sales'); }
+        if (itc > 0.5 * sales) { triggers.push('ITC Mismatch'); triggerCounts['ITC Mismatch']++; }
+        if (refund > 0.3 * sales) { triggers.push('High Refund'); triggerCounts['High Refund']++; }
+        if (purchase > 1.5 * sales) { triggers.push('Circular Trading'); triggerCounts['Circular Trading']++; }
 
-        if (triggers.length > 0) {
+        let riskLevel = 'Low';
+        let riskClass = 'g';
+        let riskIdx = 0;
+        if (triggers.length === 1) { riskLevel = 'Medium'; riskClass = 'b'; riskIdx = 1; }
+        else if (triggers.length === 2) { riskLevel = 'High'; riskClass = 'y'; riskIdx = 2; }
+        else if (triggers.length >= 3) { riskLevel = 'Critical'; riskClass = 'r'; riskIdx = 3; }
+
+        sevCounts[riskIdx]++;
+        if (riskIdx > 0) {
           fraudCount++;
-          if (triggers.length === 0) lowCount++;
+          trendBuckets[Math.floor((i / validRows.length) * numBuckets)]++;
+          
+          let alertAmt = itc + refund > 0 ? (itc + refund) : sales * 0.18;
+          entities.push({ gstin, company, amount: alertAmt, triggers, riskLevel, riskClass, riskIdx });
+          
+          if (alerts.length < 5) {
+            alerts.push({
+              title: triggers[0],
+              sub: `${company} flagged for suspicious patterns.`,
+              time: `${Math.floor(Math.random() * 10) + 1}m ago`,
+              riskClass, riskLevel
+            });
+          }
         } else {
           lowCount++;
         }
 
-        if (triggers.length >= 2) {
+        if (riskIdx >= 2) {
           totalITC += itc;
           totalRefund += refund;
         }
       });
 
       const totalInvoices = validRows.length;
-      const fraudAmount = (totalITC + totalRefund) / 10000000; // Convert to Cr
+      const fraudAmount = (totalITC + totalRefund) / 10000000;
       const accuracy = totalInvoices > 0 ? ((lowCount / totalInvoices) * 100) : 0;
-
       this.updateKPIs(totalInvoices, fraudCount, fraudAmount, accuracy);
+
+      // Render Donut Chart
+      if (this.severityChart) {
+        this.severityChart.data.datasets[0].data = sevCounts;
+        this.severityChart.update();
+        document.getElementById('dash-severity-total').textContent = fraudCount;
+
+        const legendEl = document.getElementById('dash-donut-legend');
+        if (legendEl) {
+          const colors = ['var(--green)', 'var(--blue)', 'var(--yellow)', 'var(--red)'];
+          const labels = ['Low', 'Medium', 'High', 'Critical'];
+          legendEl.innerHTML = labels.map((l, i) => `
+            <div class="legend-item" style="margin-bottom:8px;">
+              <div class="legend-dot" style="background: ${colors[i]}; box-shadow: 0 0 5px ${colors[i]};"></div>
+              <div class="legend-label">${l}</div>
+              <div class="legend-val">${sevCounts[i]}</div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Render Trigger Gauges
+      const gaugesEl = document.getElementById('dash-gauge-list');
+      if (gaugesEl) {
+        const totalTriggers = triggerCounts['ITC Mismatch'] + triggerCounts['High Refund'] + triggerCounts['Circular Trading'];
+        if (totalTriggers === 0) {
+          gaugesEl.innerHTML = '<div style="color:var(--text-2); font-size:0.8rem; padding:10px;">No triggers detected.</div>';
+        } else {
+          const triggersInfo = [
+            { label: 'Circular Trading', val: triggerCounts['Circular Trading'], colorClass: 'red' },
+            { label: 'High Refund', val: triggerCounts['High Refund'], colorClass: 'yellow' },
+            { label: 'ITC Mismatch', val: triggerCounts['ITC Mismatch'], colorClass: 'blue' }
+          ];
+          
+          gaugesEl.innerHTML = triggersInfo.map(t => {
+            const pct = Math.round((t.val / totalTriggers) * 100);
+            return `
+              <div class="gauge-item">
+                <div class="gauge-header">
+                  <span class="gauge-label">${t.label}</span>
+                  <span class="gauge-val">${t.val} (${pct}%)</span>
+                </div>
+                <div class="gauge-track">
+                  <div class="gauge-fill ${t.colorClass}" style="width: ${pct}%;"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // Render Trend Chart
+      if (this.trendChart) {
+        this.trendChart.data.labels = new Array(numBuckets).fill('').map((_, i) => `B${i+1}`);
+        this.trendChart.data.datasets[0].data = trendBuckets;
+        this.trendChart.update();
+      }
+
+      // Render Recent Alerts
+      const alertsEl = document.getElementById('dash-alert-list');
+      if (alertsEl) {
+        if (alerts.length === 0) {
+          alertsEl.innerHTML = '<div style="color:var(--text-2); font-size:0.8rem; padding:10px;">No alerts detected.</div>';
+        } else {
+          alertsEl.innerHTML = alerts.map(a => `
+            <div class="alert-row">
+              <div class="alert-dot-sm ${a.riskClass}"></div>
+              <div class="alert-text">
+                <div class="alert-title-sm">${a.title}</div>
+                <div class="alert-sub-sm">${a.sub}</div>
+              </div>
+              <div class="alert-meta">
+                <div class="risk-pill ${a.riskLevel === 'Critical' || a.riskLevel === 'High' ? 'high' : a.riskLevel === 'Medium' ? 'med' : 'low'}">${a.riskLevel}</div>
+                <div class="alert-time-sm">${a.time}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Render Top Entities
+      const tableBody = document.getElementById('dash-entities-table');
+      if (tableBody) {
+        entities.sort((a, b) => b.riskIdx - a.riskIdx || b.amount - a.amount);
+        const topEntities = entities.slice(0, 5);
+        
+        if (topEntities.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-2); padding:20px;">No suspicious entities found.</td></tr>';
+        } else {
+          tableBody.innerHTML = topEntities.map(e => `
+            <tr>
+              <td class="td-gstin">${e.gstin}</td>
+              <td style="color:var(--text-2); font-size:0.8rem;">${e.company}</td>
+              <td class="td-amount" style="color:var(--red);">₹${this.formatNumber(e.amount)}</td>
+              <td style="font-size:0.75rem;">${e.triggers.join(', ')}</td>
+              <td><span class="td-status ${e.riskIdx >= 2 ? 'flagged' : 'review'}">${e.riskLevel}</span></td>
+            </tr>
+          `).join('');
+        }
+      }
+
     } catch (error) {
       console.error('Error processing CSV data for dashboard:', error);
     }
   }
 
   initializeKPIs() {
-    // Set KPIs to zero if no CSV data is available
     if (!sessionStorage.getItem('analytics_csv_data')) {
       this.updateKPIs(0, 0, 0, 0);
     }
@@ -318,7 +513,7 @@ class CurrencyExchange {
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', () => {
-  const exchange = new CurrencyExchange();
+  const dashboard = new DashboardController();
 });
 
 function logout() {

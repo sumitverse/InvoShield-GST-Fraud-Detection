@@ -154,7 +154,87 @@
       </div>
     </div>
 
-    <p style="padding:14px 0;color:var(--text-2);font-size:.8rem;text-align:center;">Charts and tables will render with full dataset when API is integrated.</p>
+    <div class="mid-row" id="dash-mid-row" style="display: none;">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Risk Severity Distribution</div>
+        </div>
+        <div class="donut-wrap" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 20px; margin-top: -10px;">
+          <div class="donut-svg" style="width: 160px; height: 160px; position: relative;">
+            <canvas id="dashSeverityChart"></canvas>
+            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+              <span id="dash-severity-total" style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-d); color: var(--text-1);">0</span>
+              <span style="font-size: 0.6rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; margin-top: -2px;">Total Flags</span>
+            </div>
+          </div>
+          <div class="donut-legend" id="dash-donut-legend" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; width: 100%;">
+            <!-- Legend will be populated by JS -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Fraud Trigger Frequency</div>
+        </div>
+        <div class="gauge-list" id="dash-gauge-list" style="margin-top: 10px;">
+          <!-- Gauges populated by JS -->
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Recent Alerts</div>
+          <div class="card-action" onclick="window.location.href='fraud-alert.html'">View All</div>
+        </div>
+        <div class="alert-list" id="dash-alert-list">
+          <!-- Alerts populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="bot-row" id="dash-bot-row" style="display: none; margin-top: 20px; margin-bottom: 20px;">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Top Suspicious Entities</div>
+          <div class="card-action" onclick="window.location.href='entities.html'">View Entities</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>GSTIN</th>
+                <th>Entity Name</th>
+                <th>Flagged Amt</th>
+                <th>Triggers</th>
+                <th>Risk</th>
+              </tr>
+            </thead>
+            <tbody id="dash-entities-table">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Detection Trends</div>
+        </div>
+        <div class="chart-wrap" style="height: 220px; width: 100%;">
+          <canvas id="dashTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="dash-empty-state" style="padding: 60px 0; text-align: center; background: var(--bg-card); border: 1px dashed var(--border); border-radius: var(--radius); margin-bottom: 20px;">
+      <div style="margin-bottom: 16px;">
+        <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; stroke: var(--text-3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      </div>
+      <div style="font-family: var(--font-d); font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin-bottom: 8px;">No Data Loaded</div>
+      <div style="font-size: 0.9rem; color: var(--text-2); max-width: 340px; margin: 0 auto 20px;">Upload a CSV file in the Analytics section to populate the dashboard charts and tables with real-time data.</div>
+      <button onclick="window.location.href='analytics.html'" style="background: var(--green-dim); color: var(--green); border: 1px solid rgba(57,255,140,0.3); padding: 10px 20px; border-radius: var(--radius-sm); font-family: var(--font-b); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+        Go to Analytics
+      </button>
+    </div>
 
     <div class="currency-section">
       <div class="currency-title">

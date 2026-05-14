@@ -565,19 +565,19 @@
           <div class="detail-grid">
             <div class="detail-item">
               <span class="meta-label">GSTIN</span>
-              <span class="meta-value" id="gstin">27AABC1234D1Z5</span>
+              <span class="meta-value" id="gstin">Loading...</span>
             </div>
             <div class="detail-item">
               <span class="meta-label">Entity</span>
-              <span class="meta-value" id="entity">Apex Traders Pvt Ltd</span>
+              <span class="meta-value" id="entity">Loading...</span>
             </div>
             <div class="detail-item">
               <span class="meta-label">Pattern Score</span>
-              <span class="meta-value" id="patternScore">98/100</span>
+              <span class="meta-value" id="patternScore">Loading...</span>
             </div>
             <div class="detail-item">
               <span class="meta-label">Confidence</span>
-              <span class="meta-value" id="confidence">95%</span>
+              <span class="meta-value" id="confidence">Loading...</span>
             </div>
           </div>
         </div>
@@ -608,6 +608,65 @@
     
     // Update page with alert ID
     document.getElementById('alertId').textContent = alertId;
+    
+    // Load alert data from sessionStorage and populate fields
+    function loadAlertData() {
+      try {
+        const storedAlerts = sessionStorage.getItem('fraud_alerts_data');
+        if (storedAlerts) {
+          const alerts = JSON.parse(storedAlerts);
+          const alert = alerts.find(a => a.id === alertId);
+          
+          if (alert) {
+            console.log('Found alert data:', alert);
+            
+            // Update entity name
+            if (alert.entity) {
+              document.getElementById('entity').textContent = alert.entity;
+            }
+            
+            // Update GSTIN
+            if (alert.gstin) {
+              document.getElementById('gstin').textContent = alert.gstin;
+            }
+            
+            // Update title
+            if (alert.title) {
+              document.getElementById('alertTitle').textContent = alert.title;
+            }
+            
+            // Update severity
+            if (alert.severity) {
+              const severityEl = document.getElementById('alertSeverity');
+              severityEl.textContent = alert.severity;
+              severityEl.className = 'meta-value severity-' + alert.severity.toLowerCase();
+            }
+            
+            // Update amount
+            if (alert.amount) {
+              const inrFormat = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(alert.amount);
+              document.getElementById('alertAmount').textContent = inrFormat;
+            }
+            
+            // Update pattern score
+            if (alert.score) {
+              document.getElementById('patternScore').textContent = alert.score + '/100';
+            }
+            
+            // Update detected time
+            if (alert.detected) {
+              document.getElementById('alertTime').textContent = alert.detected;
+            }
+          } else {
+            console.log('Alert not found with ID:', alertId);
+          }
+        } else {
+          console.log('No fraud alerts data in sessionStorage');
+        }
+      } catch (error) {
+        console.error('Error loading alert data:', error);
+      }
+    }
     
     // Load assignment information
     function loadAssignmentInfo() {
@@ -714,9 +773,8 @@
     }
     
     // Load assignment info when page loads
-    setTimeout(() => {
-      loadAssignmentInfo();
-    }, 500); // Wait 500ms to ensure localStorage is updated
+    loadAlertData();
+    loadAssignmentInfo();
   </script>
   <style>
     ::-webkit-scrollbar { width: 4px; }

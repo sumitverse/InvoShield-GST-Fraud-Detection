@@ -6,21 +6,16 @@
 
   async function loadCSVData() {
     try {
-      console.log('Loading CSV data for invoices...');
-      const response = await fetch('http://localhost:5000/api/data/csv', {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache'
-      });
-      
-      if (!response.ok) {
-        console.warn('Could not load CSV from backend, using empty array.');
+      // Only load data if CSV has been uploaded in analytics page
+      const csvText = sessionStorage.getItem('analytics_csv_data');
+      if (!csvText) {
+        console.log('No CSV data uploaded in analytics page. Invoice data will not be loaded.');
         invoices = [];
         renderTable();
         return;
       }
-      
-      const csvText = await response.text();
+
+      console.log('Loading CSV data for invoices from session storage...');
       const lines = csvText.split('\n').filter(line => line.trim());
 
       if (lines.length <= 1) {
@@ -238,6 +233,14 @@
 
       if (response.ok) {
         console.log('Invoice saved successfully to CSV');
+        
+        // Append to local session storage to keep UI in sync
+        let localCsv = sessionStorage.getItem('analytics_csv_data');
+        if (localCsv) {
+          const newCsvLine = `\n${invoice.gstin},"${invoice.entity}",${invoice.amount},0,0,0,Pending`;
+          sessionStorage.setItem('analytics_csv_data', localCsv + newCsvLine);
+        }
+        
         setTimeout(loadCSVData, 1000);
       } else {
         console.error('Failed to save invoice to CSV');

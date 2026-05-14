@@ -367,6 +367,14 @@ const itemsPerPage = 10;
 // Load CSV data
 async function loadCSVData() {
   try {
+    // Only load data if CSV has been uploaded in analytics page
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+      console.log('No CSV data uploaded in analytics page. Invoice data will not be loaded.');
+      invoices = [];
+      renderTable();
+      return;
+    }
+
     const response = await fetch('../backend/data/real_companies_gst_data.csv');
     const csvText = await response.text();
     const lines = csvText.split('\n').filter(line => line.trim());

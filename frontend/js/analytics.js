@@ -23,8 +23,16 @@
     const tickColor = 'rgba(255,255,255,0.35)';
 
     const labels = Array.from({ length: 24 }, (_, i) => `${24 - i}m`);
-    const baseFlags = Array.from({ length: 24 }, (_, i) => 48 + Math.sin(i / 2.4) * 10 + Math.random() * 6);
-    const baseCrit = Array.from({ length: 24 }, (_, i) => 6 + Math.abs(Math.sin(i / 3.1)) * 3 + Math.random());
+    
+    // Check if CSV has been uploaded - if not, initialize with flat/empty data
+    const hasCsvData = sessionStorage.getItem('analytics_csv_data');
+    
+    const baseFlags = hasCsvData 
+      ? Array.from({ length: 24 }, (_, i) => 48 + Math.sin(i / 2.4) * 10 + Math.random() * 6)
+      : new Array(24).fill(0);
+    const baseCrit = hasCsvData
+      ? Array.from({ length: 24 }, (_, i) => 6 + Math.abs(Math.sin(i / 3.1)) * 3 + Math.random())
+      : new Array(24).fill(0);
 
     state.trend = new Chart(trendEl, {
       type: 'line',
@@ -73,13 +81,15 @@
       }
     });
 
+    const sevData = hasCsvData ? [42, 33, 18, 7] : [0, 0, 0, 0];
+
     state.sev = new Chart(sevEl, {
       type: 'doughnut',
       data: {
         labels: ['Low', 'Medium', 'High', 'Critical'],
         datasets: [
           {
-            data: [42, 33, 18, 7],
+            data: sevData,
             backgroundColor: [
               'rgba(57,255,140,0.25)',
               'rgba(79,163,255,0.22)',

@@ -36,13 +36,57 @@
       loadingIndicator.style.display = 'block';
 
       try {
-        // Assuming backend is running on 5000
-        const response = await fetch(`http://localhost:5000/api/gstin/lookup/${gstin}`);
-        const result = await response.json();
+        let result = null;
+        
+        // 1. Check local session storage CSV first to stay in sync with frontend
+        const localCsv = sessionStorage.getItem('analytics_csv_data');
+        if (localCsv) {
+          const rows = localCsv.split('\n').map(r => r.trim()).filter(r => r);
+          if (rows.length > 1) {
+            const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
+            const idxId = headers.findIndex(h => h.includes('gstin') || h.includes('identifier') || (h.includes('id') && !h.includes('name')));
+            const idxCompany = headers.findIndex(h => h.includes('company') || h.includes('name'));
+            const idxSales = headers.findIndex(h => h.includes('sales'));
+            const idxPurchase = headers.findIndex(h => h.includes('purchase'));
+            const idxItc = headers.findIndex(h => h.includes('itc') || h.includes('tax'));
+            const idxRefund = headers.findIndex(h => h.includes('refund'));
+            
+            for (let i = 1; i < rows.length; i++) {
+              const cols = rows[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+              const rowGstin = idxId !== -1 ? cols[idxId] : '';
+              if (rowGstin.toUpperCase() === gstin) {
+                const sales = parseFloat(cols[idxSales]) || 0;
+                const purchase = parseFloat(cols[idxPurchase]) || 0;
+                const itc = parseFloat(cols[idxItc]) || 0;
+                const refund = parseFloat(cols[idxRefund]) || 0;
+                
+                result = {
+                  success: true,
+                  data: {
+                    gstin: rowGstin,
+                    companyName: idxCompany !== -1 ? cols[idxCompany] : 'Unknown Entity',
+                    sales: sales,
+                    purchase: purchase,
+                    itc: itc,
+                    refund: refund,
+                    riskScore: (refund > itc * 0.8 || purchase > sales * 1.5) ? 'HIGH' : 'LOW'
+                  }
+                };
+                break;
+              }
+            }
+          }
+        }
+        
+        // 2. Fallback to backend API if not found in local CSV
+        if (!result) {
+          const response = await fetch(`http://localhost:5000/api/gstin/lookup/${gstin}`);
+          result = await response.json();
+        }
         
         loadingIndicator.style.display = 'none';
 
-        if (result.success) {
+        if (result && result.success) {
           resCompany.textContent = result.data.companyName;
           resSales.textContent = formatCurrency(result.data.sales);
           resPurchase.textContent = formatCurrency(result.data.purchase);
@@ -63,12 +107,12 @@
 
           resultContainer.style.display = 'block';
         } else {
-          errorMsg.textContent = result.message || 'GSTIN not found.';
+          errorMsg.textContent = (result && result.message) ? result.message : 'GSTIN not found.';
           errorMsg.style.display = 'block';
         }
       } catch (err) {
         loadingIndicator.style.display = 'none';
-        errorMsg.textContent = 'Error connecting to the server. Is the backend running?';
+        errorMsg.textContent = 'Error connecting to the server or processing data.';
         errorMsg.style.display = 'block';
         console.error(err);
       }

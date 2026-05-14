@@ -103,11 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Re-initialize page scripts after DOM swap (scripts inside fetched HTML won't execute)
                 if (url.includes('dashboard.html')) {
                     await ensureChartJs();
-                    if (typeof CurrencyExchange !== 'undefined') {
-                        new CurrencyExchange();
-                    } else {
-                        await loadScript('/js/dashboard.js');
-                    }
+                    await loadScript('/js/dashboard.js');
+                    if (window.InvoShield?.initDashboard) window.InvoShield.initDashboard();
+                } else if (url.includes('invoices.html')) {
+                    await loadScript('/js/invoices.js');
+                    if (window.InvoShield?.initInvoices) window.InvoShield.initInvoices();
+                } else if (url.includes('fraud-alert.html')) {
+                    await loadScript('/js/fraud-alerts.js');
+                    if (window.InvoShield?.initFraudAlerts) window.InvoShield.initFraudAlerts();
                 } else if (url.includes('entities.html')) {
                     await ensureChartJs();
                     await loadScript('/js/entities.js');

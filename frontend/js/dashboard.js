@@ -337,7 +337,7 @@ class DashboardController {
     this.fetchExchangeRates();
     
     // Auto-update every 30 seconds
-    setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.fetchExchangeRates();
     }, this.refreshInterval);
   }
@@ -512,8 +512,26 @@ class DashboardController {
 }
 
 // Initialize when page loads
+window.InvoShield = window.InvoShield || {};
+window.InvoShield.initDashboard = () => {
+  if (window.InvoShield.dashboardInstance) {
+    if (window.InvoShield.dashboardInstance.intervalId) {
+      clearInterval(window.InvoShield.dashboardInstance.intervalId);
+    }
+    if (window.InvoShield.dashboardInstance.severityChart) {
+      window.InvoShield.dashboardInstance.severityChart.destroy();
+    }
+    if (window.InvoShield.dashboardInstance.trendChart) {
+      window.InvoShield.dashboardInstance.trendChart.destroy();
+    }
+  }
+  window.InvoShield.dashboardInstance = new DashboardController();
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  const dashboard = new DashboardController();
+  if (location.pathname.endsWith('/dashboard.html') || location.pathname.endsWith('\\dashboard.html') || location.href.includes('dashboard.html')) {
+    window.InvoShield.initDashboard();
+  }
 });
 
 function logout() {

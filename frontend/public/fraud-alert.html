@@ -174,147 +174,16 @@
         <div class="cards-grid">
         </div>
       </div>
-  </div>
-  </main>
+    </main>
   </div>
 
   <script src="/js/router.js"></script>
+  <script src="/js/fraud-alerts.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log('DOM loaded, setting up fraud alerts');
-
-      const cardsGrid = document.querySelector('.cards-grid');
-      const alertData = JSON.parse(sessionStorage.getItem('fraud_alerts_data'));
-
-      function renderCards(data) {
-        if (data && data.length > 0 && cardsGrid) {
-          cardsGrid.innerHTML = '';
-
-          const bannerSub = document.querySelector('.banner-sub');
-          if (bannerSub) {
-            bannerSub.textContent = `${data.length} cases require review`;
-          }
-          const badgeCount = document.querySelector('.nav-item.active .badge-count');
-          if (badgeCount) {
-            badgeCount.textContent = data.length;
-          }
-
-          data.forEach(alert => {
-            const card = document.createElement('div');
-            card.className = 'alert-card';
-
-            let sevBg = '';
-            if (alert.severity === 'HIGH') {
-              sevBg = 'background:#ff9100;color:#000;';
-            } else if (alert.severity === 'MEDIUM') {
-              sevBg = 'background:#ffab00;color:#000;';
-            }
-
-            let confidenceColor = alert.severity === 'CRITICAL' ? 'red' : 'orange';
-            const inrFormat = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(alert.amount);
-
-            card.innerHTML = `
-          <div class="ac-header">
-            <div class="ac-left">
-              <span class="ac-status">${alert.severity}</span>
-              <div class="ac-id">${alert.id}</div>
-              <div class="ac-title">${alert.title}</div>
-            </div>
-            <div class="ac-right">
-              <div class="ac-severity" style="${sevBg}">${alert.severity}</div>
-              <div class="ac-amount">${inrFormat}</div>
-            </div>
-          </div>
-          <div class="ac-body">
-            <div class="ac-row">
-              <span class="ac-label">GSTIN</span>
-              <span class="ac-value mono">${alert.gstin}</span>
-            </div>
-            <div class="ac-row">
-              <span class="ac-label">Entity</span>
-              <span class="ac-value">${alert.entity}</span>
-            </div>
-            <div class="ac-row">
-              <span class="ac-label">Detected</span>
-              <span class="ac-value">${alert.detected}</span>
-            </div>
-            <div class="ac-row">
-              <span class="ac-label">Pattern Score</span>
-              <span class="ac-value ${confidenceColor}">${alert.score}/100</span>
-            </div>
-          </div>
-          <div class="ac-tags">
-            ${alert.triggers.map(t => `<span class="tag suspicious">${t}</span>`).join('')}
-          </div>
-          <div class="ac-footer">
-            <a href="alert-details.html?alertId=${encodeURIComponent(alert.id)}" class="ac-action view">View Details</a>
-            <a href="assignment-simple.html?alertId=${encodeURIComponent(alert.id)}" class="ac-action assign">Assign</a>
-          </div>
-        `;
-            cardsGrid.appendChild(card);
-          });
-        } else if (cardsGrid) {
-          const bannerSub = document.querySelector('.banner-sub');
-          if (bannerSub) {
-            bannerSub.textContent = `0 cases require review`;
-          }
-          const badgeCount = document.querySelector('.nav-item.active .badge-count');
-          if (badgeCount) {
-            badgeCount.textContent = '0';
-          }
-          cardsGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--r); border: 1px dashed var(--border);">
-          <div style="font-size: 3rem; margin-bottom: 20px; color: var(--text-3);">✓</div>
-          <div style="font-size: 1.2rem; color: var(--text-1); margin-bottom: 10px;">No Fraud Alerts Detected</div>
-          <div style="color: var(--text-2);">Upload a CSV file in the Analytics page or refine your search.</div>
-          <button class="tbtn ghost" style="margin-top:20px; border: 1px solid var(--border);" onclick="window.location.href='analytics.html'">Go to Analytics</button>
-        </div>
-      `;
-        }
-      }
-
-      // Initial render
-      renderCards(alertData);
-
-      // Search filtering logic
-      const searchInput = document.getElementById('fa-search');
-      if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-          const query = e.target.value.toLowerCase();
-          if (!alertData) return;
-          const filtered = alertData.filter(a =>
-            a.gstin.toLowerCase().includes(query) ||
-            a.entity.toLowerCase().includes(query) ||
-            a.id.toLowerCase().includes(query) ||
-            a.severity.toLowerCase().includes(query)
-          );
-          renderCards(filtered);
-        });
-      }
-
-      // Set up button listeners using event delegation for both static and dynamic cards
-      if (cardsGrid) {
-        cardsGrid.addEventListener('click', function (e) {
-          if (e.target.classList.contains('view') || e.target.classList.contains('assign')) {
-            e.preventDefault();
-            const alertCard = e.target.closest('.alert-card');
-            const alertIdElement = alertCard.querySelector('.ac-id');
-            const alertId = alertIdElement ? alertIdElement.textContent.trim() : 'ALT-001';
-
-            if (e.target.classList.contains('view')) {
-              window.location.href = `alert-details.html?alertId=${encodeURIComponent(alertId)}`;
-            } else {
-              window.location.href = `assignment-simple.html?alertId=${encodeURIComponent(alertId)}`;
-            }
-          }
-        });
-      }
-    });
-
     function logout() {
-      window.location.href = 'login.html';
+      localStorage.removeItem('token');
+      window.location.href = '/public/login.html';
     }
   </script>
 </body>
-
 </html>

@@ -18,8 +18,6 @@ exports.lookupGSTIN = (req, res) => {
     const data = fs.readFileSync(dataFile, 'utf8');
     const lines = data.split('\n');
     
-    // First line is headers: GSTIN,Company,Sales,Purchase,ITC,Refund
-    // We want to find the line that starts with the given gstinId
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;

@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Helper function to read and parse CSV
 const getDashboardMetrics = () => {
   const csvPath = path.join(__dirname, '../data/real_companies_gst_data.csv');
   
@@ -60,7 +59,6 @@ const getDashboardMetrics = () => {
   };
 };
 
-// Dashboard stats controller
 exports.getStats = (req, res) => {
   const metrics = getDashboardMetrics();
   
@@ -72,7 +70,7 @@ exports.getStats = (req, res) => {
       invoicesScanned: metrics.invoicesScanned.toLocaleString(),
       accuracy: metrics.accuracy,
       threatsDetected: metrics.threatsDetected,
-      activeUsers: 342 // Mock active users
+      activeUsers: 342 
     } : {
       fraudPrevented: '₹0 Cr',
       invoicesScanned: '0',
@@ -82,12 +80,9 @@ exports.getStats = (req, res) => {
     }
   });
 };
-
-// Get analytics
 exports.getAnalytics = (req, res) => {
   const metrics = getDashboardMetrics();
-  
-  // We can use some derived values for the analytics payload
+
   const suspicious = metrics ? metrics.threatsDetected : 0;
   const verified = metrics ? metrics.invoicesScanned - suspicious : 0;
   

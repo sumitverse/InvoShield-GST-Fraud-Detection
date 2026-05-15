@@ -139,8 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Fade out overlay to reveal new page
                 overlay.style.opacity = '0';
 
-                // Update user info
+                // Update user info & badges
                 updateUserInfo();
+                if (window.updateNavBadges) window.updateNavBadges();
             } catch (err) {
                 console.error("Routing error:", err);
                 // Hide overlay even on error
@@ -180,4 +181,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial call on load
     updateUserInfo();
+    if (window.updateNavBadges) window.updateNavBadges();
+});
+
+// Global function to update navigation badges
+window.updateNavBadges = function() {
+    const csvText = sessionStorage.getItem('analytics_csv_data');
+    const badgeInvoices = document.querySelectorAll('a[href="invoices.html"] .badge-count');
+    const badgeAlerts = document.querySelectorAll('a[href="fraud-alert.html"] .badge-count');
+    const badgeCases = document.querySelectorAll('a[href="case-manager.html"] .badge-count');
+
+    if (!csvText) {
+        badgeInvoices.forEach(b => b.textContent = '0');
+        badgeAlerts.forEach(b => b.textContent = '0');
+        badgeCases.forEach(b => {
+            b.textContent = '0';
+            b.className = 'badge-count ok';
+        });
+        return;
+    }
+
+    try {
+        const rows = csvText.split('\n').map(r => r.trim()).filter(r => r);
+        if (rows.length < 2) return;
+        
+        const headers = rows[0].split(',').map(h => h.trim().toLowerCase());
+        const idx = {
+            sales: headers.findIndex(h => h.includes('sales')),
+            purchase: headers.findIndex(h => h.includes('purchase')),
+            itc: headers.findIndex(h => h.includes('itc') || h.includes('tax')),
+            refund: headers.findIndex(h => h.includes('refund')),
+        };
+
+        if (idx.sales === -1 || idx.purchase === -1 || idx.itc === -1 || idx.refund === -1) return;
+
+        const validRows = rows.slice(1);
+        let fraudCount = 0;
+        let criticalCount = 0;
+
+        validRows.forEach((row) => {
+            const cols = row.split(',').map(c => c.trim());
+            const sales = parseFloat(cols[idx.sales]) || 0;
+            const purchase = parseFloat(cols[idx.purchase]) || 0;
+            const itc = parseFloat(cols[idx.itc]) || 0;
+            const refund = parseFloat(cols[idx.refund]) || 0;
+
+            let triggers = [];
+            if (itc > 0.5 * sales) triggers.push('ITC');
+            if (refund > 0.3 * sales) triggers.push('Refund');
+            if (purchase > 1.5 * sales) triggers.push('Circular');
+
+            if (triggers.length > 0) fraudCount++;
+            if (triggers.length >= 3) criticalCount++;
+        });
+
+        badgeInvoices.forEach(b => b.textContent = validRows.length.toString());
+        badgeAlerts.forEach(b => b.textContent = fraudCount.toString());
+        badgeCases.forEach(b => {
+            b.textContent = criticalCount.toString();
+            if (criticalCount > 0) {
+                b.className = 'badge-count'; // Removes 'ok', maybe add a 'danger' if needed, but standard is red without 'ok'
+                b.style.background = 'var(--red)';
+                b.style.color = 'white';
+            } else {
+                b.className = 'badge-count ok';
+                b.style.background = '';
+                b.style.color = '';
+            }
+        });
+    } catch (e) {
+        console.error('Error updating nav badges:', e);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    window.updateNavBadges();
+});
+
+window.addEventListener('csvDataUpdated', () => {
+    if (window.updateNavBadges) window.updateNavBadges();
+});
+
+window.addEventListener('storage', (e) => {
+    if (e.key === 'analytics_csv_data') {
+        if (window.updateNavBadges) window.updateNavBadges();
+    }
 });

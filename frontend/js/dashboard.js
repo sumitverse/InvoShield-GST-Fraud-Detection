@@ -31,6 +31,86 @@ class DashboardController {
     this.initCharts();
     this.initializeKPIs();
     this.setupCSVDataListener();
+    this.setupNotifications();
+  }
+
+  setupNotifications() {
+    this.notifBtn = document.getElementById('notifBtn');
+    this.notifDropdown = document.getElementById('notifDropdown');
+    this.notifDot = document.getElementById('notifDot');
+    this.notifList = document.getElementById('notifList');
+
+    if (this.notifBtn && this.notifDropdown) {
+      // Toggle dropdown
+      this.notifBtn.addEventListener('click', (e) => {
+        // Prevent closing when clicking inside the dropdown
+        if (e.target.closest('.notif-dropdown') && !e.target.classList.contains('notif-clear')) {
+          return;
+        }
+        
+        const isVisible = this.notifDropdown.style.display === 'flex';
+        this.notifDropdown.style.display = isVisible ? 'none' : 'flex';
+        
+        // When opening, hide the dot
+        if (!isVisible && this.notifDot) {
+          this.notifDot.style.display = 'none';
+        }
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!this.notifBtn.contains(e.target)) {
+          this.notifDropdown.style.display = 'none';
+        }
+      });
+    }
+
+    this.populateNotifications();
+  }
+
+  populateNotifications() {
+    if (!this.notifList) return;
+
+    const savedAlerts = sessionStorage.getItem('fraud_alerts_data');
+    let alerts = [];
+    if (savedAlerts) {
+      try {
+        alerts = JSON.parse(savedAlerts);
+      } catch (e) {}
+    }
+
+    // Filter unread or just show top 5 recent alerts
+    if (alerts && alerts.length > 0) {
+      // Show dot if we have alerts
+      if (this.notifDot && this.notifDropdown.style.display !== 'flex') {
+        this.notifDot.style.display = 'block';
+      }
+
+      const recentAlerts = alerts.slice(0, 5);
+      this.notifList.innerHTML = recentAlerts.map(a => `
+        <div class="notif-item" onclick="window.location.href='fraud-alert.html'">
+          <div class="notif-item-title" style="color: ${a.riskClass === 'r' ? 'var(--red)' : a.riskClass === 'y' ? 'var(--yellow)' : 'var(--blue)'}">${a.title}</div>
+          <div class="notif-item-desc">${a.entity} (${a.gstin})</div>
+          <div class="notif-item-time">${a.detected || 'Just now'}</div>
+        </div>
+      `).join('');
+    } else {
+      if (this.notifDot) this.notifDot.style.display = 'none';
+      this.notifList.innerHTML = '<div class="notif-empty">No new notifications</div>';
+    }
+  }
+
+  clearNotifications(e) {
+    if (e) e.stopPropagation();
+    // In a real app, this might mark them as read in DB. Here we just clear the UI.
+    if (this.notifList) {
+      this.notifList.innerHTML = '<div class="notif-empty">No new notifications</div>';
+    }
+    if (this.notifDot) {
+      this.notifDot.style.display = 'none';
+    }
+    // Optionally remove from session storage if we truly want to clear them globally
+    // sessionStorage.removeItem('fraud_alerts_data'); 
   }
 
   initCharts() {
@@ -105,6 +185,12 @@ class DashboardController {
     if (existingData) {
       this.processCSVDataForDashboard(existingData);
     }
+    // Also listen to fraud_alerts_data changes for notifications
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'fraud_alerts_data') {
+        this.populateNotifications();
+      }
+    });
   }
 
   processCSVDataForDashboard(csvText) {
@@ -308,6 +394,7 @@ class DashboardController {
     } catch (error) {
       console.error('Error processing CSV data for dashboard:', error);
     }
+    this.populateNotifications();
   }
 
   initializeKPIs() {

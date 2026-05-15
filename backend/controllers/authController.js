@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/tokenUtils');
 const { users } = require('../models/User');
+const { sendLoginNotification } = require('../utils/emailService');
 
 // Login controller
 exports.login = async (req, res) => {
@@ -36,6 +37,9 @@ exports.login = async (req, res) => {
 
     // Generate token
     const token = generateToken(user);
+
+    // Send email notification asynchronously
+    sendLoginNotification(user).catch(err => console.error("Email notification failed in background:", err));
 
     return res.json({
       success: true,

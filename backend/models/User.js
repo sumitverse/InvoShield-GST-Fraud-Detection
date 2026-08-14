@@ -22,6 +22,14 @@ const users = [
     name: 'Kunal Singh',
     role: 'Tax Officer',
     gstin: '27AABC1234D1Z5'
+  },
+  {
+    id: 4,
+    email: 'jhadivyank7@gmail.com',
+    password: '$2a$10$Pnq5StMsngvT28CULw8x3eeuxsq5pWeO1HrXOUbNKbmoNlDLHUxzm', // password: "Divyank@123"
+    name: 'Divyank',
+    role: 'Quality Specialist',
+    gstin: '27AABC1234D1Z5'
   }
 ];
 

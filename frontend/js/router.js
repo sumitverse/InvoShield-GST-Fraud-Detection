@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentMain.removeAttribute('data-page');
                 }
 
-                // Remove old page-specific CSS files (fraud-alerts.css, dashboard.css, etc.)
-                const pageSpecificCss = ['/css/fraud-alerts.css', '/css/dashboard.css', '/css/invoices.css', '/css/enforcement.css', '/css/login.css', '/css/analytics.css'];
+                // Remove old page-specific CSS files (fraud-alerts.css, invoices.css, etc.)
+                const pageSpecificCss = ['/css/fraud-alerts.css', '/css/invoices.css', '/css/enforcement.css', '/css/login.css', '/css/analytics.css'];
                 pageSpecificCss.forEach(cssFile => {
                     const link = document.querySelector(`link[href="${cssFile}"]`);
                     if (link) link.remove();

@@ -1,58 +1,54 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "src": "^/api/(.*)$",
-      "dest": "/api/index.js"
+      "source": "/api/:path*",
+      "destination": "/api"
     },
     {
-      "src": "^/about(\\.html)?$",
-      "dest": "/frontend/public/about.html"
+      "source": "/css/:path*",
+      "destination": "/frontend/css/:path*"
     },
     {
-      "src": "^/$",
-      "dest": "/frontend/public/login.html"
+      "source": "/js/:path*",
+      "destination": "/frontend/js/:path*"
     },
     {
-      "src": "^/public/(.*)$",
-      "dest": "/frontend/public/$1"
+      "source": "/assets/:path*",
+      "destination": "/frontend/assets/:path*"
     },
     {
-      "src": "^/css/(.*)$",
-      "dest": "/frontend/css/$1"
+      "source": "/",
+      "destination": "/frontend/public/login.html"
     },
     {
-      "src": "^/js/(.*)$",
-      "dest": "/frontend/js/$1"
+      "source": "/login",
+      "destination": "/frontend/public/login.html"
     },
     {
-      "src": "^/assets/(.*)$",
-      "dest": "/frontend/assets/$1"
+      "source": "/dashboard",
+      "destination": "/frontend/public/dashboard.html"
     },
     {
-      "src": "^/login(\\.html)?$",
-      "dest": "/frontend/public/login.html"
+      "source": "/invoices",
+      "destination": "/frontend/public/invoices.html"
     },
     {
-      "src": "^/dashboard(\\.html)?$",
-      "dest": "/frontend/public/dashboard.html"
+      "source": "/fraud-alert",
+      "destination": "/frontend/public/fraud-alert.html"
     },
     {
-      "src": "^/invoices(\\.html)?$",
-      "dest": "/frontend/public/invoices.html"
+      "source": "/gstin-lookup",
+      "destination": "/frontend/public/gstin-lookup.html"
     },
     {
-      "src": "^/fraud-alert(\\.html)?$",
-      "dest": "/frontend/public/fraud-alert.html"
+      "source": "/about",
+      "destination": "/frontend/public/about.html"
     },
     {
-      "src": "^/gstin-lookup(\\.html)?$",
-      "dest": "/frontend/public/gstin-lookup.html"
-    },
-    {
-      "src": "^/(.*)$",
-      "dest": "/frontend/public/$1"
+      "source": "/:path*",
+      "destination": "/frontend/public/:path*"
     }
   ]
 }

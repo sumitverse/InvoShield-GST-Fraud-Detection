@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "^/$",
+      "dest": "/public/login.html"
+    },
+    {
+      "src": "^/public/(.*)$",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "^/css/(.*)$",
+      "dest": "/css/$1"
+    },
+    {
+      "src": "^/js/(.*)$",
+      "dest": "/js/$1"
+    },
+    {
+      "src": "^/assets/(.*)$",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "^/login(\\.html)?$",
+      "dest": "/public/login.html"
+    },
+    {
+      "src": "^/dashboard(\\.html)?$",
+      "dest": "/public/dashboard.html"
+    },
+    {
+      "src": "^/invoices(\\.html)?$",
+      "dest": "/public/invoices.html"
+    },
+    {
+      "src": "^/fraud-alert(\\.html)?$",
+      "dest": "/public/fraud-alert.html"
+    },
+    {
+      "src": "^/gstin-lookup(\\.html)?$",
+      "dest": "/public/gstin-lookup.html"
+    }
+  ]
+}

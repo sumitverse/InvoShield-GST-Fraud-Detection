@@ -3,6 +3,14 @@
   "cleanUrls": true,
   "routes": [
     {
+      "src": "^/api/(.*)$",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "^/about(\\.html)?$",
+      "dest": "/frontend/public/about.html"
+    },
+    {
       "src": "^/$",
       "dest": "/frontend/public/login.html"
     },

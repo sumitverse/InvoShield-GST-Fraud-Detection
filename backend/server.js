@@ -43,6 +43,10 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend Server Chal raha hai.. http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Backend Server Chal raha hai.. http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

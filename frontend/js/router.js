@@ -254,7 +254,27 @@ window.updateNavBadges = function() {
     }
 };
 
+async function loadInitialCSVData() {
+    if (!sessionStorage.getItem('analytics_csv_data')) {
+        try {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const apiBase = isLocal ? 'http://localhost:5000/api' : '/api';
+            const response = await fetch(`${apiBase}/data/csv`);
+            if (response.ok) {
+                const text = await response.text();
+                sessionStorage.setItem('analytics_csv_data', text);
+                window.dispatchEvent(new CustomEvent('csvDataUpdated', { 
+                    detail: { csvData: text } 
+                }));
+            }
+        } catch (err) {
+            console.error('Failed to fetch initial CSV data:', err);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    loadInitialCSVData();
     window.updateNavBadges();
 });
 

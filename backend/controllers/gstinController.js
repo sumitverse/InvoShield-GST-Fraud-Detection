@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-const dataFile = path.join(__dirname, '..', 'data', 'real_companies_gst_data.csv');
+const db = require('../utils/db');
 
 exports.lookupGSTIN = (req, res) => {
   const gstinId = req.params.id;
@@ -11,11 +8,7 @@ exports.lookupGSTIN = (req, res) => {
   }
 
   try {
-    if (!fs.existsSync(dataFile)) {
-      return res.status(500).json({ success: false, message: 'Database file not found.' });
-    }
-
-    const data = fs.readFileSync(dataFile, 'utf8');
+    const data = db.getCSVData();
     const lines = data.split('\n');
     
     for (let i = 1; i < lines.length; i++) {

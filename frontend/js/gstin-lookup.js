@@ -80,7 +80,9 @@
         
         // 2. Fallback to backend API if not found in local CSV
         if (!result) {
-          const response = await fetch(`http://localhost:5000/api/gstin/lookup/${gstin}`);
+          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          const apiBase = isLocal ? 'http://localhost:5000/api' : '/api';
+          const response = await fetch(`${apiBase}/gstin/lookup/${gstin}`);
           result = await response.json();
         }
         

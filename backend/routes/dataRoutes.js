@@ -1,21 +1,11 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const router = express.Router();
+const db = require('../utils/db');
 
 // Serve CSV data
 router.get('/csv', (req, res) => {
   try {
-    const csvPath = path.join(__dirname, '../data/real_companies_gst_data.csv');
-    
-    if (!fs.existsSync(csvPath)) {
-      return res.status(404).json({
-        success: false,
-        message: 'CSV file not found'
-      });
-    }
-    
-    const csvData = fs.readFileSync(csvPath, 'utf8');
+    const csvData = db.getCSVData();
     res.setHeader('Content-Type', 'text/csv');
     res.send(csvData);
   } catch (error) {
@@ -42,22 +32,9 @@ router.post('/invoices', (req, res) => {
     
     // Create CSV line with proper format
     const csvLine = `${gstin},"${entity}",${amount},0,0,0`;
-    const csvPath = path.join(__dirname, '../data/real_companies_gst_data.csv');
     
-    // Ensure file exists and has proper format
-    try {
-      const existingData = fs.readFileSync(csvPath, 'utf8');
-      if (existingData.trim() === '') {
-        // If file is empty, add header
-        fs.writeFileSync(csvPath, 'GSTIN,Company,Sales,Purchase,ITC,Refund');
-      }
-    } catch (err) {
-      // If file doesn't exist, create it with header
-      fs.writeFileSync(csvPath, 'GSTIN,Company,Sales,Purchase,ITC,Refund');
-    }
-    
-    // Append the new invoice to the file
-    fs.appendFileSync(csvPath, '\n' + csvLine);
+    // Save invoice to our in-memory CSV manager
+    db.appendCSVLine(csvLine);
     
     console.log('New invoice added to CSV:', { id, gstin, entity, amount });
     

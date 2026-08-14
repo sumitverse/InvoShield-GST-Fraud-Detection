@@ -1,14 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+const db = require('../utils/db');
 
 const getDashboardMetrics = () => {
-  const csvPath = path.join(__dirname, '../data/real_companies_gst_data.csv');
-  
-  if (!fs.existsSync(csvPath)) {
-    return null;
-  }
-  
-  const csvData = fs.readFileSync(csvPath, 'utf8');
+  const csvData = db.getCSVData();
   const rows = csvData.split('\n').map(r => r.trim()).filter(r => r);
   if (rows.length < 2) return null;
 

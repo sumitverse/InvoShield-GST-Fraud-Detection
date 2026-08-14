@@ -220,7 +220,9 @@
 
   async function saveInvoiceToBackend(invoice) {
     try {
-      const response = await fetch('http://localhost:5000/api/invoices', {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const apiBase = isLocal ? 'http://localhost:5000/api' : '/api';
+      const response = await fetch(`${apiBase}/data/invoices`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

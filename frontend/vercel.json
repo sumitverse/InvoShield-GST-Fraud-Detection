@@ -3,6 +3,10 @@
   "cleanUrls": true,
   "routes": [
     {
+      "src": "^/about(\\.html)?$",
+      "dest": "/public/about.html"
+    },
+    {
       "src": "^/$",
       "dest": "/public/login.html"
     },
